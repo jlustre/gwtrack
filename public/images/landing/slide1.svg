@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-label="Leadership clarity hero background">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#050505"/>
+      <stop offset="45%" stop-color="#111111"/>
+      <stop offset="100%" stop-color="#1a1408"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="72%" cy="38%" r="55%">
+      <stop offset="0%" stop-color="#d4af37" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#d4af37" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#bg)"/>
+  <rect width="1920" height="1080" fill="url(#glow)"/>
+  <path d="M0 720 Q480 560 960 680 T1920 620 L1920 1080 L0 1080 Z" fill="#d4af37" fill-opacity="0.08"/>
+  <circle cx="1600" cy="220" r="180" fill="#f5d76e" fill-opacity="0.06"/>
+</svg>

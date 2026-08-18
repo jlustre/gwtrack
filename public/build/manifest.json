@@ -1,0 +1,22 @@
+{
+  "resources/css/app.css": {
+    "file": "assets/app-CBPrbXcO.css",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-CDvUBhdK.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true
+  },
+  "resources/js/email-template-editor.js": {
+    "file": "assets/email-template-editor-BDDB2ZNa.js",
+    "name": "email-template-editor",
+    "src": "resources/js/email-template-editor.js",
+    "isEntry": true,
+    "css": [
+      "assets/email-template-editor-D7RcV1VZ.css"
+    ]
+  }
+}

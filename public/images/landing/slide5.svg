@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-label="Recognition hero background">
+  <defs>
+    <linearGradient id="bg" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#12100a"/>
+      <stop offset="55%" stop-color="#0a0a0a"/>
+      <stop offset="100%" stop-color="#050505"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="30%" r="60%">
+      <stop offset="0%" stop-color="#d4af37" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#d4af37" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#bg)"/>
+  <rect width="1920" height="1080" fill="url(#glow)"/>
+  <polygon points="960,140 1010,260 1140,260 1040,340 1070,460 960,390 850,460 880,340 780,260 910,260" fill="#f5d76e" fill-opacity="0.12"/>
+  <circle cx="320" cy="760" r="120" fill="#d4af37" fill-opacity="0.05"/>
+  <circle cx="1580" cy="680" r="160" fill="#b8860b" fill-opacity="0.06"/>
+</svg>

@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>GWTrack · Premium Registration | MLM Insurance Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: radial-gradient(circle at 10% 20%, #0a0a0a, #000000);
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #e5e5e5;
+            min-height: 100vh;
+            padding: 2rem 1.5rem;
+        }
+
+        /* fallback smooth font */
+        @supports (font-variation-settings: normal) {
+            body { font-family: 'Inter Variable', system-ui, sans-serif; }
+        }
+
+        /* main container */
+        .register-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: calc(100vh - 4rem);
+        }
+
+        /* premium glass-card effect with gold glow */
+        .premium-card {
+            background: rgba(0, 0, 0, 0.82);
+            backdrop-filter: blur(2px);
+            border-radius: 2rem;
+            box-shadow: 0 25px 45px -12px rgba(0,0,0,0.8), 0 0 0 1px rgba(212, 175, 55, 0.2), 0 0 18px rgba(212, 175, 55, 0.25);
+            transition: box-shadow 0.3s ease;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .premium-card:hover {
+            box-shadow: 0 30px 50px -15px rgba(0,0,0,0.9), 0 0 0 1px rgba(212, 175, 55, 0.5), 0 0 28px rgba(212, 175, 55, 0.4);
+        }
+
+        /* two-column grid layout (desktop default) */
+        .registration-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.1fr;
+            gap: 0;
+            background: #0b0b0c;
+        }
+
+        /* LEFT HERO SIDE: branding & info */
+        .brand-side {
+            background: linear-gradient(145deg, #010101 0%, #0e0e0f 100%);
+            padding: 2.5rem 2rem;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid rgba(212, 175, 55, 0.25);
+        }
+
+        .logo-area {
+            margin-bottom: 2rem;
+        }
+
+        .logo {
+            font-size: 1.9rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #F5E7B2 0%, #D4AF37 50%, #B8860B 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            display: inline-block;
+            font-family: inherit;
+        }
+
+        .logo span {
+            font-weight: 800;
+            text-shadow: 0 0 8px rgba(212, 175, 55, 0.3);
+        }
+
+        .tagline {
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #D4AF37;
+            border-left: 2px solid #D4AF37;
+            padding-left: 0.75rem;
+            margin-top: 0.25rem;
+            font-weight: 500;
+        }
+
+        .hero-headline {
+            margin-top: 2rem;
+        }
+
+        .hero-headline h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            line-height: 1.2;
+            background: linear-gradient(to right, #ffffff, #E5C56A);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .hero-headline p {
+            color: #b9b9bb;
+            font-size: 1rem;
+            margin-bottom: 2rem;
+            border-left: 2px solid rgba(212, 175, 55, 0.5);
+            padding-left: 1rem;
+        }
+
+        .benefits-list {
+            list-style: none;
+            margin-top: 1.5rem;
+        }
+
+        .benefits-list li {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.2rem;
+            font-size: 0.9rem;
+            color: #ddd;
+        }
+
+        .gold-dot {
+            width: 8px;
+            height: 8px;
+            background: #D4AF37;
+            border-radius: 50%;
+            box-shadow: 0 0 6px #D4AF37;
+        }
+
+        .accent-text {
+            font-weight: 600;
+            color: #EBC455;
+        }
+
+        /* RIGHT SIDE: FORM */
+        .form-side {
+            background: #0a0a0c;
+            padding: 2.5rem 2rem;
+        }
+
+        .form-title {
+            margin-bottom: 1.8rem;
+        }
+
+        .form-title h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+            color: #fff;
+        }
+
+        .form-title p {
+            font-size: 0.85rem;
+            color: #aaa;
+            margin-top: 0.3rem;
+        }
+
+        .registration-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .input-group label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #D4AF37;
+        }
+
+        .input-group input, 
+        .input-group select {
+            background: #131316;
+            border: 1px solid #2a2a2e;
+            border-radius: 1rem;
+            padding: 0.8rem 1rem;
+            font-size: 0.9rem;
+            color: #f0f0f0;
+            transition: all 0.2s ease;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .input-group input:focus, 
+        .input-group select:focus {
+            border-color: #D4AF37;
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+            background: #18181c;
+        }
+
+        .helper-text {
+            font-size: 0.7rem;
+            color: #9b9b9b;
+            margin-top: 0.2rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .helper-text::before {
+            content: "✨";
+            font-size: 0.65rem;
+        }
+
+        .double-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .submit-btn {
+            margin-top: 1rem;
+            background: linear-gradient(95deg, #B8860B, #D4AF37, #F3D572);
+            border: none;
+            border-radius: 2rem;
+            padding: 0.9rem;
+            font-weight: 700;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: #0a0a0a;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 6px 12px -8px rgba(0,0,0,0.5);
+            font-family: inherit;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 20px -12px rgba(212, 175, 55, 0.5);
+            background: linear-gradient(95deg, #D4AF37, #F3D572, #E5B82E);
+        }
+
+        .footer-signin {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.85rem;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            padding-top: 1.2rem;
+        }
+
+        .footer-signin a {
+            color: #D4AF37;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .footer-signin a:hover {
+            color: #F3D572;
+            text-decoration: underline;
+        }
+
+        /* country + timezone row adjustments */
+        .full-width {
+            width: 100%;
+        }
+
+        /* responsiveness */
+        @media (max-width: 900px) {
+            body {
+                padding: 1rem;
+            }
+            .registration-grid {
+                grid-template-columns: 1fr;
+                border-radius: 2rem;
+            }
+            .brand-side {
+                border-right: none;
+                border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+                padding: 2rem 1.5rem;
+            }
+            .form-side {
+                padding: 2rem 1.5rem;
+            }
+            .hero-headline h1 {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .double-group {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .premium-card {
+                border-radius: 1.5rem;
+            }
+            .logo {
+                font-size: 1.5rem;
+            }
+            .form-title h2 {
+                font-size: 1.5rem;
+            }
+            .input-group input, .input-group select {
+                padding: 0.7rem 0.9rem;
+            }
+        }
+
+        /* custom styling for selects */
+        select {
+            appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="%23D4AF37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>');
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 14px;
+        }
+
+        /* placeholder style */
+        ::placeholder {
+            color: #5a5a60;
+            font-size: 0.8rem;
+        }
+
+        /* small gold underline */
+        .gold-accent-line {
+            height: 2px;
+            width: 60px;
+            background: linear-gradient(90deg, #D4AF37, transparent);
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+<div class="register-container">
+    <div class="premium-card">
+        <div class="registration-grid">
+            <!-- left column: brand & professional messaging -->
+            <div class="brand-side">
+                <div class="logo-area">
+                    <div class="logo">GW<span>Track</span>.com</div>
+                    <div class="tagline">Financial Intelligence · MLM Insurance Suite</div>
+                </div>
+                <div class="hero-headline">
+                    <h1>Create Your GWTrack Account</h1>
+                    <div class="gold-accent-line"></div>
+                    <p>Start your onboarding and field apprenticeship journey</p>
+                    <div class="benefits-list">
+                        <li><span class="gold-dot"></span> Premium agent dashboard & training</li>
+                        <li><span class="gold-dot"></span> Real-time commission tracking & analytics</li>
+                        <li><span class="gold-dot"></span> Mentor-led apprenticeship modules</li>
+                        <li><span class="gold-dot"></span> Secure insurance portfolio manager</li>
+                    </div>
+                    <div style="margin-top: 2rem;">
+                        <span class="accent-text">⚡ Trusted by 7,200+ financial professionals</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- right column: registration form -->
+            <div class="form-side">
+                <div class="form-title">
+                    <h2>Agent Registration</h2>
+                    <p>Secure portal access · MLM compliance ready</p>
+                </div>
+                <form class="registration-form" action="#" method="post">
+                    <!-- registration code field + helper -->
+                    <div class="input-group">
+                        <label>REGISTRATION CODE</label>
+                        <input type="text" placeholder="e.g., GW-MENTOR-24X" value="" required>
+                        <div class="helper-text">Enter the code provided by your sponsor or mentor.</div>
+                    </div>
+
+                    <!-- sponsor field -->
+                    <div class="input-group">
+                        <label>SPONSOR</label>
+                        <input type="text" placeholder="Sponsor ID / Referral code" required>
+                    </div>
+
+                    <!-- first & last name row -->
+                    <div class="double-group">
+                        <div class="input-group">
+                            <label>FIRST NAME</label>
+                            <input type="text" placeholder="James" required>
+                        </div>
+                        <div class="input-group">
+                            <label>LAST NAME</label>
+                            <input type="text" placeholder="Carter" required>
+                        </div>
+                    </div>
+
+                    <!-- password + confirm row -->
+                    <div class="double-group">
+                        <div class="input-group">
+                            <label>PASSWORD</label>
+                            <input type="password" placeholder="••••••••" required>
+                        </div>
+                        <div class="input-group">
+                            <label>CONFIRM PASSWORD</label>
+                            <input type="password" placeholder="Confirm password" required>
+                        </div>
+                    </div>
+
+                    <!-- city field -->
+                    <div class="input-group">
+                        <label>CITY</label>
+                        <input type="text" placeholder="Vancouver / Manila / Mexico City" required>
+                    </div>
+
+                    <!-- country dropdown -->
+                    <div class="input-group">
+                        <label>COUNTRY</label>
+                        <select required>
+                            <option value="" disabled selected>— Select jurisdiction —</option>
+                            <option>Canada</option>
+                            <option>United States</option>
+                            <option>Philippines</option>
+                            <option>Mexico</option>
+                        </select>
+                    </div>
+
+                    <!-- timezone dropdown (full list required) -->
+                    <div class="input-group">
+                        <label>TIMEZONE</label>
+                        <select required>
+                            <option value="" disabled selected>— Select your local timezone —</option>
+                            <option>PST</option>
+                            <option>MST</option>
+                            <option>CST</option>
+                            <option>EST</option>
+                            <option>Canada Pacific Time</option>
+                            <option>Canada Mountain Time</option>
+                            <option>Canada Central Time</option>
+                            <option>Canada Eastern Time</option>
+                            <option>Philippines Time</option>
+                            <option>Mexico Pacific Time</option>
+                            <option>Mexico Mountain Time</option>
+                            <option>Mexico Central Time</option>
+                            <option>Mexico Eastern Time</option>
+                        </select>
+                    </div>
+
+                    <!-- premium submit button -->
+                    <button type="submit" class="submit-btn">Create Account</button>
+
+                    <div class="footer-signin">
+                        Already have an account? <a href="#">Sign in</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

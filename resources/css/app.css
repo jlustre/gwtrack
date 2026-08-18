@@ -1,0 +1,329 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ |--------------------------------------------------------------------------
+ | Greatway Financial brand palette (from logo)
+ |--------------------------------------------------------------------------
+ | App theme tokens. Prefer Tailwind `gw-*` utilities in views; use these
+ | CSS variables in plain CSS. Source hexes sampled from the logo.
+ |
+ |   Primary (navy/charcoal)  #2D3E50  — icon squares + "greatway"
+ |   Accent  (lime green)     #84BB41  — icon accent squares
+ |   Neutral (medium gray)    #687480  — "FINANCIAL" wordmark
+ |   Surface (white)          #FFFFFF  — logo background
+ */
+:root {
+    --gw-primary: #2d3e50;
+    --gw-primary-hover: #465565;
+    --gw-primary-dark: #263544;
+    --gw-primary-soft: #f2f3f4;
+    --gw-primary-muted: #e6e8ea;
+
+    --gw-accent: #84bb41;
+    --gw-accent-hover: #93c358;
+    --gw-accent-dark: #74a539;
+    --gw-accent-soft: #f5faf0;
+    --gw-accent-muted: #edf5e2;
+
+    --gw-neutral: #687480;
+    --gw-neutral-soft: #f3f4f5;
+
+    --gw-surface: #ffffff;
+    --gw-on-primary: #ffffff;
+    --gw-on-accent: #2d3e50;
+}
+
+@layer base {
+    body {
+        color-scheme: light;
+    }
+
+    [x-cloak] {
+        display: none !important;
+    }
+
+    #gw-page-loading.hidden {
+        display: none;
+    }
+}
+
+.cfm-management-page ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.cfm-management-page ::-webkit-scrollbar-track {
+    background: #1f1f1f;
+    border-radius: 10px;
+}
+
+.cfm-management-page ::-webkit-scrollbar-thumb {
+    background: #b45309;
+    border-radius: 10px;
+}
+
+.cfm-management-page ::-webkit-scrollbar-thumb:hover {
+    background: #f59e0b;
+}
+
+@layer components {
+    .gw-page-spinner {
+        @apply h-12 w-12 animate-spin rounded-full border-4 border-gw-accent/25 border-t-gw-accent;
+    }
+
+    .gw-card {
+        @apply rounded-lg border border-slate-400 bg-gradient-to-br from-white via-slate-50 to-gw-accent-soft shadow-sm;
+    }
+
+    .gw-button-primary {
+        @apply inline-flex items-center justify-center rounded-md bg-gw-primary px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-gw-primary-hover;
+    }
+
+    .gw-button-gold {
+        @apply inline-flex items-center justify-center rounded-md bg-gw-accent px-4 py-2 text-sm font-semibold text-gw-primary shadow-sm transition hover:bg-gw-accent-hover;
+    }
+
+    .gw-icon-btn {
+        @apply relative inline-flex h-7 w-7 shrink-0 items-center justify-center rounded text-slate-500 transition hover:bg-slate-100 hover:text-gw-primary;
+    }
+
+    .gw-icon-btn-lg {
+        @apply relative inline-flex h-9 w-9 shrink-0 items-center justify-center rounded text-slate-500 transition hover:bg-slate-100 hover:text-gw-primary;
+    }
+
+    .gw-icon-btn-xs {
+        @apply inline-flex h-5 w-5 shrink-0 items-center justify-center rounded text-slate-500 transition hover:bg-slate-100 hover:text-gw-primary;
+    }
+
+    .gw-icon-btn-danger {
+        @apply relative inline-flex h-7 w-7 shrink-0 items-center justify-center rounded text-red-600 transition hover:bg-red-50 hover:text-red-700;
+    }
+
+    .gw-icon-btn-warning {
+        @apply relative inline-flex h-7 w-7 shrink-0 items-center justify-center rounded text-amber-600 transition hover:bg-amber-50;
+    }
+
+    .gw-icon-btn-success {
+        @apply relative inline-flex h-7 w-7 shrink-0 items-center justify-center rounded text-emerald-600 transition hover:bg-emerald-50;
+    }
+
+    .gw-icon-btn-accent {
+        @apply relative inline-flex h-7 w-7 shrink-0 items-center justify-center rounded text-gw-accent-dark transition hover:bg-gw-accent-soft hover:text-gw-primary;
+    }
+
+    .gw-icon-btn-primary {
+        @apply relative inline-flex h-7 w-7 shrink-0 items-center justify-center rounded text-gw-primary transition hover:bg-slate-100;
+    }
+
+    .gw-icon-btn-favorite {
+        @apply relative inline-flex h-7 w-7 shrink-0 items-center justify-center rounded text-slate-500 transition hover:bg-gw-accent/10 hover:text-gw-accent-dark;
+    }
+
+    .gw-icon-btn-favorite-active {
+        @apply relative inline-flex h-7 w-7 shrink-0 items-center justify-center rounded text-gw-accent-dark transition hover:bg-gw-accent/15;
+    }
+
+    .gw-icon-btn-close {
+        @apply inline-flex h-8 w-8 shrink-0 items-center justify-center rounded text-slate-500 transition hover:bg-slate-100 hover:text-gw-primary;
+    }
+
+    .gw-icon-btn-overlay {
+        @apply pointer-events-auto inline-flex h-8 w-8 shrink-0 items-center justify-center rounded text-white/90 transition hover:bg-white/20;
+    }
+
+    .gw-icon-btn-dark {
+        @apply inline-flex h-6 w-6 shrink-0 items-center justify-center rounded text-gw-accent transition hover:bg-gw-accent hover:text-gw-primary;
+    }
+
+    .gw-icon-btn-dark-accent {
+        @apply inline-flex h-5 w-5 shrink-0 items-center justify-center rounded text-gw-accent transition hover:bg-gw-accent hover:text-gw-primary;
+    }
+
+    .gw-checklist-item {
+        @apply border-b border-slate-200/70 px-6 py-2.5 transition;
+    }
+
+    .gw-checklist-item--odd {
+        @apply bg-white hover:bg-gw-accent-muted;
+    }
+
+    .gw-checklist-item--even {
+        @apply bg-gw-primary-soft hover:bg-gw-accent-muted;
+    }
+
+    /*
+     | Theme table rows — odd / even / hover
+     | Applied app-wide under <main>. Opt out with class "gw-table-unstriped".
+     | Explicit Tailwind bg-* utilities on a <tr> still win (utilities layer).
+     */
+    .gw-table > tbody > tr,
+    main table:not(.gw-table-unstriped) > tbody > tr {
+        @apply transition-colors;
+    }
+
+    .gw-table > tbody > tr:nth-child(odd),
+    main table:not(.gw-table-unstriped) > tbody > tr:nth-child(odd) {
+        background-color: var(--gw-surface);
+    }
+
+    .gw-table > tbody > tr:nth-child(even),
+    main table:not(.gw-table-unstriped) > tbody > tr:nth-child(even) {
+        background-color: var(--gw-primary-soft);
+    }
+
+    .gw-table > tbody > tr:hover,
+    main table:not(.gw-table-unstriped) > tbody > tr:hover {
+        background-color: var(--gw-accent-muted);
+    }
+
+    .gw-table > thead > tr,
+    main table:not(.gw-table-unstriped) > thead > tr {
+        background-color: var(--gw-primary-soft);
+    }
+
+    /* Dark zinc surfaces (support hub, wishlist) — keep striping readable */
+    main :is(.bg-zinc-900, .bg-zinc-950, .bg-zinc-800) table:not(.gw-table-unstriped) > thead > tr {
+        background-color: rgb(24 24 27);
+    }
+
+    main :is(.bg-zinc-900, .bg-zinc-950, .bg-zinc-800) table:not(.gw-table-unstriped) > tbody > tr:nth-child(odd) {
+        background-color: rgb(24 24 27);
+    }
+
+    main :is(.bg-zinc-900, .bg-zinc-950, .bg-zinc-800) table:not(.gw-table-unstriped) > tbody > tr:nth-child(even) {
+        background-color: rgb(9 9 11);
+    }
+
+    main :is(.bg-zinc-900, .bg-zinc-950, .bg-zinc-800) table:not(.gw-table-unstriped) > tbody > tr:hover {
+        background-color: rgba(245, 158, 11, 0.12);
+    }
+}
+
+@media print {
+    .gw-table > tbody > tr,
+    .gw-table > thead > tr,
+    main table > tbody > tr,
+    main table > thead > tr {
+        background-color: transparent !important;
+    }
+}
+
+/* Soft card wash — never apply to dark brand heroes / primary surfaces */
+main :where(.rounded-lg.border.shadow-sm:not(.text-white):not(.bg-gw-primary):not(.gw-page-hero)) {
+    border-color: #94a3b8;
+    background-image: linear-gradient(135deg, #ffffff 0%, #f8fafc 52%, var(--gw-accent-soft) 100%);
+}
+
+main :where(.overflow-hidden.rounded-lg.border.shadow-sm:not(.text-white):not(.bg-gw-primary):not(.gw-page-hero)) {
+    border-color: #94a3b8;
+    background-image: linear-gradient(135deg, #ffffff 0%, #f8fafc 52%, var(--gw-accent-soft) 100%);
+}
+
+main :where(a.rounded-lg.border.shadow-sm:not(.text-white):not(.bg-gw-primary):not(.gw-page-hero), button.rounded-lg.border.shadow-sm:not(.text-white):not(.bg-gw-primary):not(.gw-page-hero)) {
+    border-color: #94a3b8;
+    background-image: linear-gradient(135deg, #ffffff 0%, #f8fafc 52%, var(--gw-accent-soft) 100%);
+}
+
+main :where(a.rounded-lg.border.shadow-sm:not(.text-white):not(.bg-gw-primary):not(.gw-page-hero):hover, button.rounded-lg.border.shadow-sm:not(.text-white):not(.bg-gw-primary):not(.gw-page-hero):hover) {
+    border-color: var(--gw-accent);
+    background-image: linear-gradient(135deg, #fafdf6 0%, #f8fafc 45%, var(--gw-accent-muted) 100%);
+}
+
+.gw-page-hero {
+    background-color: var(--gw-primary) !important;
+    background-image: none !important;
+    border-color: var(--gw-primary) !important;
+    color: #ffffff;
+}
+
+main :where(.rounded-lg.border-red-100, .rounded-lg.border-red-200) {
+    border-color: #fca5a5;
+}
+
+main :where(.rounded-lg.border-amber-100, .rounded-lg.border-amber-200) {
+    border-color: #f3c969;
+}
+
+main :where(.rounded-lg.border-purple-100, .rounded-lg.border-indigo-100, .rounded-lg.border-sky-100, .rounded-lg.border-emerald-100) {
+    border-color: #a8b5c7;
+}
+
+/* Go-to-top — plain CSS so it always applies (not dependent on Tailwind purge) */
+.gw-go-to-top {
+    position: fixed;
+    right: max(1.25rem, env(safe-area-inset-right, 0px));
+    bottom: max(1.25rem, env(safe-area-inset-bottom, 0px));
+    z-index: 9990;
+    display: block;
+    padding: 3px;
+    border: none;
+    border-radius: 9999px;
+    cursor: pointer;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    background: linear-gradient(145deg, var(--gw-accent-hover) 0%, var(--gw-accent) 42%, var(--gw-accent-dark) 100%);
+    box-shadow:
+        0 14px 30px -10px rgba(45, 62, 80, 0.55),
+        0 0 0 1px rgba(132, 187, 65, 0.45);
+    transform: translateY(16px) scale(0.9);
+    transition:
+        opacity 0.25s ease,
+        transform 0.25s ease,
+        visibility 0.25s ease,
+        box-shadow 0.2s ease;
+}
+
+.gw-go-to-top--visible {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0) scale(1);
+}
+
+.gw-go-to-top:hover {
+    box-shadow:
+        0 18px 34px -10px rgba(45, 62, 80, 0.6),
+        0 0 0 2px rgba(147, 195, 88, 0.7);
+}
+
+.gw-go-to-top:focus-visible {
+    outline: 2px solid var(--gw-accent);
+    outline-offset: 3px;
+}
+
+.gw-go-to-top__surface {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.25rem;
+    height: 3.25rem;
+    border-radius: 9999px;
+    background: var(--gw-primary);
+    color: var(--gw-accent);
+    transition: background-color 0.2s ease;
+}
+
+.gw-go-to-top:hover .gw-go-to-top__surface {
+    background: var(--gw-primary-hover);
+}
+
+.gw-go-to-top__icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex-shrink: 0;
+}
+
+/*
+ | Livewire @persist wrappers render as <div x-persist="...">.
+ | Use display:contents so sidebar/topbar keep participating in the shell flex layout
+ | while the DOM node is reused across wire:navigate visits.
+ */
+[x-persist='page-chrome'],
+[x-persist='sidebar'],
+[x-persist='topbar'],
+[x-persist='shell-overlays'] {
+    display: contents;
+}

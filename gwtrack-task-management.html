@@ -1,0 +1,664 @@
+<section x-data="taskManagement()" x-init="init()" class="min-h-screen bg-[#0a0a0b] text-[#e8e8f0] antialiased">
+  <div class="mx-auto max-w-[1600px] px-4 py-6 sm:px-5 lg:px-6">
+
+    <!-- Page Header -->
+    <header class="mb-7 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+      <div class="min-w-0">
+        <div class="mb-2 flex flex-wrap items-center gap-2.5">
+          <div class="flex h-9 w-9 items-center justify-center rounded-lg border border-[#c9a84c]/30 bg-[#c9a84c]/15">
+            <svg class="h-[18px] w-[18px] text-[#c9a84c]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 11l3 3L22 4"/><path stroke-linecap="round" stroke-linejoin="round" d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+          </div>
+          <h1 class="text-xl font-semibold tracking-wide text-[#e8e8f0] sm:text-2xl">Task Management</h1>
+          <span class="rounded-full border border-[#c9a84c]/30 bg-[#c9a84c]/10 px-2 py-0.5 text-[11px] font-semibold text-[#c9a84c]">GWTrack</span>
+        </div>
+        <p class="max-w-xl text-sm leading-relaxed text-[#6b6b80]">Organize team activities, follow-ups, training actions, mentorship tasks, and rank advancement priorities.</p>
+      </div>
+      <div class="flex flex-wrap items-center gap-2">
+        <button type="button" @click="showFilters = !showFilters" class="inline-flex items-center gap-1.5 rounded-lg border border-[#2a2a32] bg-transparent px-3.5 py-2 text-sm text-[#9898aa] transition hover:border-[#c9a84c]/40 hover:text-[#c9a84c]">
+          <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/></svg>
+          Filters
+        </button>
+        <button type="button" @click="activeView = 'my'" class="inline-flex items-center gap-1.5 rounded-lg border border-[#c9a84c]/30 bg-transparent px-3.5 py-2 text-sm font-medium text-[#c9a84c] transition hover:bg-[#c9a84c]/10">
+          <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          My Tasks
+        </button>
+        <button type="button" @click="activeView = 'team'" class="inline-flex items-center gap-1.5 rounded-lg border border-[#c9a84c]/30 bg-transparent px-3.5 py-2 text-sm font-medium text-[#c9a84c] transition hover:bg-[#c9a84c]/10">
+          <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path stroke-linecap="round" d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+          Team Tasks
+        </button>
+        <button type="button" @click="showNewTask = true" class="inline-flex items-center gap-1.5 rounded-lg bg-gradient-to-br from-[#c9a84c] to-[#a07830] px-4 py-2 text-sm font-semibold text-[#0a0a0b] shadow-lg shadow-[#c9a84c]/10 transition hover:from-[#e8c97a] hover:to-[#c9a84c] hover:-translate-y-px">
+          <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" d="M12 5v14M5 12h14"/></svg>
+          New Task
+        </button>
+      </div>
+    </header>
+
+    <!-- Summary Cards -->
+    <div class="mb-7 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+      <div class="rounded-xl border border-[#2a2a32] border-t-2 border-t-[#c9a84c] bg-[#111114]/90 p-4 shadow-lg backdrop-blur-md transition hover:-translate-y-0.5 hover:border-[#c9a84c]/30">
+        <p class="text-[11px] font-medium uppercase tracking-wider text-[#6b6b80]">Total Tasks</p>
+        <p class="mt-2 text-2xl font-bold text-[#e8e8f0] sm:text-3xl">124</p>
+        <p class="mt-1 text-[11px] text-[#6b6b80]">↑ 12 this week</p>
+      </div>
+      <div class="rounded-xl border border-[#2a2a32] border-t-2 border-t-amber-500 bg-[#111114]/90 p-4 shadow-lg backdrop-blur-md transition hover:-translate-y-0.5 hover:border-[#c9a84c]/30">
+        <p class="text-[11px] font-medium uppercase tracking-wider text-[#6b6b80]">Due Today</p>
+        <p class="mt-2 text-2xl font-bold text-amber-400 sm:text-3xl">9</p>
+        <p class="mt-1 text-[11px] text-[#6b6b80]">3 urgent</p>
+      </div>
+      <div class="rounded-xl border border-[#2a2a32] border-t-2 border-t-red-500 bg-[#111114]/90 p-4 shadow-lg backdrop-blur-md transition hover:-translate-y-0.5 hover:border-[#c9a84c]/30">
+        <p class="text-[11px] font-medium uppercase tracking-wider text-[#6b6b80]">Overdue</p>
+        <p class="mt-2 text-2xl font-bold text-red-400 sm:text-3xl">5</p>
+        <p class="mt-1 text-[11px] text-[#6b6b80]">↑ 2 from yesterday</p>
+      </div>
+      <div class="rounded-xl border border-[#2a2a32] border-t-2 border-t-emerald-500 bg-[#111114]/90 p-4 shadow-lg backdrop-blur-md transition hover:-translate-y-0.5 hover:border-[#c9a84c]/30">
+        <p class="text-[11px] font-medium uppercase tracking-wider text-[#6b6b80]">Completed This Week</p>
+        <p class="mt-2 text-2xl font-bold text-emerald-400 sm:text-3xl">38</p>
+        <p class="mt-1 text-[11px] text-[#6b6b80]">On track</p>
+      </div>
+      <div class="rounded-xl border border-[#2a2a32] border-t-2 border-t-orange-500 bg-[#111114]/90 p-4 shadow-lg backdrop-blur-md transition hover:-translate-y-0.5 hover:border-[#c9a84c]/30">
+        <p class="text-[11px] font-medium uppercase tracking-wider text-[#6b6b80]">High Priority</p>
+        <p class="mt-2 text-2xl font-bold text-orange-400 sm:text-3xl">17</p>
+        <p class="mt-1 text-[11px] text-[#6b6b80]">6 urgent</p>
+      </div>
+      <div class="col-span-2 rounded-xl border border-[#2a2a32] border-t-2 border-t-[#c9a84c] bg-[#111114]/90 p-4 shadow-lg backdrop-blur-md transition hover:-translate-y-0.5 hover:border-[#c9a84c]/30 sm:col-span-1">
+        <p class="text-[11px] font-medium uppercase tracking-wider text-[#6b6b80]">Assigned to Me</p>
+        <p class="mt-2 text-2xl font-bold text-[#e8c97a] sm:text-3xl">22</p>
+        <p class="mt-1 text-[11px] text-[#6b6b80]">8 in progress</p>
+      </div>
+    </div>
+
+    <!-- Main Layout -->
+    <div class="flex flex-col gap-5 xl:flex-row xl:items-start">
+
+      <!-- Left: Views -->
+      <div class="min-w-0 flex-1 space-y-5">
+
+        <!-- Tab Navigation -->
+        <nav class="flex gap-1.5 overflow-x-auto pb-1 scrollbar-thin" aria-label="Task views">
+          <template x-for="tab in viewTabs" :key="tab.id">
+            <button type="button" @click="activeView = tab.id" :class="activeView === tab.id ? 'border border-[#c9a84c]/30 bg-[#c9a84c]/12 text-[#c9a84c]' : 'border border-transparent text-[#9898aa] hover:bg-white/5 hover:text-[#e8e8f0]'" class="flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium transition" x-text="tab.label"></button>
+          </template>
+        </nav>
+
+        <!-- Filters -->
+        <div x-show="showFilters" x-transition class="rounded-xl border border-[#2a2a32] bg-[#111114]/85 p-4 shadow-xl backdrop-blur-md sm:p-5">
+          <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <div class="sm:col-span-2 lg:col-span-2">
+              <label class="mb-1 block text-[11px] font-medium uppercase tracking-wide text-[#6b6b80]">Search tasks</label>
+              <div class="relative">
+                <svg class="pointer-events-none absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[#6b6b80]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg>
+                <input type="search" x-model="searchQuery" placeholder="Search tasks..." class="w-full rounded-lg border border-[#2a2a32] bg-[#1c1c22] py-2 pl-9 pr-3 text-sm text-[#e8e8f0] placeholder:text-[#6b6b80] focus:border-[#c9a84c] focus:outline-none focus:ring-2 focus:ring-[#c9a84c]/20" />
+              </div>
+            </div>
+            <div>
+              <label class="mb-1 block text-[11px] font-medium uppercase tracking-wide text-[#6b6b80]">Status</label>
+              <select x-model="filterStatus" class="w-full rounded-lg border border-[#2a2a32] bg-[#1c1c22] px-3 py-2 text-sm text-[#e8e8f0] focus:border-[#c9a84c] focus:outline-none focus:ring-2 focus:ring-[#c9a84c]/20">
+                <option value="">All Status</option>
+                <option>To Do</option><option>In Progress</option><option>Waiting</option><option>Completed</option><option>Cancelled</option><option>Overdue</option>
+              </select>
+            </div>
+            <div>
+              <label class="mb-1 block text-[11px] font-medium uppercase tracking-wide text-[#6b6b80]">Priority</label>
+              <select x-model="filterPriority" class="w-full rounded-lg border border-[#2a2a32] bg-[#1c1c22] px-3 py-2 text-sm text-[#e8e8f0] focus:border-[#c9a84c] focus:outline-none focus:ring-2 focus:ring-[#c9a84c]/20">
+                <option value="">All Priority</option>
+                <option>Low</option><option>Medium</option><option>High</option><option>Urgent</option>
+              </select>
+            </div>
+            <div>
+              <label class="mb-1 block text-[11px] font-medium uppercase tracking-wide text-[#6b6b80]">Assigned To</label>
+              <select x-model="filterAssignee" class="w-full rounded-lg border border-[#2a2a32] bg-[#1c1c22] px-3 py-2 text-sm text-[#e8e8f0] focus:border-[#c9a84c] focus:outline-none focus:ring-2 focus:ring-[#c9a84c]/20">
+                <option value="">All Members</option>
+                <option>James Wilson</option><option>Sarah Chen</option><option>Marcus Reed</option><option>Priya Patel</option>
+              </select>
+            </div>
+            <div>
+              <label class="mb-1 block text-[11px] font-medium uppercase tracking-wide text-[#6b6b80]">Category</label>
+              <select x-model="filterCategory" class="w-full rounded-lg border border-[#2a2a32] bg-[#1c1c22] px-3 py-2 text-sm text-[#e8e8f0] focus:border-[#c9a84c] focus:outline-none focus:ring-2 focus:ring-[#c9a84c]/20">
+                <option value="">All Categories</option>
+                <template x-for="cat in categories" :key="cat"><option :value="cat" x-text="cat"></option></template>
+              </select>
+            </div>
+            <div>
+              <label class="mb-1 block text-[11px] font-medium uppercase tracking-wide text-[#6b6b80]">Due Date</label>
+              <input type="date" x-model="filterDueDate" class="w-full rounded-lg border border-[#2a2a32] bg-[#1c1c22] px-3 py-2 text-sm text-[#e8e8f0] [color-scheme:dark] focus:border-[#c9a84c] focus:outline-none focus:ring-2 focus:ring-[#c9a84c]/20" />
+            </div>
+            <div>
+              <label class="mb-1 block text-[11px] font-medium uppercase tracking-wide text-[#6b6b80]">Related Module</label>
+              <select x-model="filterModule" class="w-full rounded-lg border border-[#2a2a32] bg-[#1c1c22] px-3 py-2 text-sm text-[#e8e8f0] focus:border-[#c9a84c] focus:outline-none focus:ring-2 focus:ring-[#c9a84c]/20">
+                <option value="">All Modules</option>
+                <option>Prospects</option><option>Licensing</option><option>Training</option><option>Team</option><option>Rank Advancement</option>
+              </select>
+            </div>
+          </div>
+          <div class="mt-4 flex justify-end gap-2">
+            <button type="button" @click="clearFilters()" class="rounded-lg border border-[#2a2a32] px-3 py-1.5 text-xs text-[#9898aa] transition hover:border-[#c9a84c]/40 hover:text-[#c9a84c]">Clear Filters</button>
+            <button type="button" class="rounded-lg bg-gradient-to-br from-[#c9a84c] to-[#a07830] px-3 py-1.5 text-xs font-semibold text-[#0a0a0b]">Apply</button>
+          </div>
+        </div>
+
+        <!-- List View -->
+        <div x-show="['list','my','completed'].includes(activeView)" x-cloak class="space-y-3">
+          <div class="hidden rounded-lg border border-[#2a2a32]/60 bg-[#111114]/50 px-4 py-2 text-[11px] font-semibold uppercase tracking-wider text-[#6b6b80] lg:grid lg:grid-cols-12 lg:gap-3">
+            <span class="lg:col-span-4">Task</span>
+            <span class="lg:col-span-1">Priority</span>
+            <span class="lg:col-span-1">Status</span>
+            <span class="lg:col-span-2">Category</span>
+            <span class="lg:col-span-1">Due</span>
+            <span class="lg:col-span-1">Module</span>
+            <span class="lg:col-span-1">Assign</span>
+            <span class="lg:col-span-1 text-right">Actions</span>
+          </div>
+          <template x-for="task in filteredTasks" :key="task.id">
+            <article @click="selectTask(task)" :class="selectedTask?.id === task.id ? 'border-[#c9a84c]/50 ring-1 ring-[#c9a84c]/20' : 'border-[#2a2a32]'" class="cursor-pointer rounded-xl border bg-[#111114]/90 p-4 shadow-md backdrop-blur-sm transition hover:border-[#c9a84c]/35 hover:bg-[#16161a] lg:grid lg:grid-cols-12 lg:items-center lg:gap-3 lg:py-3.5">
+              <div class="lg:col-span-4">
+                <div class="flex flex-wrap items-center gap-2">
+                  <h3 class="text-sm font-medium text-[#e8e8f0]" x-text="task.title"></h3>
+                </div>
+                <p class="mt-1 line-clamp-2 text-xs text-[#6b6b80]" x-text="task.desc"></p>
+                <div class="mt-2 flex items-center gap-2 lg:hidden">
+                  <span :class="priorityClass(task.priority)" class="rounded-full px-2 py-0.5 text-[10px] font-semibold" x-text="task.priority"></span>
+                  <span :class="statusClass(task.status)" class="rounded-full px-2 py-0.5 text-[10px] font-semibold" x-text="task.status"></span>
+                  <span class="rounded-full border border-[#c9a84c]/30 bg-[#c9a84c]/10 px-2 py-0.5 text-[10px] font-medium text-[#c9a84c]" x-text="task.category"></span>
+                </div>
+                <div class="mt-2 h-1 w-full max-w-[140px] overflow-hidden rounded-full bg-white/5 lg:mt-2">
+                  <div class="h-full rounded-full bg-gradient-to-r from-[#c9a84c] to-[#e8c97a] transition-all" :style="`width:${task.progress}%`"></div>
+                </div>
+              </div>
+              <div class="mt-3 hidden lg:col-span-1 lg:block"><span :class="priorityClass(task.priority)" class="rounded-full px-2 py-0.5 text-[10px] font-semibold" x-text="task.priority"></span></div>
+              <div class="hidden lg:col-span-1 lg:block"><span :class="statusClass(task.status)" class="rounded-full px-2 py-0.5 text-[10px] font-semibold" x-text="task.status"></span></div>
+              <div class="hidden lg:col-span-2 lg:block"><span class="rounded-full border border-[#c9a84c]/30 bg-[#c9a84c]/10 px-2 py-0.5 text-[10px] font-medium text-[#c9a84c]" x-text="task.category"></span></div>
+              <div class="hidden text-xs lg:col-span-1 lg:block" :class="task.status === 'Overdue' ? 'text-red-400' : 'text-[#9898aa]'" x-text="task.due"></div>
+              <div class="hidden text-xs text-[#9898aa] lg:col-span-1 lg:block" x-text="task.module"></div>
+              <div class="hidden lg:col-span-1 lg:flex">
+                <div class="flex h-8 w-8 items-center justify-center rounded-full text-[11px] font-semibold" :class="task.avatarRing" x-text="task.initials" :title="task.assignee"></div>
+              </div>
+              <div class="mt-3 flex items-center justify-between gap-2 lg:col-span-1 lg:mt-0 lg:justify-end">
+                <div class="flex h-8 w-8 items-center justify-center rounded-full text-[11px] font-semibold lg:hidden" :class="task.avatarRing" x-text="task.initials"></div>
+                <div class="flex gap-1" @click.stop>
+                  <button type="button" @click="selectTask(task)" class="rounded-md border border-[#2a2a32] p-1.5 text-[#9898aa] transition hover:border-[#c9a84c]/40 hover:text-[#c9a84c]" title="View"><svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                  <button type="button" class="rounded-md border border-[#2a2a32] p-1.5 text-[#9898aa] transition hover:border-[#c9a84c]/40 hover:text-[#c9a84c]" title="Edit"><svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path stroke-linecap="round" d="M18.5 2.5a2.12 2.12 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+                  <button type="button" class="rounded-md border border-[#2a2a32] p-1.5 text-[#9898aa] transition hover:border-emerald-500/40 hover:text-emerald-400" title="Complete"><svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M20 6L9 17l-5-5"/></svg></button>
+                </div>
+              </div>
+            </article>
+          </template>
+          <div class="flex flex-col gap-2 pt-2 text-xs text-[#6b6b80] sm:flex-row sm:items-center sm:justify-between">
+            <span>Showing <span class="font-semibold text-[#c9a84c]" x-text="filteredTasks.length"></span> tasks</span>
+            <div class="flex gap-2">
+              <button type="button" class="rounded-lg border border-[#2a2a32] px-3 py-1.5 transition hover:border-[#c9a84c]/40">← Prev</button>
+              <button type="button" class="rounded-lg bg-gradient-to-br from-[#c9a84c] to-[#a07830] px-3 py-1.5 font-semibold text-[#0a0a0b]">Next →</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Board View -->
+        <div x-show="activeView === 'board'" x-cloak class="-mx-1 flex gap-3 overflow-x-auto pb-2">
+          <template x-for="col in kanbanCols" :key="col.id">
+            <div class="min-w-[240px] flex-1 rounded-xl border border-[#2a2a32] bg-[#16161a]/90 p-4 backdrop-blur-sm">
+              <div class="mb-3 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="h-2 w-2 rounded-full" :class="col.dot"></span>
+                  <span class="text-sm font-semibold text-[#e8e8f0]" x-text="col.label"></span>
+                </div>
+                <span class="rounded-full bg-white/5 px-2 py-0.5 text-[11px] text-[#6b6b80]" x-text="col.tasks.length"></span>
+              </div>
+              <template x-for="t in col.tasks" :key="t.id">
+                <div @click="selectTask(t)" class="mb-2.5 cursor-pointer rounded-lg border border-[#2a2a32] bg-[#1c1c22] p-3.5 transition hover:border-[#c9a84c]/35 hover:-translate-y-0.5 hover:shadow-lg">
+                  <div class="mb-2 flex items-start justify-between gap-2">
+                    <p class="text-sm font-medium leading-snug text-[#e8e8f0]" x-text="t.title"></p>
+                    <span :class="priorityClass(t.priority)" class="shrink-0 rounded-full px-1.5 py-0.5 text-[9px] font-semibold" x-text="t.priority"></span>
+                  </div>
+                  <span class="mb-2 inline-block rounded-full border border-[#c9a84c]/30 bg-[#c9a84c]/10 px-2 py-0.5 text-[10px] text-[#c9a84c]" x-text="t.category"></span>
+                  <div class="mb-2 h-1 overflow-hidden rounded-full bg-white/5"><div class="h-full rounded-full bg-gradient-to-r from-[#c9a84c] to-[#e8c97a]" :style="`width:${t.progress}%`"></div></div>
+                  <div class="flex items-center justify-between">
+                    <div class="flex h-6 w-6 items-center justify-center rounded-full text-[9px] font-semibold" :class="t.avatarRing" x-text="t.initials"></div>
+                    <span class="text-[11px] text-[#6b6b80]" x-text="t.due"></span>
+                  </div>
+                </div>
+              </template>
+              <button type="button" class="flex w-full items-center justify-center gap-1 rounded-lg border border-dashed border-[#2a2a32] py-2 text-xs text-[#6b6b80] transition hover:border-[#c9a84c]/40 hover:text-[#c9a84c]">
+                <svg class="h-3 w-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" d="M12 5v14M5 12h14"/></svg>
+                Add Task
+              </button>
+            </div>
+          </template>
+        </div>
+
+        <!-- Calendar View -->
+        <div x-show="activeView === 'calendar'" x-cloak class="rounded-xl border border-[#2a2a32] bg-[#111114]/90 p-4 shadow-xl backdrop-blur-md sm:p-5">
+          <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+            <h3 class="text-base font-semibold text-[#e8e8f0]">June 2025</h3>
+            <div class="flex gap-2">
+              <button type="button" class="rounded-lg border border-[#2a2a32] px-3 py-1 text-xs text-[#9898aa] hover:border-[#c9a84c]/40">← Prev</button>
+              <button type="button" class="rounded-lg border border-[#c9a84c]/30 px-3 py-1 text-xs text-[#c9a84c]">Today</button>
+              <button type="button" class="rounded-lg border border-[#2a2a32] px-3 py-1 text-xs text-[#9898aa] hover:border-[#c9a84c]/40">Next →</button>
+            </div>
+          </div>
+          <div class="mb-2 grid grid-cols-7 gap-1">
+            <template x-for="d in ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']"><div class="py-1 text-center text-[11px] font-semibold text-[#6b6b80]" x-text="d"></div></template>
+          </div>
+          <div class="grid grid-cols-7 gap-1">
+            <template x-for="day in calendarDays" :key="day.key">
+              <div :class="day.today ? 'border-[#c9a84c]/40 bg-[#c9a84c]/8' : 'border-[#2a2a32] bg-[#16161a]'" class="min-h-[72px] rounded-lg border p-1.5 sm:min-h-[80px]">
+                <div :class="day.today ? 'font-semibold text-[#c9a84c]' : 'text-[#9898aa]'" class="mb-1 text-xs" x-text="day.n || ''"></div>
+                <template x-for="ev in day.events" :key="ev">
+                  <div class="mb-0.5 truncate rounded border border-[#c9a84c]/25 bg-[#c9a84c]/10 px-1 py-0.5 text-[9px] text-[#c9a84c] sm:text-[10px]" x-text="ev"></div>
+                </template>
+              </div>
+            </template>
+          </div>
+        </div>
+
+        <!-- Team Tasks View -->
+        <div x-show="activeView === 'team'" x-cloak class="grid gap-3 sm:grid-cols-2">
+          <template x-for="member in teamMembers" :key="member.name">
+            <div class="rounded-xl border border-[#c9a84c]/25 bg-[#111114]/90 p-4 shadow-lg backdrop-blur-md">
+              <div class="mb-3 flex items-center gap-3">
+                <div class="flex h-9 w-9 items-center justify-center rounded-full text-sm font-semibold" :class="member.avatarRing" x-text="member.initials"></div>
+                <div class="min-w-0 flex-1">
+                  <p class="truncate text-sm font-semibold text-[#e8e8f0]" x-text="member.name"></p>
+                  <p class="text-[11px] text-[#6b6b80]" x-text="member.role"></p>
+                </div>
+                <span class="text-xl font-bold text-[#e8c97a]" x-text="member.taskCount"></span>
+              </div>
+              <div class="mb-2 h-1 overflow-hidden rounded-full bg-white/5"><div class="h-full rounded-full bg-gradient-to-r from-[#c9a84c] to-[#e8c97a]" :style="`width:${member.completion}%`"></div></div>
+              <div class="flex justify-between text-[11px] text-[#6b6b80]">
+                <span><span :class="member.completion > 60 ? 'text-emerald-400' : 'text-orange-400'" class="font-semibold" x-text="member.completion + '%'"></span> complete</span>
+                <span><span class="font-semibold text-red-400" x-text="member.overdue"></span> overdue</span>
+              </div>
+            </div>
+          </template>
+        </div>
+
+        <!-- AI Automation Panel -->
+        <aside class="rounded-xl border border-[#c9a84c]/30 bg-gradient-to-br from-[#c9a84c]/8 to-[#111114]/95 p-4 shadow-xl backdrop-blur-md">
+          <div class="mb-3 flex flex-wrap items-center gap-2">
+            <div class="flex h-7 w-7 items-center justify-center rounded-md bg-[#c9a84c]/15">
+              <svg class="h-3.5 w-3.5 text-[#c9a84c]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 2L3 14h9l-1 8 10-12h-9z"/></svg>
+            </div>
+            <h4 class="text-sm font-semibold text-[#c9a84c]">AI-Powered Task Suggestions</h4>
+            <span class="ml-auto rounded-full border border-[#c9a84c]/30 bg-[#c9a84c]/10 px-2 py-0.5 text-[10px] font-medium text-[#c9a84c]">Coming Soon</span>
+          </div>
+          <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+            <template x-for="sug in aiSuggestions" :key="sug.text">
+              <button type="button" class="flex items-start gap-2.5 rounded-lg border border-[#2a2a32] bg-white/[0.03] p-3 text-left transition hover:border-[#c9a84c]/40 hover:bg-[#c9a84c]/5">
+                <span class="text-lg leading-none" x-text="sug.icon"></span>
+                <span class="text-xs leading-relaxed text-[#9898aa]" x-text="sug.text"></span>
+              </button>
+            </template>
+          </div>
+        </aside>
+      </div>
+
+      <!-- Right Sidebar: Detail + Quick Form -->
+      <aside class="w-full shrink-0 space-y-4 xl:w-[340px]">
+
+        <!-- Task Detail Panel -->
+        <div class="rounded-xl border border-[#c9a84c]/30 bg-[#111114]/90 shadow-xl backdrop-blur-md">
+          <div class="flex items-center justify-between border-b border-[#2a2a32] px-4 py-3">
+            <span class="text-xs font-semibold uppercase tracking-wider text-[#c9a84c]">Task Detail</span>
+            <button type="button" x-show="selectedTask" @click="selectedTask = null" class="rounded-md border border-[#2a2a32] p-1 text-[#6b6b80] hover:border-[#c9a84c]/40 hover:text-[#c9a84c]">
+              <svg class="h-3 w-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+          </div>
+          <div class="max-h-[520px] overflow-y-auto p-4 scrollbar-thin">
+            <template x-if="selectedTask">
+              <div>
+                <h3 class="mb-2 text-base font-semibold leading-snug text-[#e8e8f0]" x-text="selectedTask.title"></h3>
+                <div class="mb-4 flex flex-wrap gap-1.5">
+                  <span :class="priorityClass(selectedTask.priority)" class="rounded-full px-2 py-0.5 text-[10px] font-semibold" x-text="selectedTask.priority"></span>
+                  <span :class="statusClass(selectedTask.status)" class="rounded-full px-2 py-0.5 text-[10px] font-semibold" x-text="selectedTask.status"></span>
+                  <span class="rounded-full border border-[#c9a84c]/30 bg-[#c9a84c]/10 px-2 py-0.5 text-[10px] text-[#c9a84c]" x-text="selectedTask.category"></span>
+                </div>
+                <div class="my-4 h-px bg-gradient-to-r from-transparent via-[#c9a84c]/30 to-transparent"></div>
+                <dl class="mb-4 grid grid-cols-2 gap-3 text-xs">
+                  <div>
+                    <dt class="mb-1 text-[10px] uppercase tracking-wide text-[#6b6b80]">Assigned to</dt>
+                    <dd class="flex items-center gap-1.5 text-[#e8e8f0]">
+                      <span class="flex h-5 w-5 items-center justify-center rounded-full text-[9px] font-semibold" :class="selectedTask.avatarRing" x-text="selectedTask.initials"></span>
+                      <span x-text="selectedTask.assignee"></span>
+                    </dd>
+                  </div>
+                  <div>
+                    <dt class="mb-1 text-[10px] uppercase tracking-wide text-[#6b6b80]">Due date</dt>
+                    <dd :class="selectedTask.status === 'Overdue' ? 'text-red-400' : 'text-[#e8e8f0]'" x-text="selectedTask.due"></dd>
+                  </div>
+                  <div>
+                    <dt class="mb-1 text-[10px] uppercase tracking-wide text-[#6b6b80]">Created by</dt>
+                    <dd class="text-[#e8e8f0]" x-text="selectedTask.createdBy"></dd>
+                  </div>
+                  <div>
+                    <dt class="mb-1 text-[10px] uppercase tracking-wide text-[#6b6b80]">Category</dt>
+                    <dd class="text-[#e8e8f0]" x-text="selectedTask.category"></dd>
+                  </div>
+                  <div class="col-span-2">
+                    <dt class="mb-1 text-[10px] uppercase tracking-wide text-[#6b6b80]">Related</dt>
+                    <dd class="text-[#9898aa]" x-text="(selectedTask.related || '—') + ' · ' + selectedTask.module"></dd>
+                  </div>
+                </dl>
+                <div class="mb-4">
+                  <p class="mb-1 text-[10px] uppercase tracking-wide text-[#6b6b80]">Description</p>
+                  <p class="text-xs leading-relaxed text-[#9898aa]" x-text="selectedTask.desc"></p>
+                </div>
+                <div class="mb-4">
+                  <div class="mb-1 flex justify-between text-[10px] uppercase tracking-wide text-[#6b6b80]">
+                    <span>Progress</span>
+                    <span class="text-[#c9a84c]" x-text="selectedTask.progress + '%'"></span>
+                  </div>
+                  <div class="h-1 overflow-hidden rounded-full bg-white/5"><div class="h-full rounded-full bg-gradient-to-r from-[#c9a84c] to-[#e8c97a]" :style="`width:${selectedTask.progress}%`"></div></div>
+                </div>
+                <div class="mb-4">
+                  <p class="mb-2 text-[10px] uppercase tracking-wide text-[#6b6b80]">Checklist</p>
+                  <template x-for="item in checklistItems" :key="item.id">
+                    <label class="flex cursor-pointer items-center gap-2 border-b border-[#2a2a32] py-2 last:border-0">
+                      <input type="checkbox" :checked="item.done" @change="item.done = !item.done" class="h-3.5 w-3.5 rounded border-[#2a2a32] accent-[#c9a84c]" />
+                      <span class="text-xs" :class="item.done ? 'text-[#6b6b80] line-through' : 'text-[#9898aa]'" x-text="item.text"></span>
+                    </label>
+                  </template>
+                </div>
+                <div class="mb-4">
+                  <p class="mb-2 text-[10px] uppercase tracking-wide text-[#6b6b80]">Activity</p>
+                  <template x-for="c in comments" :key="c.id">
+                    <div class="border-b border-[#2a2a32] py-2.5 last:border-0">
+                      <div class="mb-1 flex items-center gap-2">
+                        <span class="flex h-5 w-5 items-center justify-center rounded-full text-[9px] font-semibold" :class="c.avatarRing" x-text="c.initials"></span>
+                        <span class="text-[11px] font-semibold text-[#e8e8f0]" x-text="c.author"></span>
+                        <span class="text-[10px] text-[#6b6b80]" x-text="c.time"></span>
+                      </div>
+                      <p class="pl-7 text-[11px] leading-relaxed text-[#9898aa]" x-text="c.text"></p>
+                    </div>
+                  </template>
+                  <div class="mt-2 flex gap-2">
+                    <input type="text" placeholder="Add a comment..." class="flex-1 rounded-lg border border-[#2a2a32] bg-[#1c1c22] px-2.5 py-1.5 text-xs text-[#e8e8f0] placeholder:text-[#6b6b80] focus:border-[#c9a84c] focus:outline-none focus:ring-2 focus:ring-[#c9a84c]/20" />
+                    <button type="button" class="shrink-0 rounded-lg bg-gradient-to-br from-[#c9a84c] to-[#a07830] px-3 py-1.5 text-xs font-semibold text-[#0a0a0b]">Send</button>
+                  </div>
+                </div>
+                <div>
+                  <p class="mb-2 text-[10px] uppercase tracking-wide text-[#6b6b80]">Attachments</p>
+                  <div class="rounded-lg border border-dashed border-[#c9a84c]/35 p-4 text-center transition hover:bg-[#c9a84c]/5">
+                    <svg class="mx-auto mb-1 h-5 w-5 text-[#7a6030]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
+                    <p class="text-[11px] text-[#6b6b80]">Drop files or click to attach</p>
+                  </div>
+                </div>
+              </div>
+            </template>
+            <div x-show="!selectedTask" class="py-10 text-center">
+              <svg class="mx-auto mb-2 h-9 w-9 text-[#6b6b80]" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" d="M9 11l3 3L22 4"/><path stroke-linecap="round" d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+              <p class="text-xs text-[#6b6b80]">Select a task to view details</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick New Task Form -->
+        <form @submit.prevent class="rounded-xl border border-[#2a2a32] bg-[#111114]/90 p-4 shadow-lg backdrop-blur-md">
+          <button type="button" @click="showFormPanel = !showFormPanel" class="mb-3 flex w-full items-center justify-between">
+            <span class="flex items-center gap-2 text-sm font-semibold text-[#e8e8f0]">
+              <span class="flex h-6 w-6 items-center justify-center rounded-md bg-[#c9a84c]/12 text-[#c9a84c]">
+                <svg class="h-3 w-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" d="M12 5v14M5 12h14"/></svg>
+              </span>
+              Quick Task
+            </span>
+            <svg class="h-3.5 w-3.5 text-[#6b6b80] transition" :class="showFormPanel && 'rotate-180'" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div x-show="showFormPanel" x-transition class="space-y-3">
+            <div>
+              <label class="mb-1 block text-[11px] font-medium text-[#6b6b80]">Task Title <span class="text-red-400">*</span></label>
+              <input type="text" name="title" placeholder="Enter task title..." class="w-full rounded-lg border border-[#2a2a32] bg-[#1c1c22] px-3 py-2 text-sm text-[#e8e8f0] focus:border-[#c9a84c] focus:outline-none focus:ring-2 focus:ring-[#c9a84c]/20" />
+            </div>
+            <div>
+              <label class="mb-1 block text-[11px] font-medium text-[#6b6b80]">Description</label>
+              <textarea name="description" rows="2" placeholder="Brief description..." class="w-full rounded-lg border border-[#2a2a32] bg-[#1c1c22] px-3 py-2 text-sm text-[#e8e8f0] focus:border-[#c9a84c] focus:outline-none focus:ring-2 focus:ring-[#c9a84c]/20"></textarea>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="mb-1 block text-[11px] font-medium text-[#6b6b80]">Priority</label>
+                <select name="priority" class="w-full rounded-lg border border-[#2a2a32] bg-[#1c1c22] px-2 py-2 text-sm text-[#e8e8f0]"><option>Medium</option><option>Low</option><option>High</option><option>Urgent</option></select>
+              </div>
+              <div>
+                <label class="mb-1 block text-[11px] font-medium text-[#6b6b80]">Status</label>
+                <select name="status" class="w-full rounded-lg border border-[#2a2a32] bg-[#1c1c22] px-2 py-2 text-sm text-[#e8e8f0]"><option>To Do</option><option>In Progress</option><option>Waiting</option></select>
+              </div>
+            </div>
+            <div>
+              <label class="mb-1 block text-[11px] font-medium text-[#6b6b80]">Category</label>
+              <select name="category" class="w-full rounded-lg border border-[#2a2a32] bg-[#1c1c22] px-2 py-2 text-sm text-[#e8e8f0]">
+                <template x-for="cat in categories" :key="cat"><option :value="cat" x-text="cat"></option></template>
+              </select>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="mb-1 block text-[11px] font-medium text-[#6b6b80]">Assign To</label>
+                <select name="assignee" class="w-full rounded-lg border border-[#2a2a32] bg-[#1c1c22] px-2 py-2 text-sm text-[#e8e8f0]"><option>James Wilson</option><option>Sarah Chen</option><option>Marcus Reed</option></select>
+              </div>
+              <div>
+                <label class="mb-1 block text-[11px] font-medium text-[#6b6b80]">Due Date</label>
+                <input type="date" name="due_date" class="w-full rounded-lg border border-[#2a2a32] bg-[#1c1c22] px-2 py-2 text-sm text-[#e8e8f0] [color-scheme:dark]" />
+              </div>
+            </div>
+            <div>
+              <label class="mb-1 block text-[11px] font-medium text-[#6b6b80]">Related Module</label>
+              <select name="module" class="w-full rounded-lg border border-[#2a2a32] bg-[#1c1c22] px-2 py-2 text-sm text-[#e8e8f0]"><option value="">None</option><option>Prospects</option><option>Licensing</option><option>Training</option></select>
+            </div>
+            <div>
+              <label class="mb-1 block text-[11px] font-medium text-[#6b6b80]">Reminder</label>
+              <select name="reminder" class="w-full rounded-lg border border-[#2a2a32] bg-[#1c1c22] px-2 py-2 text-sm text-[#e8e8f0]"><option>None</option><option>1 hour before</option><option>1 day before</option></select>
+            </div>
+            <button type="submit" class="w-full rounded-lg bg-gradient-to-br from-[#c9a84c] to-[#a07830] py-2.5 text-sm font-semibold text-[#0a0a0b] shadow-lg shadow-[#c9a84c]/10 hover:from-[#e8c97a] hover:to-[#c9a84c]">Create Task</button>
+          </div>
+        </form>
+      </aside>
+    </div>
+  </div>
+
+  <!-- Mobile Task Detail Drawer -->
+  <div x-show="selectedTask && mobileDetail" x-cloak class="fixed inset-0 z-40 bg-black/75 xl:hidden" @click="mobileDetail = false">
+    <div @click.stop class="absolute inset-x-0 bottom-0 max-h-[85vh] overflow-y-auto rounded-t-2xl border-t border-[#c9a84c]/30 bg-[#111114] p-4">
+      <div class="mb-3 flex justify-between">
+        <span class="text-xs font-semibold uppercase tracking-wider text-[#c9a84c]">Task Detail</span>
+        <button type="button" @click="mobileDetail = false; selectedTask = null" class="text-[#6b6b80]">Close</button>
+      </div>
+      <template x-if="selectedTask">
+        <div>
+          <h3 class="text-base font-semibold text-[#e8e8f0]" x-text="selectedTask.title"></h3>
+          <p class="mt-2 text-xs text-[#9898aa]" x-text="selectedTask.desc"></p>
+        </div>
+      </template>
+    </div>
+  </div>
+
+  <!-- New Task Modal -->
+  <div x-show="showNewTask" x-cloak class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4" @click.self="showNewTask = false" role="dialog" aria-modal="true">
+    <form @submit.prevent="showNewTask = false" class="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-[#c9a84c]/30 bg-[#111114] p-6 shadow-2xl shadow-black/50">
+      <div class="mb-5 flex items-start justify-between gap-4">
+        <div>
+          <h2 class="text-lg font-semibold text-[#e8e8f0]">Create New Task</h2>
+          <p class="mt-1 text-xs text-[#6b6b80]">Fill in the details for your new task</p>
+        </div>
+        <button type="button" @click="showNewTask = false" class="rounded-lg border border-[#2a2a32] p-2 text-[#9898aa] hover:border-[#c9a84c]/40 hover:text-[#c9a84c]">
+          <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="space-y-4">
+        <div>
+          <label class="mb-1 block text-[11px] font-semibold uppercase tracking-wide text-[#6b6b80]">Task Title <span class="text-red-400">*</span></label>
+          <input type="text" name="title" required placeholder="e.g. Follow up with Marcus on licensing application" class="w-full rounded-lg border border-[#2a2a32] bg-[#1c1c22] px-3 py-2.5 text-sm text-[#e8e8f0] focus:border-[#c9a84c] focus:outline-none focus:ring-2 focus:ring-[#c9a84c]/20" />
+        </div>
+        <div>
+          <label class="mb-1 block text-[11px] font-semibold uppercase tracking-wide text-[#6b6b80]">Description</label>
+          <textarea name="description" rows="3" placeholder="Describe objectives, context, or instructions..." class="w-full rounded-lg border border-[#2a2a32] bg-[#1c1c22] px-3 py-2.5 text-sm text-[#e8e8f0] focus:border-[#c9a84c] focus:outline-none focus:ring-2 focus:ring-[#c9a84c]/20"></textarea>
+        </div>
+        <div class="grid gap-3 sm:grid-cols-2">
+          <div>
+            <label class="mb-1 block text-[11px] font-semibold uppercase tracking-wide text-[#6b6b80]">Assign To</label>
+            <select name="assignee" class="w-full rounded-lg border border-[#2a2a32] bg-[#1c1c22] px-3 py-2.5 text-sm text-[#e8e8f0]"><option>James Wilson</option><option>Sarah Chen</option><option>Marcus Reed</option><option>Priya Patel</option></select>
+          </div>
+          <div>
+            <label class="mb-1 block text-[11px] font-semibold uppercase tracking-wide text-[#6b6b80]">Priority <span class="text-red-400">*</span></label>
+            <select name="priority" class="w-full rounded-lg border border-[#2a2a32] bg-[#1c1c22] px-3 py-2.5 text-sm text-[#e8e8f0]"><option>Medium</option><option>Low</option><option>High</option><option>Urgent</option></select>
+          </div>
+          <div>
+            <label class="mb-1 block text-[11px] font-semibold uppercase tracking-wide text-[#6b6b80]">Status</label>
+            <select name="status" class="w-full rounded-lg border border-[#2a2a32] bg-[#1c1c22] px-3 py-2.5 text-sm text-[#e8e8f0]"><option>To Do</option><option>In Progress</option><option>Waiting</option><option>Completed</option></select>
+          </div>
+          <div>
+            <label class="mb-1 block text-[11px] font-semibold uppercase tracking-wide text-[#6b6b80]">Category</label>
+            <select name="category" class="w-full rounded-lg border border-[#2a2a32] bg-[#1c1c22] px-3 py-2.5 text-sm text-[#e8e8f0]">
+              <template x-for="cat in categories" :key="cat"><option :value="cat" x-text="cat"></option></template>
+            </select>
+          </div>
+          <div>
+            <label class="mb-1 block text-[11px] font-semibold uppercase tracking-wide text-[#6b6b80]">Due Date <span class="text-red-400">*</span></label>
+            <input type="date" name="due_date" required class="w-full rounded-lg border border-[#2a2a32] bg-[#1c1c22] px-3 py-2.5 text-sm text-[#e8e8f0] [color-scheme:dark]" />
+          </div>
+          <div>
+            <label class="mb-1 block text-[11px] font-semibold uppercase tracking-wide text-[#6b6b80]">Related Module</label>
+            <select name="module" class="w-full rounded-lg border border-[#2a2a32] bg-[#1c1c22] px-3 py-2.5 text-sm text-[#e8e8f0]"><option value="">None</option><option>Prospects</option><option>Licensing</option><option>Training</option><option>Team Members</option></select>
+          </div>
+          <div>
+            <label class="mb-1 block text-[11px] font-semibold uppercase tracking-wide text-[#6b6b80]">Related Person / Prospect</label>
+            <input type="text" name="related_person" placeholder="Search prospect or member..." class="w-full rounded-lg border border-[#2a2a32] bg-[#1c1c22] px-3 py-2.5 text-sm text-[#e8e8f0] focus:border-[#c9a84c] focus:outline-none focus:ring-2 focus:ring-[#c9a84c]/20" />
+          </div>
+          <div>
+            <label class="mb-1 block text-[11px] font-semibold uppercase tracking-wide text-[#6b6b80]">Reminder</label>
+            <select name="reminder" class="w-full rounded-lg border border-[#2a2a32] bg-[#1c1c22] px-3 py-2.5 text-sm text-[#e8e8f0]"><option>None</option><option>1 hour before</option><option>1 day before</option><option>2 days before</option><option>1 week before</option></select>
+          </div>
+        </div>
+        <div>
+          <label class="mb-2 block text-[11px] font-semibold uppercase tracking-wide text-[#6b6b80]">Checklist Items</label>
+          <template x-for="(item, idx) in newTaskChecklist" :key="idx">
+            <div class="mb-2 flex gap-2">
+              <input type="text" x-model="item.text" placeholder="Checklist item..." class="flex-1 rounded-lg border border-[#2a2a32] bg-[#1c1c22] px-3 py-2 text-sm text-[#e8e8f0]" />
+              <button type="button" @click="newTaskChecklist.splice(idx, 1)" class="shrink-0 rounded-lg border border-[#2a2a32] px-2 text-[#9898aa] hover:border-red-500/40 hover:text-red-400">×</button>
+            </div>
+          </template>
+          <button type="button" @click="newTaskChecklist.push({ text: '' })" class="mt-1 inline-flex items-center gap-1 rounded-lg border border-[#2a2a32] px-3 py-1.5 text-xs text-[#9898aa] hover:border-[#c9a84c]/40 hover:text-[#c9a84c]">
+            <svg class="h-3 w-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" d="M12 5v14M5 12h14"/></svg>
+            Add Item
+          </button>
+        </div>
+        <div class="h-px bg-gradient-to-r from-transparent via-[#c9a84c]/30 to-transparent"></div>
+        <div class="flex flex-wrap justify-end gap-2">
+          <button type="button" @click="showNewTask = false" class="rounded-lg border border-[#2a2a32] px-4 py-2.5 text-sm text-[#9898aa]">Cancel</button>
+          <button type="button" class="rounded-lg border border-[#c9a84c]/30 px-4 py-2.5 text-sm text-[#c9a84c]">Save Draft</button>
+          <button type="submit" class="rounded-lg bg-gradient-to-br from-[#c9a84c] to-[#a07830] px-5 py-2.5 text-sm font-semibold text-[#0a0a0b]">Create Task</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <script>
+  function taskManagement() {
+    return {
+      activeView: 'list',
+      showFilters: false,
+      showNewTask: false,
+      showFormPanel: true,
+      selectedTask: null,
+      mobileDetail: false,
+      searchQuery: '',
+      filterStatus: '',
+      filterPriority: '',
+      filterAssignee: '',
+      filterCategory: '',
+      filterDueDate: '',
+      filterModule: '',
+      newTaskChecklist: [{ text: '' }, { text: '' }],
+      viewTabs: [
+        { id: 'list', label: 'List View' },
+        { id: 'board', label: 'Board View' },
+        { id: 'calendar', label: 'Calendar View' },
+        { id: 'my', label: 'My Tasks' },
+        { id: 'team', label: 'Team Tasks' },
+        { id: 'completed', label: 'Completed' },
+      ],
+      categories: [
+        'Prospect Follow-Up', 'Licensing', 'Training', 'CFM Mentorship',
+        'Field Apprenticeship', 'Rank Advancement', 'Team Meeting',
+        'Resource Review', 'Personal', 'Admin',
+      ],
+      tasks: [
+        { id: 1, title: 'Follow up with David Kim on life insurance application', desc: 'Review submitted docs and schedule call to finalize coverage options.', priority: 'Urgent', status: 'Overdue', category: 'Prospect Follow-Up', assignee: 'James Wilson', initials: 'JW', avatarRing: 'bg-[#c9a84c]/20 text-[#c9a84c]', due: 'Jun 1', progress: 30, module: 'Prospects', related: 'David Kim', createdBy: 'J. Wilson' },
+        { id: 2, title: 'Complete Series 6 exam prep modules for Sandra', desc: 'Assign exam prep material and set weekly check-in schedule.', priority: 'High', status: 'In Progress', category: 'Licensing', assignee: 'Sarah Chen', initials: 'SC', avatarRing: 'bg-blue-500/20 text-blue-300', due: 'Jun 8', progress: 60, module: 'Licensing', related: 'Sandra M.', createdBy: 'J. Wilson' },
+        { id: 3, title: 'Schedule CFM mentor review session with Marcus', desc: 'Monthly mentorship review — cover field performance and advancement criteria.', priority: 'Medium', status: 'To Do', category: 'CFM Mentorship', assignee: 'Marcus Reed', initials: 'MR', avatarRing: 'bg-emerald-500/20 text-emerald-300', due: 'Jun 10', progress: 0, module: 'Team', related: 'Marcus Reed', createdBy: 'S. Chen' },
+        { id: 4, title: 'Review Q2 field apprenticeship progress reports', desc: 'Compile scores and submit to regional director by end of week.', priority: 'High', status: 'Waiting', category: 'Field Apprenticeship', assignee: 'Priya Patel', initials: 'PP', avatarRing: 'bg-purple-500/20 text-purple-300', due: 'Jun 12', progress: 45, module: 'Training', related: 'Apprentice Cohort', createdBy: 'J. Wilson' },
+        { id: 5, title: 'Prepare rank advancement documentation for Alex Torres', desc: 'Gather production history, client letters and field supervisor sign-offs.', priority: 'Medium', status: 'In Progress', category: 'Rank Advancement', assignee: 'James Wilson', initials: 'JW', avatarRing: 'bg-[#c9a84c]/20 text-[#c9a84c]', due: 'Jun 14', progress: 75, module: 'Rank Advancement', related: 'Alex Torres', createdBy: 'M. Reed' },
+        { id: 6, title: 'Send team meeting agenda for Thursday call', desc: 'Compile action items, highlight field metrics and recognition awards.', priority: 'Low', status: 'To Do', category: 'Team Meeting', assignee: 'Sarah Chen', initials: 'SC', avatarRing: 'bg-blue-500/20 text-blue-300', due: 'Jun 6', progress: 10, module: 'Team', related: '—', createdBy: 'J. Wilson' },
+        { id: 7, title: 'Onboard new prospect referral from regional network', desc: 'Initial outreach call, gather info, enter into CRM pipeline.', priority: 'High', status: 'To Do', category: 'Prospect Follow-Up', assignee: 'Marcus Reed', initials: 'MR', avatarRing: 'bg-emerald-500/20 text-emerald-300', due: 'Jun 5', progress: 0, module: 'Prospects', related: 'Referral #4421', createdBy: 'S. Chen' },
+        { id: 8, title: 'Upload updated training materials to resource library', desc: 'New compliance slides from HQ — replace outdated versions.', priority: 'Low', status: 'Completed', category: 'Resource Review', assignee: 'Priya Patel', initials: 'PP', avatarRing: 'bg-purple-500/20 text-purple-300', due: 'Jun 3', progress: 100, module: 'Training', related: 'HQ Compliance', createdBy: 'J. Wilson' },
+      ],
+      checklistItems: [
+        { id: 1, done: true, text: 'Review client file and previous notes' },
+        { id: 2, done: true, text: 'Prepare talking points for the call' },
+        { id: 3, done: false, text: 'Send pre-call email with agenda' },
+        { id: 4, done: false, text: 'Log outcome in CRM after call' },
+        { id: 5, done: false, text: 'Schedule follow-up if needed' },
+      ],
+      comments: [
+        { id: 1, author: 'James Wilson', initials: 'JW', avatarRing: 'bg-[#c9a84c]/20 text-[#c9a84c]', time: '2 hrs ago', text: 'Left a voicemail — will try again tomorrow morning.' },
+        { id: 2, author: 'Sarah Chen', initials: 'SC', avatarRing: 'bg-blue-500/20 text-blue-300', time: '1 day ago', text: 'Email sent with application status summary. Waiting on client response.' },
+      ],
+      kanbanCols: [
+        { id: 'todo', label: 'To Do', dot: 'bg-zinc-500', tasks: [] },
+        { id: 'inprogress', label: 'In Progress', dot: 'bg-blue-400', tasks: [] },
+        { id: 'waiting', label: 'Waiting', dot: 'bg-purple-400', tasks: [] },
+        { id: 'completed', label: 'Completed', dot: 'bg-emerald-400', tasks: [] },
+      ],
+      teamMembers: [
+        { name: 'James Wilson', role: 'Senior Associate', initials: 'JW', avatarRing: 'bg-[#c9a84c]/20 text-[#c9a84c]', taskCount: 18, completion: 72, overdue: 1 },
+        { name: 'Sarah Chen', role: 'Associate', initials: 'SC', avatarRing: 'bg-blue-500/20 text-blue-300', taskCount: 12, completion: 58, overdue: 2 },
+        { name: 'Marcus Reed', role: 'Field Mentor', initials: 'MR', avatarRing: 'bg-emerald-500/20 text-emerald-300', taskCount: 9, completion: 88, overdue: 0 },
+        { name: 'Priya Patel', role: 'Apprentice', initials: 'PP', avatarRing: 'bg-purple-500/20 text-purple-300', taskCount: 7, completion: 43, overdue: 2 },
+      ],
+      aiSuggestions: [
+        { icon: '🔥', text: 'Follow up with hot prospects approaching close window' },
+        { icon: '📋', text: 'Check overdue licensing steps for associates' },
+        { icon: '🎯', text: 'Schedule mentor review — Marcus Reed hit 90-day mark' },
+        { icon: '📈', text: 'Review apprenticeship progress before month-end close' },
+        { icon: '💼', text: 'Invite inactive associate to upcoming training event' },
+      ],
+      calendarDays: [],
+      get filteredTasks() {
+        return this.tasks.filter(t => {
+          if (this.searchQuery && !t.title.toLowerCase().includes(this.searchQuery.toLowerCase())) return false;
+          if (this.filterStatus && t.status !== this.filterStatus) return false;
+          if (this.filterPriority && t.priority !== this.filterPriority) return false;
+          if (this.filterAssignee && t.assignee !== this.filterAssignee) return false;
+          if (this.filterCategory && t.category !== this.filterCategory) return false;
+          if (this.filterModule && t.module !== this.filterModule) return false;
+          if (this.activeView === 'my' && t.assignee !== 'James Wilson') return false;
+          if (this.activeView === 'completed' && t.status !== 'Completed') return false;
+          return true;
+        });
+      },
+      priorityClass(p) {
+        const m = { Urgent: 'bg-red-500/15 text-red-400 border border-red-500/30', High: 'bg-orange-500/15 text-orange-400 border border-orange-500/30', Medium: 'bg-[#c9a84c]/15 text-[#e8c97a] border border-[#c9a84c]/30', Low: 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30' };
+        return m[p] || m.Medium;
+      },
+      statusClass(s) {
+        const m = { 'To Do': 'bg-zinc-500/20 text-zinc-300 border border-zinc-500/30', 'In Progress': 'bg-blue-500/15 text-blue-300 border border-blue-500/30', Waiting: 'bg-purple-500/15 text-purple-300 border border-purple-500/30', Completed: 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30', Overdue: 'bg-red-500/15 text-red-400 border border-red-500/30', Cancelled: 'bg-zinc-600/20 text-zinc-500 border border-zinc-600/30' };
+        return m[s] || m['To Do'];
+      },
+      selectTask(t) {
+        this.selectedTask = t;
+        if (window.innerWidth < 1280) this.mobileDetail = true;
+      },
+      clearFilters() {
+        this.searchQuery = this.filterStatus = this.filterPriority = this.filterAssignee = this.filterCategory = this.filterDueDate = this.filterModule = '';
+      },
+      init() {
+        const statusMap = { 'To Do': 'todo', 'In Progress': 'inprogress', Waiting: 'waiting', Completed: 'completed' };
+        this.tasks.forEach(t => {
+          const col = this.kanbanCols.find(c => c.id === (statusMap[t.status] || 'todo'));
+          if (col) col.tasks.push(t);
+        });
+        const days = [];
+        const evMap = { 3: ['Licensing Call'], 6: ['Team Meeting'], 8: ['Mentor Review'], 12: ['Follow-Up: Kim'], 14: ['Rank Adv.'], 20: ['Training Upload'] };
+        for (let i = 0; i < 2; i++) days.push({ key: 'e' + i, n: '', today: false, events: [] });
+        for (let d = 1; d <= 30; d++) days.push({ key: 'd' + d, n: d, today: d === 2, events: evMap[d] || [] });
+        this.calendarDays = days;
+        if (this.tasks.length) this.selectedTask = this.tasks[0];
+      },
+    };
+  }
+  </script>
+</section>

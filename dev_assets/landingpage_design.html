@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>GWTrack.com | Team Growth & Leadership Platform for Greatway Financial</title>
+    <!-- Tailwind CSS v3 + Font Awesome Icons + Google Fonts -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Alpine.js for interactive components -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <!-- Custom styling overrides for luxury black/gold theme -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap');
+        
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        body {
+            background-color: #050505;
+            scroll-behavior: smooth;
+        }
+        
+        /* Custom gold gradient & glow utilities */
+        .gold-glow {
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3), 0 0 5px rgba(212, 175, 55, 0.2);
+        }
+        
+        .gold-border-glow {
+            border: 1px solid rgba(212, 175, 55, 0.5);
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.2);
+        }
+        
+        .gold-text-gradient {
+            background: linear-gradient(135deg, #D4AF37 0%, #F5D76E 50%, #B8860B 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .gold-bg-gradient {
+            background: linear-gradient(95deg, #B8860B, #D4AF37, #F5D76E);
+        }
+        
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 30px -15px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(212, 175, 55, 0.3);
+        }
+        
+        /* custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0A0A0A;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #D4AF37;
+            border-radius: 10px;
+        }
+        
+        /* glassmorphism card base */
+        .glass-card {
+            background: rgba(17, 17, 17, 0.7);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        
+        /* timeline connector lines */
+        .timeline-line {
+            background: linear-gradient(90deg, #D4AF37, rgba(212, 175, 55, 0.2));
+        }
+        
+        @media (max-width: 768px) {
+            .timeline-line {
+                background: linear-gradient(180deg, #D4AF37, rgba(212, 175, 55, 0.2));
+            }
+        }
+        
+        /* go-to-top button animation */
+        .go-top {
+            transition: all 0.2s ease;
+        }
+        .go-top:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px #D4AF37;
+        }
+    </style>
+</head>
+<body class="text-white" x-data="{ mobileMenuOpen: false, scrolled: false, heroIndex: 0 }" x-init="window.addEventListener('scroll', () => { scrolled = window.scrollY > 50 }); setInterval(() => { heroIndex = (heroIndex + 1) % 3 }, 5000)">
+    
+    <!-- FIXED NAVIGATION (glass + solid on scroll) -->
+    <nav class="fixed top-0 left-0 w-full z-50 transition-all duration-300" :class="scrolled ? 'bg-black/95 shadow-2xl border-b border-[#D4AF37]/30' : 'bg-black/40 backdrop-blur-sm'">
+        <div class="max-w-7xl mx-auto px-5 md:px-8 py-4 flex justify-between items-center">
+            <!-- Logo -->
+            <div class="text-2xl md:text-3xl font-extrabold tracking-tight">
+                <span class="gold-text-gradient">GWTrack</span><span class="text-white">.com</span>
+            </div>
+            
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex items-center space-x-8 text-sm font-medium">
+                <a href="#" class="hover:text-[#D4AF37] transition">Home</a>
+                <a href="#who-we-are" class="hover:text-[#D4AF37] transition">Who We Are</a>
+                <a href="#features" class="hover:text-[#D4AF37] transition">Features</a>
+                <a href="#testimonials" class="hover:text-[#D4AF37] transition">Testimonials</a>
+                <a href="#leadership-path" class="hover:text-[#D4AF37] transition">Leadership Path</a>
+                <a href="#contact" class="hover:text-[#D4AF37] transition">Contact</a>
+                <a href="#" class="bg-gradient-to-r from-[#B8860B] to-[#D4AF37] px-5 py-2 rounded-full text-black font-bold text-sm transition hover:scale-105 shadow-lg">Get Started</a>
+            </div>
+            
+            <!-- Mobile Menu Toggle -->
+            <button class="md:hidden text-2xl focus:outline-none" @click="mobileMenuOpen = !mobileMenuOpen">
+                <span x-show="!mobileMenuOpen">☰</span>
+                <span x-show="mobileMenuOpen">✕</span>
+            </button>
+        </div>
+        
+        <!-- Mobile Menu Dropdown -->
+        <div x-show="mobileMenuOpen" x-transition.duration.300ms class="md:hidden bg-black/95 backdrop-blur-md border-t border-[#D4AF37]/30 px-5 py-5 flex flex-col space-y-4 text-base">
+            <a href="#" class="hover:text-[#D4AF37] transition" @click="mobileMenuOpen=false">Home</a>
+            <a href="#who-we-are" class="hover:text-[#D4AF37] transition" @click="mobileMenuOpen=false">Who We Are</a>
+            <a href="#features" class="hover:text-[#D4AF37] transition" @click="mobileMenuOpen=false">Features</a>
+            <a href="#testimonials" class="hover:text-[#D4AF37] transition" @click="mobileMenuOpen=false">Testimonials</a>
+            <a href="#leadership-path" class="hover:text-[#D4AF37] transition" @click="mobileMenuOpen=false">Leadership Path</a>
+            <a href="#contact" class="hover:text-[#D4AF37] transition" @click="mobileMenuOpen=false">Contact</a>
+            <a href="#" class="inline-block text-center bg-gradient-to-r from-[#B8860B] to-[#D4AF37] px-5 py-2 rounded-full text-black font-bold">Get Started</a>
+        </div>
+    </nav>
+    
+    <!-- HERO SECTION with Carousel Placeholders -->
+    <section class="relative min-h-screen flex items-center overflow-hidden pt-20">
+        <!-- Carousel background images (placeholders) -->
+        <div class="absolute inset-0 w-full h-full transition-opacity duration-700" x-show="heroIndex === 0" x-cloak>
+            <div class="absolute inset-0 bg-black/70 z-10"></div>
+            <div class="w-full h-full bg-cover bg-center" style="background-image: linear-gradient(to right, #000, #1a1a1a), url('https://placehold.co/1920x1080/111111/D4AF37?text=Hero+Image+1'); background-blend-mode: overlay;"></div>
+        </div>
+        <div class="absolute inset-0 w-full h-full transition-opacity duration-700" x-show="heroIndex === 1" x-cloak>
+            <div class="absolute inset-0 bg-black/70 z-10"></div>
+            <div class="w-full h-full bg-cover bg-center" style="background-image: linear-gradient(to right, #000, #1a1a1a), url('https://placehold.co/1920x1080/1a1a1a/D4AF37?text=Hero+Image+2'); background-blend-mode: overlay;"></div>
+        </div>
+        <div class="absolute inset-0 w-full h-full transition-opacity duration-700" x-show="heroIndex === 2" x-cloak>
+            <div class="absolute inset-0 bg-black/70 z-10"></div>
+            <div class="w-full h-full bg-cover bg-center" style="background-image: linear-gradient(to right, #000, #1a1a1a), url('https://placehold.co/1920x1080/0a0a0a/D4AF37?text=Hero+Image+3'); background-blend-mode: overlay;"></div>
+        </div>
+        
+        <!-- Hero Content -->
+        <div class="relative z-20 max-w-7xl mx-auto px-6 md:px-12 text-center md:text-left">
+            <div class="md:max-w-3xl">
+                <h1 class="text-5xl md:text-7xl font-extrabold leading-tight"><span class="gold-text-gradient">Track. Train. Mentor. Grow.</span></h1>
+                <p class="text-gray-300 text-lg md:text-xl mt-6">The complete team development platform for Greatway Financial Group associates. From onboarding and licensing to leadership and rank advancement.</p>
+                <div class="flex flex-wrap gap-5 justify-center md:justify-start mt-8">
+                    <a href="#" class="gold-bg-gradient text-black font-bold px-8 py-3 rounded-full text-lg transition hover:scale-105 shadow-xl">Create Account</a>
+                    <a href="#" class="border border-[#D4AF37] px-8 py-3 rounded-full text-[#D4AF37] font-semibold hover:bg-[#D4AF37]/10 transition">Sign In</a>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12">
+                    <div class="glass-card rounded-xl p-3 text-center"><span class="text-[#D4AF37] font-bold">✓</span> Licensing Tracker</div>
+                    <div class="glass-card rounded-xl p-3 text-center"><span class="text-[#D4AF37] font-bold">✓</span> Field Apprenticeship</div>
+                    <div class="glass-card rounded-xl p-3 text-center"><span class="text-[#D4AF37] font-bold">✓</span> Certified Mentor Program</div>
+                    <div class="glass-card rounded-xl p-3 text-center"><span class="text-[#D4AF37] font-bold">✓</span> Rank Advancement System</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Carousel Dots & Arrows -->
+        <div class="absolute bottom-8 left-0 right-0 flex justify-center space-x-2 z-20">
+            <template x-for="i in 3" :key="i">
+                <button class="w-2.5 h-2.5 rounded-full transition-all" :class="heroIndex === i-1 ? 'bg-[#D4AF37] w-6' : 'bg-gray-500'" @click="heroIndex = i-1"></button>
+            </template>
+        </div>
+        <button class="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-black/50 p-2 rounded-full text-white hover:bg-[#D4AF37]/40 transition" @click="heroIndex = (heroIndex - 1 + 3) % 3">❮</button>
+        <button class="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-black/50 p-2 rounded-full text-white hover:bg-[#D4AF37]/40 transition" @click="heroIndex = (heroIndex + 1) % 3">❯</button>
+    </section>
+    
+    <!-- WHO WE ARE + Journey Timeline -->
+    <section id="who-we-are" class="py-24 px-6 max-w-7xl mx-auto">
+        <div class="text-center">
+            <h2 class="text-4xl md:text-5xl font-bold"><span class="gold-text-gradient">Built for Leaders.</span> Designed for Growth.</h2>
+            <div class="w-24 h-1 gold-bg-gradient mx-auto mt-4"></div>
+        </div>
+        <div class="grid md:grid-cols-2 gap-12 mt-16 items-center">
+            <div>
+                <p class="text-gray-300 text-lg leading-relaxed">GWTrack empowers every role — from new recruits to Executive Partners — with clarity, accountability, and real-time growth tracking. Our ecosystem ensures you always know the next step to build a successful financial services business.</p>
+                <div class="mt-8 space-y-4">
+                    <div class="flex items-center gap-3"><div class="w-3 h-3 bg-[#D4AF37] rounded-full"></div><span>New Recruits → Onboarding Success</span></div>
+                    <div class="flex items-center gap-3"><div class="w-3 h-3 bg-[#D4AF37] rounded-full"></div><span>Field Associates → Rank Acceleration</span></div>
+                    <div class="flex items-center gap-3"><div class="w-3 h-3 bg-[#D4AF37] rounded-full"></div><span>Mentors → Leadership Excellence</span></div>
+                </div>
+            </div>
+            <div class="relative bg-[#111111] p-6 rounded-2xl gold-border-glow">
+                <div class="flex flex-wrap justify-between items-center text-center text-sm font-semibold gap-3 relative z-10">
+                    <div class="flex flex-col items-center"><span class="text-[#D4AF37] text-2xl">1</span><span>Recruit</span></div>
+                    <span class="text-[#D4AF37] text-xl">→</span>
+                    <div class="flex flex-col items-center"><span class="text-[#D4AF37] text-2xl">2</span><span>Licensed Assoc.</span></div>
+                    <span class="text-[#D4AF37] text-xl">→</span>
+                    <div class="flex flex-col items-center"><span class="text-[#D4AF37] text-2xl">3</span><span>CFM</span></div>
+                    <span class="text-[#D4AF37] text-xl">→</span>
+                    <div class="flex flex-col items-center"><span class="text-[#D4AF37] text-2xl">4</span><span>Manager</span></div>
+                    <span class="text-[#D4AF37] text-xl">→</span>
+                    <div class="flex flex-col items-center"><span class="text-[#D4AF37] text-2xl">5</span><span>Director</span></div>
+                    <span class="text-[#D4AF37] text-xl">→</span>
+                    <div class="flex flex-col items-center"><span class="text-[#D4AF37] text-2xl">6</span><span>Exec Partner</span></div>
+                </div>
+                <div class="absolute inset-0 gold-border-glow rounded-2xl opacity-30"></div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- FEATURES SECTION (8 premium cards) -->
+    <section id="features" class="py-24 bg-[#0A0A0A]">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold">Everything You Need <span class="gold-text-gradient">To Build A Stronger Team</span></h2>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-7">
+                <div class="bg-[#111111] p-6 rounded-2xl border border-[#D4AF37]/20 card-hover"><div class="text-4xl mb-3">📘</div><h3 class="text-xl font-bold text-[#D4AF37]">Training Center</h3><p class="text-gray-400 mt-2 text-sm">Structured learning, video lessons, product & leadership training.</p></div>
+                <div class="bg-[#111111] p-6 rounded-2xl border border-[#D4AF37]/20 card-hover"><div class="text-4xl mb-3">📋</div><h3 class="text-xl font-bold text-[#D4AF37]">Licensing Tracker</h3><p class="text-gray-400 mt-2 text-sm">Milestones, exam prep, carrier appointments & compliance.</p></div>
+                <div class="bg-[#111111] p-6 rounded-2xl border border-[#D4AF37]/20 card-hover"><div class="text-4xl mb-3">👥</div><h3 class="text-xl font-bold text-[#D4AF37]">Field Apprenticeship</h3><p class="text-gray-400 mt-2 text-sm">Mentor assignments, progress tracking, real-world training.</p></div>
+                <div class="bg-[#111111] p-6 rounded-2xl border border-[#D4AF37]/20 card-hover"><div class="text-4xl mb-3">🏅</div><h3 class="text-xl font-bold text-[#D4AF37]">Certified Field Mentor</h3><p class="text-gray-400 mt-2 text-sm">Leadership development & apprentice management.</p></div>
+                <div class="bg-[#111111] p-6 rounded-2xl border border-[#D4AF37]/20 card-hover"><div class="text-4xl mb-3">📈</div><h3 class="text-xl font-bold text-[#D4AF37]">Rank Advancement</h3><p class="text-gray-400 mt-2 text-sm">Promotion pathways and automatic milestone tracking.</p></div>
+                <div class="bg-[#111111] p-6 rounded-2xl border border-[#D4AF37]/20 card-hover"><div class="text-4xl mb-3">📊</div><h3 class="text-xl font-bold text-[#D4AF37]">Team Growth Dashboard</h3><p class="text-gray-400 mt-2 text-sm">Downline visibility, analytics & production metrics.</p></div>
+                <div class="bg-[#111111] p-6 rounded-2xl border border-[#D4AF37]/20 card-hover"><div class="text-4xl mb-3">✅</div><h3 class="text-xl font-bold text-[#D4AF37]">Assessments</h3><p class="text-gray-400 mt-2 text-sm">Quizzes, exams and certifications.</p></div>
+                <div class="bg-[#111111] p-6 rounded-2xl border border-[#D4AF37]/20 card-hover"><div class="text-4xl mb-3">📚</div><h3 class="text-xl font-bold text-[#D4AF37]">Resource Library</h3><p class="text-gray-400 mt-2 text-sm">Scripts, presentations & training materials.</p></div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- LEADERSHIP PATH: RANK PROGRESSION -->
+    <section id="leadership-path" class="py-24 max-w-6xl mx-auto px-6">
+        <div class="text-center mb-16"><h2 class="text-4xl md:text-5xl font-bold"><span class="gold-text-gradient">The Leadership Path</span> to Executive Partner</h2></div>
+        <div class="relative flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="absolute left-0 right-0 top-1/2 h-0.5 bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent hidden md:block"></div>
+            <div class="z-10 bg-black/80 backdrop-blur p-5 rounded-2xl text-center w-36 border border-[#D4AF37]"><div class="text-[#D4AF37] font-black">FA</div><span class="text-xs">Field Assoc</span></div>
+            <div class="z-10 bg-black/80 backdrop-blur p-5 rounded-2xl text-center w-36 border border-[#D4AF37]/70"><div class="text-[#D4AF37] font-black">SFA</div><span class="text-xs">Sr. FA</span></div>
+            <div class="z-10 bg-black/80 backdrop-blur p-5 rounded-2xl text-center w-36 border border-[#D4AF37]"><div class="text-[#D4AF37] font-black">SM</div><span class="text-xs">Sales Mgr</span></div>
+            <div class="z-10 bg-black/80 backdrop-blur p-5 rounded-2xl text-center w-36 border border-[#D4AF37]"><div class="text-[#D4AF37] font-black">ED</div><span class="text-xs">Exec Director</span></div>
+            <div class="z-10 bg-black/80 backdrop-blur p-5 rounded-2xl text-center w-36 border border-[#D4AF37]"><div class="text-[#D4AF37] font-black">SED</div><span class="text-xs">Sr. ED</span></div>
+            <div class="z-10 bg-black/80 backdrop-blur p-5 rounded-2xl text-center w-36 border border-[#D4AF37]"><div class="text-[#D4AF37] font-black">NED</div><span class="text-xs">Nat. ED</span></div>
+            <div class="z-10 bg-gradient-to-r from-[#B8860B] to-[#D4AF37] p-5 rounded-2xl text-center w-36 shadow-xl"><div class="text-black font-black text-lg">EP</div><span class="text-black text-xs font-bold">Exec Partner</span></div>
+        </div>
+        <div class="grid md:grid-cols-4 gap-6 mt-16 text-center text-gray-300">
+            <div><span class="text-[#D4AF37] font-bold">FA</span> – Entry level, field training</div>
+            <div><span class="text-[#D4AF37] font-bold">SFA</span> – Advanced production</div>
+            <div><span class="text-[#D4AF37] font-bold">SM</span> – Team building & leadership</div>
+            <div><span class="text-[#D4AF37] font-bold">Director+</span> – Executive leadership & equity</div>
+        </div>
+    </section>
+    
+    <!-- CERTIFIED FIELD MENTOR SECTION -->
+    <section class="py-24 bg-[#0A0A0A]">
+        <div class="max-w-6xl mx-auto px-6 text-center">
+            <h2 class="text-4xl font-bold"><span class="gold-text-gradient">Mentorship Creates Momentum</span></h2>
+            <div class="grid md:grid-cols-2 gap-12 mt-12 items-center">
+                <div class="bg-[#111111] p-8 rounded-2xl gold-border-glow"><div class="text-6xl mb-3">👨‍🏫</div><h3 class="text-2xl font-bold">Certified Field Mentor (CFM)</h3><p class="mt-4">Every new associate is paired with a CFM to ensure structured apprenticeship, practical development, and leadership training. Field apprenticeship progress tracked seamlessly inside GWTrack.</p></div>
+                <div class="relative"><div class="bg-[#111111] p-6 rounded-2xl border-l-4 border-[#D4AF37]"><div class="flex gap-4 items-center"><div class="w-12 h-12 bg-[#D4AF37]/20 rounded-full flex items-center justify-center text-[#D4AF37] font-bold">CFM</div><div><p class="font-semibold">Mentor assignment → action plans → reviews → rank advancement</p></div></div></div><div class="h-8 w-0.5 bg-[#D4AF37] mx-auto my-2"></div><div class="bg-[#111111] p-6 rounded-2xl"><div class="flex gap-4 items-center"><div class="w-12 h-12 bg-[#D4AF37]/20 rounded-full flex items-center justify-center text-[#D4AF37] font-bold">FA</div><div><p class="font-semibold">Apprentice dashboard: 1:1 sessions & milestone tracking</p></div></div></div></div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- PLATFORM PREVIEW (SaaS DASHBOARD) -->
+    <section class="py-24 max-w-7xl mx-auto px-6">
+        <div class="text-center mb-12"><h2 class="text-4xl font-bold">Platform <span class="gold-text-gradient">Preview</span></h2></div>
+        <div class="grid md:grid-cols-3 gap-6">
+            <div class="bg-[#111111] p-5 rounded-xl border border-[#D4AF37]/20"><div class="text-[#D4AF37] font-bold">Onboarding Progress</div><div class="w-full bg-gray-800 rounded-full h-2 mt-3"><div class="bg-[#D4AF37] w-2/3 h-2 rounded-full"></div></div><p class="text-sm mt-2">Licensing: 65%</p></div>
+            <div class="bg-[#111111] p-5 rounded-xl border border-[#D4AF37]/20"><div class="text-[#D4AF37] font-bold">Licensing Status</div><p class="text-sm mt-2">Life & Health: Pending Exam</p><p class="text-xs text-gray-400">Carrier Appointments: 2/5</p></div>
+            <div class="bg-[#111111] p-5 rounded-xl border border-[#D4AF37]/20"><div class="text-[#D4AF37] font-bold">Team Performance</div><p class="text-2xl font-bold mt-1">+127%</p><p class="text-xs">Downline growth last 90d</p></div>
+            <div class="bg-[#111111] p-5 rounded-xl border border-[#D4AF37]/20"><div class="text-[#D4AF37] font-bold">Rank Progress</div><div class="text-sm">Next: SFA (82% complete)</div><div class="w-full bg-gray-800 rounded-full h-1.5 mt-2"><div class="bg-[#D4AF37] w-[82%] h-1.5 rounded-full"></div></div></div>
+            <div class="bg-[#111111] p-5 rounded-xl border border-[#D4AF37]/20"><div class="text-[#D4AF37] font-bold">Upcoming Training</div><p class="text-xs">Leadership Webinar - Tomorrow</p><p class="text-xs">Product Certification - 5d left</p></div>
+            <div class="bg-[#111111] p-5 rounded-xl border border-[#D4AF37]/20"><div class="text-[#D4AF37] font-bold">Mentor Feedback</div><p class="text-sm italic">"Great progress on field activities" – CFM review</p></div>
+        </div>
+    </section>
+    
+    <!-- TESTIMONIAL CAROUSEL (6 samples) -->
+    <section id="testimonials" class="py-24 bg-[#0A0A0A]">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-12"><h2 class="text-4xl font-bold">Trusted by <span class="gold-text-gradient">Executive Leaders</span></h2></div>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-[#111111] p-6 rounded-2xl border border-[#D4AF37]/20"><div class="flex gap-3 items-center"><div class="w-12 h-12 rounded-full bg-gray-700 gold-border-glow"></div><div><p class="font-bold">Sarah M.</p><p class="text-[#D4AF37] text-xs">Executive Director</p></div></div><p class="mt-4 italic text-gray-300">“GWTrack transformed how I coach my team. We've seen 2x faster rank advancements.”</p><div class="text-[#D4AF37] text-3xl mt-2">“</div></div>
+                <div class="bg-[#111111] p-6 rounded-2xl border border-[#D4AF37]/20"><div class="flex gap-3 items-center"><div class="w-12 h-12 rounded-full bg-gray-700"></div><div><p class="font-bold">Michael R.</p><p class="text-[#D4AF37] text-xs">Senior ED</p></div></div><p class="mt-4 italic text-gray-300">“Mentorship clarity and licensing tracker kept my downline on the right path.”</p><div class="text-[#D4AF37] text-3xl mt-2">“</div></div>
+                <div class="bg-[#111111] p-6 rounded-2xl border border-[#D4AF37]/20"><div class="flex gap-3 items-center"><div class="w-12 h-12 rounded-full bg-gray-700"></div><div><p class="font-bold">Jennifer L.</p><p class="text-[#D4AF37] text-xs">Certified Field Mentor</p></div></div><p class="mt-4 italic text-gray-300">“My apprentices love the real-time feedback dashboards, it's a game-changer.”</p><div class="text-[#D4AF37] text-3xl mt-2">“</div></div>
+                <div class="bg-[#111111] p-6 rounded-2xl border border-[#D4AF37]/20 md:col-span-3 grid md:grid-cols-3 gap-4"><div><p class="font-bold">David T.</p><p class="text-xs text-[#D4AF37]">NED</p><p class="text-sm">“Rank requirements tracker eliminated guesswork.”</p></div><div><p class="font-bold">Lisa K.</p><p class="text-xs text-[#D4AF37]">Sales Manager</p><p class="text-sm">“Best investment for our agency growth.”</p></div><div><p class="font-bold">Robert P.</p><p class="text-xs text-[#D4AF37]">Executive Partner</p><p class="text-sm">“Complete ecosystem for financial leadership.”</p></div></div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- CTA SECTION with gold glow -->
+    <section class="py-24 text-center relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-[#D4AF37]/10 via-transparent to-[#D4AF37]/10"></div>
+        <div class="relative z-10 max-w-3xl mx-auto px-6">
+            <h2 class="text-4xl md:text-5xl font-bold">Ready To <span class="gold-text-gradient">Accelerate Your Growth?</span></h2>
+            <p class="text-gray-300 text-lg mt-4">Join the platform built to help associates grow faster, lead better, and advance with confidence.</p>
+            <div class="flex flex-wrap gap-5 justify-center mt-10">
+                <a href="#" class="gold-bg-gradient text-black font-bold px-8 py-3 rounded-full text-lg hover:scale-105 transition">Create Account</a>
+                <a href="#" class="border border-[#D4AF37] px-8 py-3 rounded-full text-[#D4AF37] font-semibold hover:bg-white/5">Sign In</a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- FOOTER -->
+    <footer id="contact" class="bg-black/90 border-t border-[#D4AF37]/20 py-12 px-6">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-4 gap-8">
+            <div><div class="text-2xl font-bold gold-text-gradient">GWTrack.com</div><p class="text-gray-500 text-sm mt-2">Team growth & leadership for Greatway Financial.</p></div>
+            <div><h4 class="font-bold text-[#D4AF37]">Quick Links</h4><ul class="mt-3 space-y-2 text-sm text-gray-400"><li><a href="#" class="hover:text-white">Home</a></li><li><a href="#features">Features</a></li><li><a href="#leadership-path">Leadership Path</a></li><li><a href="#">Contact</a></li></ul></div>
+            <div><h4 class="font-bold text-[#D4AF37]">Resources</h4><ul class="mt-3 space-y-2 text-sm text-gray-400"><li>Training</li><li>Licensing</li><li>Mentorship</li><li>Rank Advancement</li></ul></div>
+            <div><h4 class="font-bold text-[#D4AF37]">Legal</h4><ul class="mt-3 space-y-2 text-sm text-gray-400"><li>Privacy Policy</li><li>Terms of Service</li><li><div class="flex space-x-4 mt-4"><span>🔵</span><span>▶️</span><span>📸</span><span>🔗</span></div></li></ul></div>
+        </div>
+        <div class="border-t border-[#D4AF37]/20 mt-10 pt-6 text-center text-gray-500 text-sm">© 2026 GWTrack.com. All Rights Reserved.</div>
+    </footer>
+    
+    <!-- GO TO TOP BUTTON -->
+    <div x-data="{ show: false }" x-init="window.addEventListener('scroll', () => { show = window.scrollY > 500 })" x-show="show" x-transition.duration.300ms class="fixed bottom-8 right-6 z-50">
+        <button @click="window.scrollTo({ top: 0, behavior: 'smooth' })" class="w-12 h-12 rounded-full gold-bg-gradient text-black font-bold flex items-center justify-center shadow-2xl go-top text-xl">↑</button>
+    </div>
+</body>
+</html>

@@ -1,0 +1,8 @@
+// Example for using Faker in Laravel Seeder
+
+use Faker\Factory as Faker;
+
+$faker = Faker::create();
+$name = $faker->name;
+$email = $faker->unique()->safeEmail;
+// ...

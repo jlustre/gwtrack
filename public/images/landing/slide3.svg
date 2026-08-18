@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-label="Rank path hero background">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#050505"/>
+      <stop offset="40%" stop-color="#101010"/>
+      <stop offset="100%" stop-color="#181208"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="55%" cy="55%" r="45%">
+      <stop offset="0%" stop-color="#f5d76e" stop-opacity="0.22"/>
+      <stop offset="100%" stop-color="#f5d76e" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#bg)"/>
+  <rect width="1920" height="1080" fill="url(#glow)"/>
+  <g stroke="#d4af37" stroke-opacity="0.15" stroke-width="2">
+    <line x1="200" y1="900" x2="1720" y2="900"/>
+    <line x1="420" y1="900" x2="420" y2="260"/>
+    <line x1="960" y1="900" x2="960" y2="180"/>
+    <line x1="1500" y1="900" x2="1500" y2="320"/>
+  </g>
+</svg>

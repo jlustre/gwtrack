@@ -1,0 +1,116 @@
+<?php
+
+declare(strict_types=1);
+
+return [
+    'modules' => [
+        [
+            'module' => 'GWTrack Welcome Orientation',
+            'title' => 'GWTrack Welcome Orientation',
+            'summary' => 'Portal purpose, dashboard, trackers, resources, communications, team visibility, and your first-week path.',
+            'slug' => 'welcome-orientation',
+            'file' => 'GWTRACK_WELCOME_ORIENTATION.md',
+            'app_route' => 'dashboard',
+            'app_label' => 'Open Dashboard',
+        ],
+        [
+            'module' => 'GWTrack Application',
+            'title' => 'GWTrack Application User Guide',
+            'summary' => 'Complete application overview — navigation, menus, workflows, and links to module guides.',
+            'slug' => 'application',
+            'file' => 'GWTRACK_APPLICATION_USER_GUIDE.md',
+            'app_route' => 'dashboard',
+            'app_label' => 'Open Dashboard',
+        ],
+        [
+            'module' => 'Dashboard',
+            'summary' => 'Your stats, team overview, journey hub, and profile completion.',
+            'app_route' => 'dashboard',
+            'app_label' => 'Open Dashboard',
+        ],
+        [
+            'module' => 'My Profile',
+            'summary' => 'Profile details, checklists, recruits, invitations, and annual premium.',
+            'app_route' => 'profile.edit',
+            'app_label' => 'Open My Profile',
+        ],
+        [
+            'module' => 'Onboarding',
+            'summary' => 'Setup checklist, sponsor alignment, and first milestones.',
+            'app_route' => 'onboarding.index',
+            'app_label' => 'Open Onboarding',
+        ],
+        [
+            'module' => 'Licensing',
+            'summary' => 'Provincial or state licensing milestones and compliance tracking.',
+            'app_route' => 'licensing.index',
+            'app_label' => 'Open Licensing',
+        ],
+        [
+            'module' => 'Field Apprenticeship (FAP)',
+            'summary' => 'Apprenticeship program checklist and field activity milestones.',
+            'app_route' => 'apprenticeship.index',
+            'app_label' => 'Open FAP Tracker',
+        ],
+        [
+            'module' => 'CFM Training',
+            'summary' => 'Certified Field Mentor training modules and certification progress.',
+            'app_route' => 'cfm-training.index',
+            'app_label' => 'Open CFM Training',
+        ],
+        [
+            'module' => 'Goals & Performance',
+            'title' => 'Goals & Performance User Guide',
+            'summary' => 'Goal planning, scorecards, coaching workflows, and performance reports.',
+            'slug' => 'goals-and-performance',
+            'file' => 'GOALS_AND_PERFORMANCE_USER_GUIDE.md',
+            'app_route' => 'goals.index',
+            'app_label' => 'Open Goals',
+        ],
+        [
+            'module' => 'Prospects & Sales Funnel',
+            'title' => 'Prospects & Sales Funnel User Guide',
+            'summary' => 'Prospect CRM, funnel board, follow-ups, and conversion tracking.',
+            'slug' => 'prospect-sales-funnel',
+            'file' => 'PROSPECT_SALES_FUNNEL_USER_GUIDE.md',
+            'app_route' => 'team.prospects',
+            'app_label' => 'Open Prospects',
+        ],
+        [
+            'module' => 'FNA Management',
+            'title' => 'FNA Management User Guide',
+            'summary' => 'Financial needs analysis records, client invites, and CFM review.',
+            'slug' => 'fna-management',
+            'file' => 'FNA_MANAGEMENT_USER_GUIDE.md',
+            'app_route' => 'team.fna.dashboard',
+            'app_label' => 'Open FNA',
+        ],
+        [
+            'module' => 'Training Academy',
+            'title' => 'Training Academy User Guide',
+            'summary' => 'Courses, learning paths, certifications, assignments, and achievements.',
+            'slug' => 'training-academy',
+            'file' => 'TRAINING_ACADEMY_USER_GUIDE.md',
+            'app_route' => 'training.index',
+            'app_label' => 'Open Training',
+        ],
+        [
+            'module' => 'Calendar & Bookings',
+            'summary' => 'Events, mentor sessions, availability, and booking links.',
+            'app_route' => 'calendar.index',
+            'app_label' => 'Open Calendar',
+        ],
+        [
+            'module' => 'Tasks',
+            'summary' => 'Personal and team tasks, due dates, and completion tracking.',
+            'app_route' => 'tasks.index',
+            'app_label' => 'Open Tasks',
+        ],
+        [
+            'module' => 'Resource Library',
+            'summary' => 'Documents, links, favorites, and agency resource materials.',
+            'app_route' => 'resources.documents',
+            'app_label' => 'Browse Resources',
+        ],
+    ],
+];
