@@ -34,6 +34,7 @@ class TopbarNavigationTest extends TestCase
             ->assertSee('Open notifications')
             ->assertSee('Notifications')
             ->assertSee('My Profile')
+            ->assertDontSee('My Billing')
             ->assertSee('Admin Management')
             ->assertSee('Log Out');
     }

@@ -77,6 +77,7 @@ class AdminManagementTest extends TestCase
             ->get(route('admin.management.resource.index', ['ranks', 'embedded' => 1]))
             ->assertOk()
             ->assertSee('Ranks')
+            ->assertDontSee('Back to Checklists')
             ->assertSee('Add Record')
             ->assertDontSee('id="gw-sidebar-navigation"', false);
     }
@@ -280,6 +281,7 @@ class AdminManagementTest extends TestCase
             ->get(route('admin.management.resource.index', 'checklists'))
             ->assertOk()
             ->assertSee('Read Only CFM Module')
+            ->assertSee('Back to Checklists')
             ->assertSee('View')
             ->assertDontSee('Add Item')
             ->assertDontSee('Update Seeder')

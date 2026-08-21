@@ -107,6 +107,7 @@ class ChecklistNotificationDispatcher
     {
         return match ($typeCode) {
             'licensing' => 'licensing',
+            'contracting' => 'licensing',
             'fap' => 'fap',
             'cfm-training', 'training' => 'training',
             'cfm-mentoring' => 'fap',
@@ -122,6 +123,7 @@ class ChecklistNotificationDispatcher
         return match ($typeCode) {
             'onboarding' => ['route' => 'onboarding.index', 'label' => 'View onboarding'],
             'licensing' => ['route' => 'licensing.index', 'label' => 'View licensing'],
+            'contracting' => ['route' => 'contracting.index', 'label' => 'View contracting'],
             'fap' => ['route' => 'apprenticeship.index', 'label' => 'View FAP'],
             'cfm-training' => ['route' => 'cfm-training.index', 'label' => 'View training'],
             default => ['route' => 'dashboard', 'label' => 'View dashboard'],

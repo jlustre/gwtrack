@@ -168,6 +168,7 @@ class MemberProfileTabsService
         return match ($typeCode) {
             'onboarding' => 'onboarding.index',
             'licensing' => 'licensing.index',
+            'contracting' => 'contracting.index',
             'fap' => 'apprenticeship.index',
             'cfm-training' => 'cfm-training.index',
             default => null,

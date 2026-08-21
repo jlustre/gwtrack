@@ -20,12 +20,12 @@ class ChecklistSeederTest extends TestCase
 
         $onboardingTypeId = DB::table('checklist_types')->where('code', 'onboarding')->value('id');
 
-        $this->assertSame(19, DB::table('checklists')->where('checklist_type_id', $onboardingTypeId)->count());
+        $this->assertSame(11, DB::table('checklists')->where('checklist_type_id', $onboardingTypeId)->count());
 
         $this->assertDatabaseHas('checklists', [
             'checklist_type_id' => $onboardingTypeId,
             'title' => 'Complete Member Profile',
-            'sort_order' => 10,
+            'sort_order' => 30,
             'responsible_parties' => 'Self',
             'notified_parties' => 'SP',
             'is_required' => true,
@@ -41,17 +41,8 @@ class ChecklistSeederTest extends TestCase
 
         $this->assertDatabaseHas('checklists', [
             'checklist_type_id' => $onboardingTypeId,
-            'title' => 'Review Rank Advancement Path',
+            'title' => 'Review Resource Library',
             'is_required' => false,
-        ]);
-
-        $this->assertDatabaseHas('checklists', [
-            'checklist_type_id' => $onboardingTypeId,
-            'title' => 'Canada: Review Provincial Licensing Path',
-            'country' => 'Canada',
-            'responsible_parties' => 'Self, SP, CFM',
-            'notified_parties' => 'SP, CFM',
-            'is_required' => true,
         ]);
     }
 
@@ -63,14 +54,24 @@ class ChecklistSeederTest extends TestCase
 
         $onboardingTypeId = DB::table('checklist_types')->where('code', 'onboarding')->value('id');
 
-        $this->assertSame(19, DB::table('checklists')->where('checklist_type_id', $onboardingTypeId)->count());
+        $this->assertSame(11, DB::table('checklists')->where('checklist_type_id', $onboardingTypeId)->count());
         $this->assertSame(1, DB::table('checklists')
             ->where('checklist_type_id', $onboardingTypeId)
-            ->where('title', 'Start Licensing Tracker')
+            ->where('title', 'Complete Member Profile')
             ->count());
+
+        $contractingTypeId = DB::table('checklist_types')->where('code', 'contracting')->value('id');
+
+        $this->assertSame(14, DB::table('checklists')->where('checklist_type_id', $contractingTypeId)->count());
+        $this->assertDatabaseHas('checklists', [
+            'checklist_type_id' => $contractingTypeId,
+            'title' => 'Select Target Carriers',
+            'responsible_parties' => 'Self, SP, AO',
+            'is_required' => true,
+        ]);
     }
 
-    public function test_onboarding_checklists_can_be_filtered_by_member_country(): void
+    public function test_onboarding_checklists_include_global_items_for_member_country(): void
     {
         $this->seed(ChecklistTypeSeeder::class);
         $this->seed(ChecklistSeeder::class);
@@ -81,15 +82,6 @@ class ChecklistSeederTest extends TestCase
             ->pluck('title');
 
         $this->assertTrue($canadaSteps->contains('Complete Member Profile'));
-        $this->assertTrue($canadaSteps->contains('Canada: Review Provincial Licensing Path'));
-        $this->assertFalse($canadaSteps->contains('United States: Review State Licensing Path'));
-
-        $usSteps = Checklist::query()
-            ->forTypeCode('onboarding')
-            ->applicableToCountry('United States')
-            ->pluck('title');
-
-        $this->assertTrue($usSteps->contains('United States: Review State Licensing Path'));
-        $this->assertFalse($usSteps->contains('Canada: Review Provincial Licensing Path'));
+        $this->assertTrue($canadaSteps->contains('Email Verified'));
     }
 }

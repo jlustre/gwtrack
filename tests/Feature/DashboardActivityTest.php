@@ -87,7 +87,21 @@ class DashboardActivityTest extends TestCase
             ->assertSee('FAP Progress', false)
             ->assertSee('Training Progress', false)
             ->assertSee('Quick Actions', false)
+            ->assertSee('Invite New Member', false)
+            ->assertSee('open-invite-member-modal', false)
             ->assertSee('Performance Statistics', false);
+    }
+
+    public function test_inactive_member_does_not_see_invite_new_member_quick_action(): void
+    {
+        $user = $this->createMember('inactive.invite@example.com');
+        $user->update(['is_active' => false]);
+
+        $home = app(DashboardHomeService::class)->forUser($user->fresh());
+
+        $this->assertFalse(collect($home['quick_actions'])->contains(
+            fn (array $action): bool => $action['label'] === 'Invite New Member'
+        ));
     }
 
     public function test_dashboard_renders_quick_links_panel_from_resource_library(): void
@@ -358,7 +372,7 @@ class DashboardActivityTest extends TestCase
     private function createMember(string $email): User
     {
         $teamId = (int) DB::table('teams')->value('id');
-        $rankId = Rank::where('code', 'FA')->value('id');
+        $rankId = Rank::where('code', 'TA')->value('id');
 
         $user = User::factory()->create([
             'name' => 'Activity Member',

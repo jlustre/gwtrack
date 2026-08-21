@@ -419,8 +419,8 @@ class DownlineController extends Controller
             'email' => $member->email,
             'avatar' => $member->initials(),
             'profile_photo_url' => $member->profilePhotoUrl(),
-            'rank' => $member->rank?->code ?? 'FA',
-            'rank_name' => $member->rank?->name ?? 'Field Associate',
+            'rank' => $member->rank?->code ?? \App\Support\GreatwayRankCatalog::entryCode(),
+            'rank_name' => $member->rank?->name ?? \App\Support\GreatwayRankCatalog::entryName(),
             'sponsor' => $member->sponsor?->name ?? 'None',
             'mentor' => $member->mentor?->name ?? 'Unassigned',
             'country' => $member->profile?->country ?? 'Global',
@@ -474,7 +474,7 @@ class DownlineController extends Controller
             ->where('user_hierarchy_paths.ancestor_id', $root->id)
             ->where('user_hierarchy_paths.depth', '>', 0)
             ->whereNull('users.deleted_at')
-            ->selectRaw('COALESCE(ranks.code, "FA") as label, COUNT(users.id) as total')
+            ->selectRaw('COALESCE(ranks.code, "TA") as label, COUNT(users.id) as total')
             ->groupBy('label')
             ->orderByDesc('total')
             ->pluck('total', 'label')

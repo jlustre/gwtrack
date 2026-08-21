@@ -54,6 +54,8 @@ This roadmap organizes GWTrack.com into practical delivery phases. The first pri
 - [x] Clear online status during logout.
 - [x] Add Spatie HasRoles trait to User model.
 - [x] Create RankSeeder.
+- [x] Seed Greatway Producer/Builder ranks (TA through NEVC) with FYO, PPB, track, and Field Leader flags.
+- [x] Remap leftover legacy rank codes onto Greatway codes.
 - [x] Create RolePermissionSeeder.
 - [x] Convert role names to lowercase dash slugs.
 - [x] Document distinction between Greatway ranks and GWTrack permission roles.
@@ -69,7 +71,7 @@ This roadmap organizes GWTrack.com into practical delivery phases. The first pri
 - [x] Add team visibility permission table for explicit access exceptions.
 - [x] Add hierarchy query service for direct recruits, descendants, visible members, and member metrics.
 - [x] Assign new registered users the `member` role.
-- [x] Assign new registered users the FA rank.
+- [x] Assign new registered users the TA rank.
 - [x] Assign new registered users to the same team as their sponsor.
 - [x] Build full admin user management CRUD for role, rank, team, status, and sponsor changes.
 - [x] Build generic Admin Management CRUD for important setup tables.
@@ -176,6 +178,7 @@ This roadmap organizes GWTrack.com into practical delivery phases. The first pri
 - [x] Build Licensing Tracker page with progress cards, progress graph, interactive checklist, and pending confirmation workflow.
 - [x] Build admin onboarding step manager.
 - [x] Build admin licensing step manager.
+- [x] Build admin Checklists hub (`/admin/checklists`) with Types, Instructions, and Items pages and Back to Checklists navigation.
 - [x] Add progress summaries to dashboard scaffold.
 
 ### Deliverables
@@ -297,13 +300,13 @@ This roadmap organizes GWTrack.com into practical delivery phases. The first pri
 - [x] Build admin CFM certification scaffold page.
 - [ ] Build admin certification request review screen.
 - [ ] Assign `certified-field-mentor` role after approval.
-- [ ] Enforce SFA-and-above eligibility before granting `certified-field-mentor`.
+- [ ] Enforce Associate-and-above eligibility before granting `certified-field-mentor`.
 
 ### Role Eligibility Notes
 
-- ED rank and above usually maps to the `agency-owner` role.
-- SM rank usually maps to the `team-leader` role.
-- SFA rank and above may become CFM after successful CFM Training and approval.
+- SVP rank and above usually maps to the `agency-owner` role. SVP is the first Field Leader rank.
+- Senior Associate (SA) rank usually maps to the `team-leader` role.
+- Associate rank and above may become CFM after successful CFM Training and approval.
 - Trainer role may be granted after FAP completion and once CFM Training has started.
 
 ### Deliverables
@@ -375,15 +378,18 @@ This roadmap organizes GWTrack.com into practical delivery phases. The first pri
 - [ ] Create rank requirement and user rank progress models.
 - [x] Build admin ranks scaffold page.
 - [x] Build user rank advancement tracker scaffold page.
+- [x] Show current and next-rank Greatway compensation (Total FYO, compensation rate, PPB) on the rank advancement tracker.
+- [x] Treat SVP as the agency-owner / first Field Leader rank for CFM management and related access.
 - [x] Add next-rank progress card to dashboard scaffold.
 - [ ] Add leadership view for team rank progress.
 - [ ] Support manual rank approval where required.
 
 ### Deliverables
 
-- Users can view progress toward next rank.
+- Users can view progress toward next rank, including Greatway compensation rates.
 - Leaders can review rank progress.
 - Admins can configure rank requirements.
+- SVP is the agency-owner rank; Managing Broker is a Producer rank and does not grant agency-leader access by rank alone.
 
 ## Phase 9: Resources, Events, Announcements, And Recognition
 
@@ -490,7 +496,7 @@ This roadmap organizes GWTrack.com into practical delivery phases. The first pri
 - [x] Build Admin Settings scaffold page.
 - [x] Build role-based Admin Management scaffold pages.
 - [x] Build generic Admin Management CRUD for important setup tables.
-- [x] Add Admin Management sidebar group with users, roles, ranks, teams, training, CFM certification, setup tables, and settings.
+- [x] Add Admin Management sidebar group with users, roles, ranks, teams, checklists hub, training, CFM certification, setup tables, and settings.
 - [ ] Add user filters by role, rank, team, and status.
 - [ ] Add onboarding progress report.
 - [ ] Add licensing progress report.

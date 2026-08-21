@@ -48,7 +48,7 @@
                     'image' => $heroSlideImage(3),
                     'eyebrow' => 'The Rank Path Is Visible',
                     'headline' => 'Turn Advancement Into A Guided Journey.',
-                    'body' => 'From FA to EP, GWTrack makes milestones, requirements, training, and leadership readiness clear.',
+                    'body' => 'From Training Associate to National Executive Vice Chairman, GWTrack makes milestones, FYO compensation, training, and leadership readiness clear.',
                     'align' => 'items-center justify-start text-left',
                     'panel' => 'max-w-xl md:ml-0',
                     'object' => 'object-center',
@@ -230,7 +230,7 @@
                             GWTrack brings the Greatway standard into one private operating system: new recruits see what to complete next, mentors see who needs attention, and leaders can spot progress across the team without digging through scattered messages.
                         </p>
                         <div class="mt-8 space-y-4">
-                            @foreach (['New recruits move from invitation to onboarding with sponsor accountability.', 'Field Associates track licensing, training, and apprenticeship milestones.', 'Leaders get visibility into rank progress and team momentum.'] as $point)
+                            @foreach (['New recruits move from invitation to onboarding with sponsor accountability.', 'Training Associates track licensing, training, and apprenticeship milestones.', 'Leaders get visibility into rank progress, FYO compensation, and team momentum.'] as $point)
                                 <div class="flex items-center gap-3">
                                     <div class="h-3 w-3 rounded-full bg-gw-accent"></div>
                                     <span class="text-gray-200">{{ $point }}</span>
@@ -264,7 +264,7 @@
                             ['Licensing Tracker', 'Milestones for exam prep, license progress, appointments, and compliance steps.'],
                             ['Field Apprenticeship', 'Mentor assignments, progress tracking, sessions, notes, and real-world practice.'],
                             ['Certified Field Mentor', 'A dedicated system for mentor certification and apprentice management.'],
-                            ['Rank Advancement', 'Promotion pathways and milestone tracking from FA through EP.'],
+                            ['Rank Advancement', 'Producer and Builder promotion pathways with Greatway FYO compensation rates.'],
                             ['Team Growth Dashboard', 'Team visibility for sponsors, leaders, agency owners, and administrators.'],
                             ['Assessments', 'Quizzes and certification-style checks to validate learning.'],
                             ['Resource Library', 'Scripts, presentations, templates, documents, and field support material.'],
@@ -281,28 +281,40 @@
 
             <section id="leadership-path" class="mx-auto max-w-6xl px-6 py-24">
                 <div class="mb-16 text-center">
-                    <h2 class="text-4xl font-bold md:text-5xl"><span class="gold-text-gradient">The Leadership Path</span> To Executive Partner</h2>
+                    <h2 class="text-4xl font-bold md:text-5xl"><span class="gold-text-gradient">The Leadership Path</span> To National Executive Vice Chairman</h2>
                 </div>
 
+                <p class="mb-6 text-center text-sm font-semibold uppercase tracking-wide text-gw-accent">Producer track</p>
                 <div class="relative flex flex-col items-center justify-between gap-4 md:flex-row">
                     <div class="absolute left-0 right-0 top-1/2 hidden h-0.5 bg-gradient-to-r from-transparent via-gw-accent to-transparent md:block"></div>
-                    @foreach ([['FA', 'Field Associate'], ['SFA', 'Senior FA'], ['SM', 'Sales Manager'], ['ED', 'Executive Director'], ['SED', 'Senior ED'], ['NED', 'National ED']] as [$code, $label])
+                    @foreach ([['TA', 'Training Associate'], ['ASC', 'Associate'], ['SA', 'Senior Associate'], ['MB', 'Managing Broker'], ['SMB', 'Senior MB'], ['AVP', 'Associate VP']] as [$code, $label])
+                        <div class="z-10 w-full rounded-2xl border border-gw-accent/80 bg-black/85 p-5 text-center backdrop-blur md:w-36">
+                            <div class="text-lg font-black text-gw-accent">{{ $code }}</div>
+                            <div class="text-xs text-gray-300">{{ $label }}</div>
+                        </div>
+                    @endforeach
+                </div>
+
+                <p class="mb-6 mt-12 text-center text-sm font-semibold uppercase tracking-wide text-gw-accent">Builder track · Field Leaders</p>
+                <div class="relative flex flex-col items-center justify-between gap-4 md:flex-row">
+                    <div class="absolute left-0 right-0 top-1/2 hidden h-0.5 bg-gradient-to-r from-transparent via-gw-accent to-transparent md:block"></div>
+                    @foreach ([['SVP', 'Senior VP'], ['EVP', 'Executive VP'], ['EVC', 'Exec. Vice Chairman'], ['SEVC', 'Senior EVC']] as [$code, $label])
                         <div class="z-10 w-full rounded-2xl border border-gw-accent/80 bg-black/85 p-5 text-center backdrop-blur md:w-36">
                             <div class="text-lg font-black text-gw-accent">{{ $code }}</div>
                             <div class="text-xs text-gray-300">{{ $label }}</div>
                         </div>
                     @endforeach
                     <div class="z-10 w-full rounded-2xl bg-gradient-to-r from-gw-accent-dark to-gw-accent p-5 text-center shadow-xl md:w-36">
-                        <div class="text-lg font-black text-black">EP</div>
-                        <div class="text-xs font-bold text-black">Executive Partner</div>
+                        <div class="text-lg font-black text-black">NEVC</div>
+                        <div class="text-xs font-bold text-black">National EVC</div>
                     </div>
                 </div>
 
                 <div class="mt-16 grid gap-6 text-center text-gray-300 md:grid-cols-4">
-                    <div><span class="font-bold text-gw-accent">FA</span> - field training and foundations</div>
-                    <div><span class="font-bold text-gw-accent">SFA</span> - stronger production habits</div>
-                    <div><span class="font-bold text-gw-accent">SM</span> - team building and leadership</div>
-                    <div><span class="font-bold text-gw-accent">Director+</span> - executive leadership</div>
+                    <div><span class="font-bold text-gw-accent">TA</span> - new agent foundations at 80% FYO</div>
+                    <div><span class="font-bold text-gw-accent">ASC+</span> - personal production and NBAs</div>
+                    <div><span class="font-bold text-gw-accent">SVP</span> - Field Leader and generational overrides</div>
+                    <div><span class="font-bold text-gw-accent">NEVC</span> - national Super Team leadership</div>
                 </div>
             </section>
 
@@ -335,7 +347,7 @@
                         ['Onboarding Progress', '65%', 'Complete profile, watch welcome module, confirm sponsor.'],
                         ['Licensing Status', 'Exam pending', 'Track life license, carrier appointments, and next action.'],
                         ['Team Performance', '+127%', 'Review downline growth and active member movement.'],
-                        ['Rank Progress', 'SFA 82%', 'See remaining requirements and leadership review items.'],
+                        ['Rank Progress', 'ASC 82%', 'See remaining requirements and leadership review items.'],
                         ['Upcoming Training', 'Tomorrow', 'Leadership webinar and product certification reminders.'],
                         ['Mentor Feedback', 'On track', 'CFM notes and follow-up sessions stay attached to progress.'],
                     ] as $preview)
@@ -355,7 +367,7 @@
                     </div>
                     <div class="grid gap-6 md:grid-cols-3">
                         @foreach ([
-                            ['Executive Director', 'GWTrack gives leaders one executive view of who needs support and who is ready for the next step.'],
+                            ['Managing Broker', 'GWTrack gives leaders one executive view of who needs support and who is ready for the next step.'],
                             ['Certified Field Mentor', 'The apprenticeship structure keeps coaching consistent without losing the human touch.'],
                             ['Agency Owner', 'Invitation tracking, roles, rank, and team placement make growth easier to manage.'],
                         ] as $quote)

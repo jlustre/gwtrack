@@ -29,7 +29,7 @@ class TaskScenarioSeeder extends Seeder
             'agency-owner@gwtrack.com',
             'Arielle Morgan',
             'agency-owner',
-            $ranks['ED'] ?? null,
+            $ranks['SVP'] ?? $ranks['MB'] ?? null,
             $teamId
         );
 
@@ -43,7 +43,7 @@ class TaskScenarioSeeder extends Seeder
             'sponsor@gwtrack.com',
             'Marcus Rivera',
             'team-leader',
-            $ranks['SM'] ?? null,
+            $ranks['SA'] ?? null,
             $teamId,
             ['sponsor_id' => $agencyOwner->id]
         );
@@ -52,7 +52,7 @@ class TaskScenarioSeeder extends Seeder
             'cfm@gwtrack.com',
             'Celeste Navarro',
             'certified-field-mentor',
-            $ranks['SFA'] ?? null,
+            $ranks['ASC'] ?? null,
             $teamId,
             ['sponsor_id' => $agencyOwner->id]
         );
@@ -61,7 +61,7 @@ class TaskScenarioSeeder extends Seeder
             'trainer@gwtrack.com',
             'Tristan Blake',
             'trainer',
-            $ranks['SFA'] ?? null,
+            $ranks['ASC'] ?? null,
             $teamId,
             ['sponsor_id' => $agencyOwner->id]
         );
@@ -69,7 +69,7 @@ class TaskScenarioSeeder extends Seeder
         $onboardingMember = $this->member('nina.onboarding@example.com', 'Nina Santos', $teamId, $agencyOwner->id, $cfm->id);
         $licensingMember = $this->member('leo.licensing@example.com', 'Leo Grant', $teamId, $agencyOwner->id, $cfm->id);
         $fapMember = $this->member('maya.fap@example.com', 'Maya Chen', $teamId, $agencyOwner->id, $cfm->id);
-        $cfmCandidate = $this->member('owen.cfm@example.com', 'Owen Patel', $teamId, $agencyOwner->id, null, $ranks['SFA'] ?? null);
+        $cfmCandidate = $this->member('owen.cfm@example.com', 'Owen Patel', $teamId, $agencyOwner->id, null, $ranks['ASC'] ?? null);
         $needsMentor = $this->member('sofia.needsmentor@example.com', 'Sofia Reyes', $teamId, $agencyOwner->id, null);
         $usProspect = $this->member('aaron.us@example.com', 'Aaron Brooks', $teamId, $agencyOwner->id, null);
         $jordan = $this->member('jordan.ellis@example.com', 'Jordan Ellis', $teamId, $sponsor->id, $cfm->id);
@@ -79,7 +79,7 @@ class TaskScenarioSeeder extends Seeder
             'taylor.kim@example.com',
             'Taylor Kim',
             'new-recruit',
-            $ranks['FA'] ?? null,
+            $ranks['TA'] ?? null,
             $teamId,
             ['sponsor_id' => $agencyOwner->id, 'joined_at' => now()->subDays(2)]
         );
@@ -144,7 +144,7 @@ class TaskScenarioSeeder extends Seeder
 
         $this->invitation($agencyOwner->id, 'prospect.one@example.com');
         $this->invitation($agencyOwner->id, 'prospect.two@example.com');
-        $this->rankReview($licensingMember->id, $ranks['SFA'] ?? null);
+        $this->rankReview($licensingMember->id, $ranks['ASC'] ?? null);
 
         $needsMentor->update([
             'joined_at' => now()->subDays(5),
@@ -198,7 +198,7 @@ class TaskScenarioSeeder extends Seeder
 
     private function member(string $email, string $name, int $teamId, int $sponsorId, ?int $mentorId, ?int $rankId = null): User
     {
-        $rankId ??= Rank::where('code', 'FA')->value('id');
+        $rankId ??= Rank::where('code', 'TA')->value('id');
 
         return $this->user($email, $name, 'member', $rankId, $teamId, [
             'sponsor_id' => $sponsorId,

@@ -918,6 +918,8 @@ class AdminManagementController extends Controller
     {
         return [
             ['code' => 'onboarding', 'label' => 'Onboarding'],
+            ['code' => 'licensing', 'label' => 'Licensing'],
+            ['code' => 'contracting', 'label' => 'Contracting'],
             ['code' => 'fap', 'label' => 'FAP'],
             ['code' => 'cfm-mentoring', 'label' => 'CFM Mentoring'],
             ['code' => 'cfm-training', 'label' => 'CFM Training'],
@@ -1175,6 +1177,7 @@ class AdminManagementController extends Controller
         foreach ([
             'onboarding' => 'seedOnboarding',
             'licensing' => 'seedLicensing',
+            'contracting' => 'seedContracting',
             'fap' => 'seedFap',
             'cfm-training' => 'seedCfmTraining',
         ] as $typeCode => $methodName) {
@@ -1236,6 +1239,7 @@ class ChecklistSeeder extends Seeder
     {
         \$this->seedOnboarding();
         \$this->seedLicensing();
+        \$this->seedContracting();
         \$this->seedFap();
         \$this->seedCfmTraining();
         \$this->seedCfmMentoring();
@@ -1909,14 +1913,27 @@ PHP;
             'ranks' => [
                 'table' => 'ranks',
                 'label' => 'Ranks',
-                'description' => 'Manage rank codes, names, ordering, and active status.',
+                'description' => 'Manage Greatway promotion levels, FYO compensation rates, and active status.',
                 'order_by' => 'sort_order',
                 'search' => ['code', 'name'],
-                'columns' => ['code', 'name', 'sort_order', 'is_active'],
+                'columns' => ['code', 'name', 'track', 'total_fyo_rate', 'sort_order', 'is_active'],
                 'fields' => [
                     ['name' => 'code', 'label' => 'Code', 'type' => 'text', 'rules' => ['required', 'string', 'max:20'], 'unique' => true],
                     ['name' => 'name', 'label' => 'Name', 'type' => 'text', 'rules' => ['required', 'string', 'max:255']],
+                    ['name' => 'track', 'label' => 'Track', 'type' => 'select', 'options' => ['producer' => 'Producer', 'builder' => 'Builder'], 'rules' => ['required', 'string', 'in:producer,builder']],
                     ['name' => 'sort_order', 'label' => 'Sort Order', 'type' => 'number', 'rules' => ['required', 'integer', 'min:0']],
+                    ['name' => 'income_metric', 'label' => 'Income Metric', 'type' => 'select', 'options' => ['' => 'None', 'lti' => 'Lifetime Income (LTI)', 'twelve_month_income' => '12 Month Income (12MI)'], 'rules' => ['nullable', 'string', 'in:lti,twelve_month_income']],
+                    ['name' => 'income_requirement', 'label' => 'Income Requirement', 'type' => 'number', 'rules' => ['nullable', 'integer', 'min:0']],
+                    ['name' => 'qualification', 'label' => 'Qualification', 'type' => 'text', 'rules' => ['nullable', 'string', 'max:255']],
+                    ['name' => 'nba_requirement', 'label' => 'NBA Requirement', 'type' => 'number', 'rules' => ['nullable', 'integer', 'min:0']],
+                    ['name' => 'mb_leg_requirement', 'label' => 'MB Leg Requirement', 'type' => 'number', 'rules' => ['nullable', 'integer', 'min:0']],
+                    ['name' => 'svp_leg_requirement', 'label' => 'SVP Leg Requirement', 'type' => 'number', 'rules' => ['nullable', 'integer', 'min:0']],
+                    ['name' => 'svp_leg_alternate', 'label' => 'SVP Alternate Legs', 'type' => 'number', 'rules' => ['nullable', 'integer', 'min:0']],
+                    ['name' => 'compensation_rate', 'label' => 'Compensation Rate %', 'type' => 'number', 'rules' => ['nullable', 'numeric', 'min:0']],
+                    ['name' => 'ppb_rate', 'label' => 'PPB Rate %', 'type' => 'number', 'rules' => ['nullable', 'numeric', 'min:0']],
+                    ['name' => 'total_fyo_rate', 'label' => 'Total FYO Rate %', 'type' => 'number', 'rules' => ['nullable', 'numeric', 'min:0']],
+                    ['name' => 'non_fyc_rate', 'label' => 'Other Provider Non-FYC %', 'type' => 'number', 'rules' => ['nullable', 'numeric', 'min:0']],
+                    ['name' => 'is_field_leader', 'label' => 'Field Leader (SVP+)', 'type' => 'boolean', 'rules' => ['required', 'boolean']],
                     ['name' => 'description', 'label' => 'Description', 'type' => 'textarea', 'rules' => ['nullable', 'string']],
                     ['name' => 'is_active', 'label' => 'Active', 'type' => 'boolean', 'rules' => ['required', 'boolean']],
                 ],
@@ -1958,7 +1975,7 @@ PHP;
             'checklists' => [
                 'table' => 'checklists',
                 'label' => 'Checklists',
-                'description' => 'Manage checklist items for onboarding, licensing, FAP, CFM training, mentoring, and other checklist types.',
+                'description' => 'Manage checklist items for onboarding, licensing, contracting, FAP, CFM training, mentoring, and other checklist types.',
                 'use_inline_modals' => true,
                 'order_by' => 'sort_order',
                 'search' => ['title', 'description', 'slug', 'group_label', 'country', 'section_title', 'phase_title'],
@@ -1988,7 +2005,7 @@ PHP;
             'checklist-types' => [
                 'table' => 'checklist_types',
                 'label' => 'Checklist Types',
-                'description' => 'Manage checklist categories such as onboarding, licensing, FAP, CFM training, and mentoring.',
+                'description' => 'Manage checklist categories such as onboarding, licensing, contracting, FAP, CFM training, and mentoring.',
                 'use_inline_modals' => false,
                 'order_by' => 'sort_order',
                 'search' => ['code', 'name', 'description'],

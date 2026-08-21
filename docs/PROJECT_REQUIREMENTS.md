@@ -12,7 +12,7 @@ GWTrack.com is a private Greatway Financial Group team portal for tracking new r
 - Give Certified Field Mentors a structured way to guide apprentices.
 - Give team leaders and agency owners visibility into team progress.
 - Keep training, assessments, resources, events, and announcements in one portal.
-- Support rank advancement tracking from FA through EP.
+- Support rank advancement tracking from Training Associate through National Executive Vice Chairman, including Greatway FYO compensation rates. Canonical catalog: `docs/greatway-promotion-compensation-guidelines.md`.
 - Use role-based access control so each user sees only what is appropriate.
 
 ## Core Roles
@@ -29,21 +29,30 @@ GWTrack.com is a private Greatway Financial Group team portal for tracking new r
 
 ## Rank Path
 
-- FA - Field Associate
-- SFA - Senior Field Associate
-- SM - Sales Manager
-- ED - Executive Director
-- SED - Senior Executive Director
-- NED - National Executive Director
-- EP - Executive Partner
+Producer track:
+
+- TA - Training Associate (80% Total FYO)
+- ASC - Associate (100% Total FYO; 3 NBAs)
+- SA - Senior Associate (110% Total FYO; $10,000 LTI)
+- MB - Managing Broker (120% Total FYO; $40,000 LTI)
+- SMB - Senior Managing Broker (130% Total FYO; $80,000 LTI)
+- AVP - Associate Vice President (145% Total FYO; $100,000 12MI)
+
+Builder track (Field Leaders, SVP and above):
+
+- SVP - Senior Vice President (145% Total FYO; $60,000 12MI plus 3 MB legs or 1 SVP). Agency-owner rank.
+- EVP - Executive Vice President (150% Total FYO including 5% PPB)
+- EVC - Executive Vice Chairman (155% Total FYO including 10% PPB)
+- SEVC - Senior Executive Vice Chairman (160% Total FYO including 15% PPB)
+- NEVC - National Executive Vice Chairman (165% Total FYO including 20% PPB)
 
 ## Rank And Role Distinction
 
 - Ranks are Greatway Financial Group advancement levels.
 - Roles are GWTrack access and permission groups.
-- ED and above usually carry the `agency-owner` role.
-- SM usually carries the `team-leader` role.
-- CFM can be granted to SFA and above after successful CFM Training completion and approval.
+- Senior Vice President (SVP) and above usually carry the `agency-owner` role. SVP is the first Field Leader rank.
+- Senior Associate usually carries the `team-leader` role.
+- CFM can be granted to Associate and above after successful CFM Training completion and approval.
 - Trainer can be granted after successful Field Apprenticeship Program completion and once CFM Training has started.
 - Authorized admins remain responsible for final role assignment until role automation is explicitly built.
 
@@ -55,6 +64,7 @@ GWTrack.com is a private Greatway Financial Group team portal for tracking new r
 - Prospect Management
 - Licensing Tracker
 - Onboarding Checklist
+- Admin Checklists Hub (Types, Instructions, Items)
 - My Tasks
 - Training Center
 - Assessments
@@ -80,13 +90,14 @@ GWTrack.com is a private Greatway Financial Group team portal for tracking new r
 - Role-based access control is handled through Spatie Laravel Permission.
 - A user may have one or more roles.
 - A user belongs to one current rank.
+- Rank-based monthly subscriptions can be enabled from Admin Settings. Unlicensed associates and TA/ASC ranks stay free. A new rank's price starts on the next subscription anniversary. Associates may choose monthly auto-pay or annual billing. Issued invoices are paid from My Billing; office collection is processed from Admin Management → Subscription Payments.
 - A user may belong to a team.
 - A user may have a sponsor.
 - A prospective member may only register through an invitation link from a current GWTrack member.
 - Each invitation link must include a tracked registration code.
 - A newly registered member must receive `sponsor_id` from the sponsoring member tied to the registration code.
 - A newly registered member receives the default `member` role.
-- A newly registered member receives the default `FA` rank.
+- A newly registered member receives the default `TA` (Training Associate) rank.
 - A newly registered member is placed on the same team as their sponsor.
 - Only users with `super-admin`, `admin`, or `agency-owner` roles may change a user's role, rank, or team after registration.
 - Unless information is explicitly tagged global, users may only see records inside their sponsorship hierarchy.
@@ -190,11 +201,20 @@ GWTrack.com is a private Greatway Financial Group team portal for tracking new r
 
 ## Rank Advancement Rules
 
-- Rank requirements are configurable per rank.
+- Rank requirements are configurable per Greatway rank.
 - User progress is tracked against rank requirements.
 - Rank advancement should be visible to the user and their leadership chain.
-- Rank advancement may depend on training, licensing, apprenticeship, production, recruiting, or leadership criteria.
-- Final rank advancement rules still need business confirmation.
+- The tracker shows current and next-rank Total FYO, compensation rate, and Personal Production Bonus.
+- Rank advancement may depend on training, licensing, apprenticeship, production (LTI or 12MI), NBA/recruiting, or Field Leader leg criteria.
+- SVP and above are Field Leaders and receive generational override eligibility.
+- Rank-based agency-leader and CFM management access starts at SVP.
+- Canonical promotion and compensation figures live in `docs/greatway-promotion-compensation-guidelines.md` and `config/greatway-compensation.php`.
+
+## Admin Checklists Hub Rules
+
+- Checklist administration starts at `/admin/checklists`.
+- The hub opens Checklist Types, Checklist Instructions, and Checklist Items.
+- Each of those pages includes a Back to Checklists action that returns to the hub.
 
 ## Team Hierarchy Rules
 
@@ -305,15 +325,15 @@ new-recruit:
 ## Primary Navigation
 
 - Dashboard
-- Trackers: My Onboarding, Licensing Tracker, My Tasks, Field Apprenticeship, CFM Training, Training Center, Assessments
+- Trackers: My Onboarding, Licensing Tracker, Contracting Tracker, My Tasks, Field Apprenticeship, CFM Training, Training Center, Assessments
 - My Team: My Directs, My Trainees, My CFMs, All Downlines, Prospect Management
 - Communications: Announcements, Events, Calendar, Notifications, Rank Advancement, Recognition
 - Resources: Documents, Videos, Recorded Webinars, Zoom Links
-- Admin Management: Admin Dashboard, User Management, Roles & Permissions, Ranks, Teams, Training Setup, CFM Certification, All Setup Tables, Admin Settings
+- Admin Management: Admin Dashboard, User Management, Roles & Permissions, Ranks, Teams, Checklists (Types, Instructions, Items), Training Setup, CFM Certification, All Setup Tables, Admin Settings
 
 ## Open Business Decisions
 
-- Final rank advancement criteria for each rank.
+- Which remaining rank-advancement evidence and approval steps still need a GWTrack workflow beyond the published Greatway catalog.
 - Exact licensing workflow by province or state.
 - Which apprenticeship steps are mandatory.
 - CFM certification approval criteria.
@@ -343,6 +363,9 @@ new-recruit:
 - 2026-05-31: Clarified that Greatway ranks and GWTrack roles are separate, with eligibility expectations for agency-owner, team-leader, certified-field-mentor, and trainer roles.
 - 2026-05-31: Added global and country-specific onboarding checklist applicability rules.
 - 2026-05-31: Added invitation-only registration business rules for duplicate prevention, active GW associate confirmation, sponsor confirmation, email preview/editing, sponsor sender identity, accepted invitation hiding, and invitation deletion/recreation.
-- 2026-05-31: Added default registration assignment rules for `member` role, FA rank, sponsor team inheritance, and `super-admin`/`agency-owner`-only role/rank/team changes.
+- 2026-05-31: Added default registration assignment rules for `member` role, TA rank, sponsor team inheritance, and `super-admin`/`agency-owner`-only role/rank/team changes.
+- 2026-08-20: Adopted Greatway Producer/Builder promotions and FYO compensation rates (TA through NEVC).
+- 2026-08-20: Set SVP as the agency-owner / first Field Leader rank.
+- 2026-08-20: Documented the admin Checklists hub (`/admin/checklists`) with Types, Instructions, and Items pages plus Back to Checklists navigation.
 - 2026-05-31: Added grouped sidebar navigation, responsive topbar search, notification bell dropdown, avatar menu, My Tasks, Prospect Management, resource category pages, and Admin Management grouping.
 - 2026-05-30: Initial business rules and project requirements file created.

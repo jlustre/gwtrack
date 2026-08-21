@@ -1,8 +1,8 @@
 # GWTrack — Prospect Sales Funnel
 **User Guide**
 
-**Version:** 1.1  
-**Last updated:** June 2026  
+**Version:** 1.2  
+**Last updated:** August 2026  
 **Audience:** Associates, team leaders, CFMs, and agency owners managing personal prospects in GWTrack  
 **Hub URL:** `/team/prospects` (sidebar: **Prospect Management**)
 
@@ -833,7 +833,7 @@ Prospect activity feeds your broader performance picture:
 | **Goals & Performance module** | KPI goals can sync prospecting metrics from CRM activity |
 | **FNA Management** | Link prospects to FNAs; **Send FNA Link**; FNA status syncs to prospect field — [FNA guide](/support/documentation/fna-management) |
 | **Performance Planner** | Income/recruiting funnels in Goals use the same activity language (contacts → appointments → presentations) |
-| **Rank advancement** | Production and recruiting outcomes from converted prospects support rank criteria |
+| **Rank advancement** | Production and recruiting outcomes from converted prospects support Greatway rank criteria (LTI/12MI, NBAs, Field Leader legs) |
 
 Use **Prospect Analytics** for operational weekly tracking and **[Goals & Performance](/support/documentation/goals-and-performance)** (`/goals`) for strategic targets and coaching conversations.
 

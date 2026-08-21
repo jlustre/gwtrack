@@ -1,168 +1,252 @@
 <?php
 
 /**
- * Placeholder rank advancement requirements.
+ * Greatway rank advancement requirements.
  *
- * Replace titles, descriptions, and categories with your official GW qualifications.
- * Requirements are keyed by target rank code (the rank a member is advancing toward).
+ * Keyed by target rank code (the rank a member is advancing toward).
+ * Source: docs/greatway-promotion-compensation-guidelines.md
  */
 return [
-    'SFA' => [
+    'ASC' => [
         [
-            'title' => 'Maintain active licensing in good standing',
-            'description' => 'Placeholder — define licensing thresholds and carrier appointment requirements for SFA.',
-            'category' => 'licensing',
+            'title' => 'Complete new-agent onboarding as a Training Associate',
+            'description' => 'Finish assigned onboarding, licensing, and Field Apprenticeship milestones while coded as a Training Associate.',
+            'category' => 'training',
             'sort_order' => 10,
         ],
         [
-            'title' => 'Complete Field Apprenticeship Program milestones',
-            'description' => 'Placeholder — tie to FAP checklist completion or leadership sign-off criteria.',
-            'category' => 'training',
+            'title' => 'Recruit 3 New Business Associates (NBAs)',
+            'description' => 'Qualify for Associate with 3 registered New Business Associates.',
+            'category' => 'recruiting',
             'sort_order' => 20,
         ],
         [
-            'title' => 'Meet minimum personal production threshold',
-            'description' => 'Placeholder — configure production volume and measurement period.',
-            'category' => 'production',
+            'title' => 'Maintain active licensing in good standing',
+            'description' => 'Keep required licenses, appointments, and compliance items current.',
+            'category' => 'licensing',
             'sort_order' => 30,
         ],
         [
             'title' => 'Demonstrate consistent field activity',
-            'description' => 'Placeholder — prospecting, FNAs, presentations, or activity scorecard targets.',
+            'description' => 'Show ongoing client service and personal production activity as a new agent.',
             'category' => 'field_activity',
             'sort_order' => 40,
         ],
-        [
-            'title' => 'Complete required academy training modules',
-            'description' => 'Placeholder — list mandatory courses or certifications for SFA.',
-            'category' => 'training',
-            'sort_order' => 50,
-        ],
     ],
-    'SM' => [
+    'SA' => [
         [
-            'title' => 'Achieve SFA rank requirements and tenure',
-            'description' => 'Placeholder — minimum time at SFA and sustained performance.',
-            'category' => 'general',
-            'sort_order' => 10,
-        ],
-        [
-            'title' => 'Meet Sales Manager production threshold',
-            'description' => 'Placeholder — personal and/or team production volume.',
-            'category' => 'production',
-            'sort_order' => 20,
-        ],
-        [
-            'title' => 'Recruit and develop qualified associates',
-            'description' => 'Placeholder — number of active recruits and licensing progress.',
-            'category' => 'recruiting',
-            'sort_order' => 30,
-        ],
-        [
-            'title' => 'Complete leadership development training',
-            'description' => 'Placeholder — SM-specific academy path or external certification.',
-            'category' => 'leadership',
-            'sort_order' => 40,
-        ],
-        [
-            'title' => 'Demonstrate team coaching and meeting cadence',
-            'description' => 'Placeholder — CFM alignment, team meetings, and trainee support.',
-            'category' => 'leadership',
-            'sort_order' => 50,
-        ],
-    ],
-    'ED' => [
-        [
-            'title' => 'Maintain Sales Manager performance standards',
-            'description' => 'Placeholder — sustained production and team retention.',
+            'title' => 'Achieve $10,000 Lifetime Income (LTI)',
+            'description' => 'Meet the Senior Associate income requirement of $10,000 LTI.',
             'category' => 'production',
             'sort_order' => 10,
         ],
         [
-            'title' => 'Build and support an active downline',
-            'description' => 'Placeholder — depth, licensing velocity, and FAP completion rates.',
-            'category' => 'recruiting',
-            'sort_order' => 20,
-        ],
-        [
-            'title' => 'Complete Executive Director leadership curriculum',
-            'description' => 'Placeholder — advanced leadership and agency operations training.',
-            'category' => 'leadership',
-            'sort_order' => 30,
-        ],
-        [
-            'title' => 'Agency owner or upline leadership endorsement',
-            'description' => 'Placeholder — nomination and review workflow.',
-            'category' => 'general',
-            'sort_order' => 40,
-        ],
-    ],
-    'SED' => [
-        [
-            'title' => 'Sustain ED-level agency production',
-            'description' => 'Placeholder — rolling production and persistency standards.',
+            'title' => 'Sustain Associate-level personal production',
+            'description' => 'Remain active as an Associate while accumulating Lifetime Income toward Senior Associate.',
             'category' => 'production',
-            'sort_order' => 10,
-        ],
-        [
-            'title' => 'Develop multiple leadership legs',
-            'description' => 'Placeholder — qualified leaders within downline structure.',
-            'category' => 'recruiting',
             'sort_order' => 20,
         ],
         [
-            'title' => 'Complete Senior Executive Director requirements',
-            'description' => 'Placeholder — advanced agency development qualifications.',
-            'category' => 'leadership',
-            'sort_order' => 30,
-        ],
-    ],
-    'NED' => [
-        [
-            'title' => 'National-level production and team metrics',
-            'description' => 'Placeholder — configure national ED thresholds.',
-            'category' => 'production',
-            'sort_order' => 10,
-        ],
-        [
-            'title' => 'Cross-market leadership development',
-            'description' => 'Placeholder — mentoring leaders across regions or teams.',
-            'category' => 'leadership',
-            'sort_order' => 20,
-        ],
-        [
-            'title' => 'Executive review and compliance clearance',
-            'description' => 'Placeholder — compliance, licensing, and agency policy attestation.',
+            'title' => 'Maintain licensing and compliance in good standing',
+            'description' => 'Licenses, carrier appointments, and compliance attestations must remain current.',
             'category' => 'licensing',
             'sort_order' => 30,
         ],
     ],
-    'SNED' => [
+    'MB' => [
         [
-            'title' => 'Sustain National Executive Director standards',
-            'description' => 'Placeholder — multi-year performance review.',
+            'title' => 'Achieve $40,000 Lifetime Income (LTI)',
+            'description' => 'Meet the Managing Broker income requirement of $40,000 LTI.',
             'category' => 'production',
             'sort_order' => 10,
         ],
         [
-            'title' => 'Agency-wide culture and development impact',
-            'description' => 'Placeholder — training contribution, recognition, and mentorship.',
-            'category' => 'personal_development',
+            'title' => 'Build a developing personal business',
+            'description' => 'Show consistent client service and personal production as a Senior Associate advancing to Managing Broker.',
+            'category' => 'production',
             'sort_order' => 20,
         ],
-    ],
-    'EP' => [
         [
-            'title' => 'Executive Partner qualification review',
-            'description' => 'Placeholder — highest rank board or executive approval criteria.',
-            'category' => 'general',
+            'title' => 'Maintain licensing and compliance in good standing',
+            'description' => 'Licenses, carrier appointments, and compliance attestations must remain current.',
+            'category' => 'licensing',
+            'sort_order' => 30,
+        ],
+    ],
+    'SMB' => [
+        [
+            'title' => 'Achieve $80,000 Lifetime Income (LTI)',
+            'description' => 'Meet the Senior Managing Broker income requirement of $80,000 LTI.',
+            'category' => 'production',
             'sort_order' => 10,
         ],
         [
-            'title' => 'Legacy leadership and agency stewardship',
-            'description' => 'Placeholder — long-term agency contribution requirements.',
-            'category' => 'leadership',
+            'title' => 'Sustain Managing Broker production standards',
+            'description' => 'Keep personal production and persistency on track while advancing to Senior Managing Broker.',
+            'category' => 'production',
             'sort_order' => 20,
+        ],
+        [
+            'title' => 'Maintain licensing and compliance in good standing',
+            'description' => 'Licenses, carrier appointments, and compliance attestations must remain current.',
+            'category' => 'licensing',
+            'sort_order' => 30,
+        ],
+    ],
+    'AVP' => [
+        [
+            'title' => 'Achieve $100,000 12-Month Income (12MI)',
+            'description' => 'Meet the Associate Vice President income requirement of $100,000 12MI. This is the top Producer promotion.',
+            'category' => 'production',
+            'sort_order' => 10,
+        ],
+        [
+            'title' => 'Sustain Senior Managing Broker performance',
+            'description' => 'Demonstrate consistent personal production while qualifying for AVP.',
+            'category' => 'production',
+            'sort_order' => 20,
+        ],
+        [
+            'title' => 'Maintain licensing and compliance in good standing',
+            'description' => 'Licenses, carrier appointments, and compliance attestations must remain current.',
+            'category' => 'licensing',
+            'sort_order' => 30,
+        ],
+    ],
+    'SVP' => [
+        [
+            'title' => 'Achieve $60,000 12-Month Income (12MI)',
+            'description' => 'Meet the Senior Vice President income requirement of $60,000 12MI.',
+            'category' => 'production',
+            'sort_order' => 10,
+        ],
+        [
+            'title' => 'Develop 3 Managing Broker legs or 1 SVP',
+            'description' => 'Qualify as a Field Leader with 3 Managing Broker legs, or 1 SVP, in your downline.',
+            'category' => 'recruiting',
+            'sort_order' => 20,
+        ],
+        [
+            'title' => 'Demonstrate Field Leader readiness',
+            'description' => 'Show the ability to recruit, develop, and lead a baseshop of agents who are not yet Field Leaders.',
+            'category' => 'leadership',
+            'sort_order' => 30,
+        ],
+        [
+            'title' => 'Maintain licensing and compliance in good standing',
+            'description' => 'Licenses, carrier appointments, and compliance attestations must remain current.',
+            'category' => 'licensing',
+            'sort_order' => 40,
+        ],
+    ],
+    'EVP' => [
+        [
+            'title' => 'Achieve $150,000 12-Month Income (12MI)',
+            'description' => 'Meet the Executive Vice President income requirement of $150,000 12MI.',
+            'category' => 'production',
+            'sort_order' => 10,
+        ],
+        [
+            'title' => 'Develop 3 SVP legs',
+            'description' => 'Qualify with 3 Senior Vice President legs in your downline.',
+            'category' => 'recruiting',
+            'sort_order' => 20,
+        ],
+        [
+            'title' => 'Sustain Field Leader / Superbase development',
+            'description' => 'Continue developing first-generation Field Leaders while leading a baseshop.',
+            'category' => 'leadership',
+            'sort_order' => 30,
+        ],
+        [
+            'title' => 'Maintain monthly settled-policy consistency (or exemption)',
+            'description' => 'SVP and above must maintain 2 settled policies per month for generational override, unless exempt (10 years tenure and 5 years in a leadership role).',
+            'category' => 'field_activity',
+            'sort_order' => 40,
+        ],
+    ],
+    'EVC' => [
+        [
+            'title' => 'Achieve $300,000 12-Month Income (12MI)',
+            'description' => 'Meet the Executive Vice Chairman income requirement of $300,000 12MI.',
+            'category' => 'production',
+            'sort_order' => 10,
+        ],
+        [
+            'title' => 'Develop 7 SVP legs',
+            'description' => 'Qualify with 7 Senior Vice President legs in your downline.',
+            'category' => 'recruiting',
+            'sort_order' => 20,
+        ],
+        [
+            'title' => 'Lead a Superbase of Field Leaders',
+            'description' => 'Demonstrate first-generation Field Leader development and Super Team leadership.',
+            'category' => 'leadership',
+            'sort_order' => 30,
+        ],
+        [
+            'title' => 'Maintain monthly settled-policy consistency (or exemption)',
+            'description' => 'SVP and above must maintain 2 settled policies per month for generational override, unless exempt.',
+            'category' => 'field_activity',
+            'sort_order' => 40,
+        ],
+    ],
+    'SEVC' => [
+        [
+            'title' => 'Achieve $500,000 12-Month Income (12MI)',
+            'description' => 'Meet the Senior Executive Vice Chairman income requirement of $500,000 12MI.',
+            'category' => 'production',
+            'sort_order' => 10,
+        ],
+        [
+            'title' => 'Develop 12 SVP legs',
+            'description' => 'Qualify with 12 Senior Vice President legs in your downline.',
+            'category' => 'recruiting',
+            'sort_order' => 20,
+        ],
+        [
+            'title' => 'Qualify Superbase NetFYC for revenue sharing',
+            'description' => 'SEVC revenue-sharing pool requires $75,000 Superbase NetFYC and 40 Superbase NBAs.',
+            'category' => 'production',
+            'sort_order' => 30,
+        ],
+        [
+            'title' => 'Maintain monthly settled-policy consistency (or exemption)',
+            'description' => 'SVP and above must maintain 2 settled policies per month for generational override, unless exempt.',
+            'category' => 'field_activity',
+            'sort_order' => 40,
+        ],
+    ],
+    'NEVC' => [
+        [
+            'title' => 'Achieve $800,000 12-Month Income (12MI)',
+            'description' => 'Meet the National Executive Vice Chairman income requirement of $800,000 12MI.',
+            'category' => 'production',
+            'sort_order' => 10,
+        ],
+        [
+            'title' => 'Develop 18 SVP legs',
+            'description' => 'Qualify with 18 Senior Vice President legs in your downline.',
+            'category' => 'recruiting',
+            'sort_order' => 20,
+        ],
+        [
+            'title' => 'Qualify Superbase NetFYC for national revenue sharing',
+            'description' => 'NEVC revenue-sharing pool requires $100,000 Superbase NetFYC and 60 Superbase NBAs.',
+            'category' => 'production',
+            'sort_order' => 30,
+        ],
+        [
+            'title' => 'National Field Leader stewardship',
+            'description' => 'Lead a Super Team spanning baseshop, Superbase, and up to 6 generations of Field Leaders.',
+            'category' => 'leadership',
+            'sort_order' => 40,
+        ],
+        [
+            'title' => 'Maintain monthly settled-policy consistency (or exemption)',
+            'description' => 'SVP and above must maintain 2 settled policies per month for generational override, unless exempt.',
+            'category' => 'field_activity',
+            'sort_order' => 50,
         ],
     ],
 ];

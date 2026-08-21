@@ -48,7 +48,7 @@ class DashboardStatDetailsTest extends TestCase
     public function test_agency_owner_sees_downline_members_in_onboarding_modal_data(): void
     {
         $teamId = (int) DB::table('teams')->value('id');
-        $rankId = Rank::where('code', 'FA')->value('id');
+        $rankId = Rank::where('code', 'TA')->value('id');
 
         $owner = $this->createUser('agency-owner@example.com', 'Agency Owner', 'agency-owner', $teamId, $rankId);
         $onboardingMember = $this->createUser('onboarding.member@example.com', 'Onboarding Member', 'member', $teamId, $rankId, $owner->id);
@@ -83,7 +83,7 @@ class DashboardStatDetailsTest extends TestCase
     public function test_agency_owner_does_not_see_members_outside_hierarchy(): void
     {
         $teamId = (int) DB::table('teams')->value('id');
-        $rankId = Rank::where('code', 'FA')->value('id');
+        $rankId = Rank::where('code', 'TA')->value('id');
 
         $owner = $this->createUser('scoped.owner@example.com', 'Scoped Owner', 'agency-owner', $teamId, $rankId);
         $downlineMember = $this->createUser('scoped.downline@example.com', 'Downline Member', 'member', $teamId, $rankId, $owner->id);
@@ -108,7 +108,7 @@ class DashboardStatDetailsTest extends TestCase
     public function test_team_leader_sees_full_downline_in_onboarding_modal_data(): void
     {
         $teamId = (int) DB::table('teams')->value('id');
-        $rankId = Rank::where('code', 'FA')->value('id');
+        $rankId = Rank::where('code', 'TA')->value('id');
 
         $leader = $this->createUser('leader@example.com', 'Team Leader', 'team-leader', $teamId, $rankId);
         $onboardingMember = $this->createUser('leader.downline@example.com', 'Leader Downline', 'member', $teamId, $rankId, $leader->id);
@@ -131,7 +131,7 @@ class DashboardStatDetailsTest extends TestCase
     public function test_member_without_downline_sees_only_themselves_when_profile_is_incomplete(): void
     {
         $teamId = (int) DB::table('teams')->value('id');
-        $rankId = Rank::where('code', 'FA')->value('id');
+        $rankId = Rank::where('code', 'TA')->value('id');
 
         $member = $this->createUser('member.only@example.com', 'Solo Member', 'new-recruit', $teamId, $rankId);
 
@@ -150,7 +150,7 @@ class DashboardStatDetailsTest extends TestCase
     public function test_dashboard_renders_team_stat_cards_with_view_buttons(): void
     {
         $teamId = (int) DB::table('teams')->value('id');
-        $rankId = Rank::where('code', 'FA')->value('id');
+        $rankId = Rank::where('code', 'TA')->value('id');
         $user = $this->createUser('viewer@example.com', 'Viewer User', 'member', $teamId, $rankId);
 
         $this->actingAs($user)
@@ -169,7 +169,7 @@ class DashboardStatDetailsTest extends TestCase
     public function test_dashboard_hides_my_licensing_for_licensed_user(): void
     {
         $teamId = (int) DB::table('teams')->value('id');
-        $rankId = Rank::where('code', 'FA')->value('id');
+        $rankId = Rank::where('code', 'TA')->value('id');
         $user = $this->createUser('licensed.viewer@example.com', 'Licensed Viewer', 'member', $teamId, $rankId);
 
         $user->profile->update(['license_number' => 'LIC-54321']);
@@ -184,7 +184,7 @@ class DashboardStatDetailsTest extends TestCase
     public function test_dashboard_hides_my_onboarding_when_onboarding_is_complete(): void
     {
         $teamId = (int) DB::table('teams')->value('id');
-        $rankId = Rank::where('code', 'FA')->value('id');
+        $rankId = Rank::where('code', 'TA')->value('id');
         $user = $this->createUser('onboarded.viewer@example.com', 'Onboarded Viewer', 'member', $teamId, $rankId);
 
         $this->startChecklistType($user, 'onboarding');
@@ -206,7 +206,7 @@ class DashboardStatDetailsTest extends TestCase
     public function test_licensing_modal_excludes_members_with_license_number(): void
     {
         $teamId = (int) DB::table('teams')->value('id');
-        $rankId = Rank::where('code', 'FA')->value('id');
+        $rankId = Rank::where('code', 'TA')->value('id');
 
         $owner = $this->createUser('licensing.owner@example.com', 'Licensing Owner', 'agency-owner', $teamId, $rankId);
         $unlicensed = $this->createUser('unlicensed@example.com', 'Unlicensed Member', 'member', $teamId, $rankId, $owner->id);
@@ -230,7 +230,7 @@ class DashboardStatDetailsTest extends TestCase
     public function test_training_modal_excludes_members_who_have_not_started(): void
     {
         $teamId = (int) DB::table('teams')->value('id');
-        $rankId = Rank::where('code', 'FA')->value('id');
+        $rankId = Rank::where('code', 'TA')->value('id');
 
         $owner = $this->createUser('training.owner@example.com', 'Training Owner', 'agency-owner', $teamId, $rankId);
         $notStarted = $this->createUser('not.started@example.com', 'Not Started Member', 'member', $teamId, $rankId, $owner->id);
@@ -262,7 +262,7 @@ class DashboardStatDetailsTest extends TestCase
     public function test_personal_prospects_details_return_list_payload(): void
     {
         $teamId = (int) DB::table('teams')->value('id');
-        $rankId = Rank::where('code', 'FA')->value('id');
+        $rankId = Rank::where('code', 'TA')->value('id');
         $user = $this->createUser('prospects.viewer@example.com', 'Prospects Viewer', 'member', $teamId, $rankId);
 
         Prospect::query()->create([
@@ -285,7 +285,7 @@ class DashboardStatDetailsTest extends TestCase
     public function test_personal_activities_details_return_metric_breakdown(): void
     {
         $teamId = (int) DB::table('teams')->value('id');
-        $rankId = Rank::where('code', 'FA')->value('id');
+        $rankId = Rank::where('code', 'TA')->value('id');
         $user = $this->createUser('activities.viewer@example.com', 'Activities Viewer', 'member', $teamId, $rankId);
 
         $this->actingAs($user)
@@ -299,7 +299,7 @@ class DashboardStatDetailsTest extends TestCase
     public function test_invalid_stat_type_returns_not_found(): void
     {
         $teamId = (int) DB::table('teams')->value('id');
-        $rankId = Rank::where('code', 'FA')->value('id');
+        $rankId = Rank::where('code', 'TA')->value('id');
         $user = $this->createUser('viewer2@example.com', 'Viewer Two', 'member', $teamId, $rankId);
 
         $this->actingAs($user)

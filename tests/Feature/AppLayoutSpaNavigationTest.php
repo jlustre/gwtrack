@@ -28,7 +28,8 @@ class AppLayoutSpaNavigationTest extends TestCase
         $this->assertStringContainsString('x-persist="shell-overlays"', $html);
         $this->assertStringContainsString('id="gw-main"', $html);
         $this->assertStringContainsString('id="gw-sidebar-navigation"', $html);
-        $this->assertStringContainsString('wire:navigate.hover', $html);
+        $this->assertStringContainsString('wire:navigate', $html);
+        $this->assertStringNotContainsString('wire:navigate.hover', $html);
         $this->assertStringContainsString('livewire', strtolower($html));
     }
 }

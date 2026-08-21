@@ -236,16 +236,19 @@ Structured mentoring checklist for Certified Field Mentors guiding trainees thro
 
 ### First Promotion Readiness
 
-- [ ] Understand rank requirements
-- [ ] Understand production requirements
-- [ ] Understand team building requirements
+- [ ] Understand Greatway rank requirements (Producer vs Builder / Field Leader)
+- [ ] Understand production requirements (LTI or 12-Month Income)
+- [ ] Understand team building requirements (NBAs, MB legs, SVP legs)
+- [ ] Understand compensation (Total FYO and Personal Production Bonus)
 - [ ] Develop promotion plan
 
 ### Advancement Tracking
 
-- [ ] FA requirements complete
-- [ ] SFA readiness review
+- [ ] Training Associate requirements complete
+- [ ] Associate readiness review (3 NBAs)
 - [ ] Promotion recommendation submitted
+
+SVP is the first Field Leader rank and the usual agency-owner rank. Managing Broker is a Producer rank, not the agency-owner threshold.
 
 ---
 

@@ -34,6 +34,7 @@
 
 <a
     href="{{ $href }}"
+    wire:navigate
     {{ $attributes->merge(['class' => 'group relative overflow-hidden rounded-xl border-2 border-gw-primary/20 bg-white p-5 shadow-md transition hover:-translate-y-0.5 hover:border-gw-accent hover:shadow-lg']) }}
 >
     <div class="absolute inset-y-0 left-0 w-1.5 bg-gw-accent"></div>

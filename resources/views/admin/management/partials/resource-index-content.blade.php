@@ -1,3 +1,7 @@
+@php
+    $isChecklistHubResource = in_array($resource, ['checklist-types', 'checklist-instructions', 'checklists'], true);
+@endphp
+
 <section @class([
     'space-y-6' => ! ($embedded ?? false),
     'flex min-h-full flex-1 flex-col gap-4 p-4' => ($embedded ?? false),
@@ -10,8 +14,14 @@
             <div @class(['min-w-0' => ($embedded ?? false)])>
                 <h1 class="sr-only">{{ $config['label'] }}</h1>
             </div>
-            @if ($canManage)
+            @if ($canManage || $isChecklistHubResource)
                 <div class="flex shrink-0 flex-nowrap items-center gap-2">
+                    @if ($isChecklistHubResource)
+                        <a href="{{ route('admin.checklists.index') }}" wire:navigate class="inline-flex items-center justify-center whitespace-nowrap rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-gw-primary transition hover:bg-slate-50">
+                            Back to Checklists
+                        </a>
+                    @endif
+                    @if ($canManage)
                     <a href="{{ route('admin.management.create', array_merge([$resource], $indexQueryParams ?? [])) }}" class="inline-flex items-center justify-center whitespace-nowrap rounded-md bg-gw-accent px-4 py-2 text-sm font-semibold text-gw-primary transition hover:bg-gw-accent-hover">
                         {{ ($canUpdateSeeder && $resource === 'checklists') ? 'Add Item' : 'Add Record' }}
                     </a>
@@ -29,6 +39,7 @@
                             </button>
                         </form>
                     @endif
+                    @endif
                 </div>
             @endif
         </div>
@@ -38,8 +49,14 @@
             :title="$config['label']"
             :description="$config['description']"
         >
-            @if ($canManage)
+            @if ($canManage || $isChecklistHubResource)
                 <x-slot:actions>
+                    @if ($isChecklistHubResource)
+                        <a href="{{ route('admin.checklists.index') }}" wire:navigate class="inline-flex items-center justify-center whitespace-nowrap rounded-md border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/15">
+                            Back to Checklists
+                        </a>
+                    @endif
+                    @if ($canManage)
                     <a href="{{ route('admin.management.create', array_merge([$resource], $indexQueryParams ?? [])) }}" class="inline-flex items-center justify-center whitespace-nowrap rounded-md border border-gw-accent/40 bg-gw-accent px-4 py-2 text-sm font-semibold text-gw-primary transition hover:bg-gw-accent/90">
                         {{ ($canUpdateSeeder && $resource === 'checklists') ? 'Add Item' : 'Add Record' }}
                     </a>
@@ -56,6 +73,7 @@
                                 Update Seeder
                             </button>
                         </form>
+                    @endif
                     @endif
                 </x-slot:actions>
             @endif

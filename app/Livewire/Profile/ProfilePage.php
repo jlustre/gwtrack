@@ -7,6 +7,7 @@ use App\Models\EmailTemplate;
 use App\Models\RegistrationInvitation;
 use App\Models\User;
 use App\Services\CfmManagementService;
+use App\Services\ComplianceLifecycleService;
 use App\Services\DownlineHierarchyService;
 use App\Services\MemberProductionService;
 use App\Services\MemberProfileTabsService;
@@ -69,6 +70,12 @@ class ProfilePage extends Component
 
     /** @var list<string> */
     public array $insuranceLicenses = [];
+
+    /** @var array<string, string> */
+    public array $insuranceLicenseNumbers = [];
+
+    /** @var array<string, string> */
+    public array $insuranceLicenseExpirations = [];
 
     public string $inviteEmail = '';
 
@@ -298,6 +305,10 @@ class ProfilePage extends Component
                     'min:1',
                 ],
                 'insuranceLicenses.*' => ['string', 'max:120'],
+                'insuranceLicenseNumbers' => ['nullable', 'array'],
+                'insuranceLicenseNumbers.*' => ['nullable', 'string', 'max:100'],
+                'insuranceLicenseExpirations' => ['nullable', 'array'],
+                'insuranceLicenseExpirations.*' => ['nullable', 'date'],
             ], [
                 'insuranceLicenses.required' => 'Select at least one license jurisdiction.',
                 'insuranceLicenses.min' => 'Select at least one license jurisdiction.',
@@ -331,12 +342,48 @@ class ProfilePage extends Component
         $licenses = $this->isLicensedLifeInsurance
             ? LocationOptions::normalizeLicensedJurisdictionKeys($this->insuranceLicenses)
             : [];
+        $licenseNumbers = $this->isLicensedLifeInsurance
+            ? LocationOptions::normalizeLicenseNumbers($licenses, $this->insuranceLicenseNumbers)
+            : [];
+        $licenseExpirations = $this->isLicensedLifeInsurance
+            ? LocationOptions::normalizeLicenseExpirations($licenses, $this->insuranceLicenseExpirations)
+            : [];
+
+        foreach ($licenses as $key) {
+            $label = LocationOptions::labelsForJurisdictionKeys([$key])[0] ?? $key;
+
+            if (($licenseNumbers[$key] ?? '') === '') {
+                $this->addError(
+                    'insuranceLicenseNumbers.'.$key,
+                    'Enter the license number for '.$label.'.'
+                );
+            }
+
+            if (($licenseExpirations[$key] ?? '') === '') {
+                $this->addError(
+                    'insuranceLicenseExpirations.'.$key,
+                    'Enter the expiration date for '.$label.'.'
+                );
+            }
+        }
+
+        if ($this->getErrorBag()->isNotEmpty()) {
+            $this->tab = 'licenses';
+            $this->licensesFeedback = [
+                'type' => 'error',
+                'message' => 'Please correct the selected licenses and try again.',
+            ];
+
+            return;
+        }
 
         $user->profile()->updateOrCreate(
             ['user_id' => $user->id],
             [
                 'is_licensed_life_insurance' => $this->isLicensedLifeInsurance,
                 'insurance_licenses' => $licenses,
+                'insurance_license_numbers' => $licenseNumbers,
+                'insurance_license_expirations' => $licenseExpirations,
             ],
         );
 
@@ -344,8 +391,12 @@ class ProfilePage extends Component
             app(CfmManagementService::class)->syncLicensedJurisdictions($user, $licenses);
         }
 
+        app(ComplianceLifecycleService::class)->syncLicenseRecordsFromProfile($user->fresh(['profile']));
+
         $validatedTasks->completeProfileTaskIfOpen($user->fresh(['profile']));
         $this->insuranceLicenses = $licenses;
+        $this->insuranceLicenseNumbers = $licenseNumbers;
+        $this->insuranceLicenseExpirations = $licenseExpirations;
         $this->tab = 'licenses';
         $this->licensesFeedback = [
             'type' => 'success',
@@ -679,6 +730,8 @@ class ProfilePage extends Component
         $this->insuranceLicenses = is_array($profile?->insurance_licenses)
             ? array_values($profile->insurance_licenses)
             : [];
+        $this->insuranceLicenseNumbers = $profile?->insuranceLicenseNumbersByKey() ?? [];
+        $this->insuranceLicenseExpirations = $profile?->insuranceLicenseExpirationsByKey() ?? [];
     }
 
     private function profileUser(?DownlineHierarchyService $downlineHierarchy = null): User

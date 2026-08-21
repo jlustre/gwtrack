@@ -3,6 +3,7 @@
 namespace App\Services\Goals;
 
 use App\Models\User;
+use App\Support\GreatwayRankCatalog;
 
 class GoalFunnelEngine
 {
@@ -39,7 +40,7 @@ class GoalFunnelEngine
             'income' => $this->buildIncomeFunnel($user, $funnelKey, $targetValue),
             'production' => $this->buildProductionFunnel($user, $funnelKey, $targetValue),
             'recruiting' => $this->buildRecruitingFunnel($user, $funnelKey, $targetValue),
-            'rank' => $this->buildRankFunnel($user, $targetRank ?? 'SM'),
+            'rank' => $this->buildRankFunnel($user, $targetRank ?? GreatwayRankCatalog::defaultGoalRank()),
             default => [],
         };
     }
@@ -144,13 +145,14 @@ class GoalFunnelEngine
      */
     private function buildRankFunnel(User $user, string $targetRank): array
     {
-        $requirements = config('goals-planning.rank_requirements.'.$targetRank, [
-            'production' => 100000,
-            'recruits' => 3,
-            'licensing' => 100,
-            'fap' => 100,
-            'training' => 100,
-        ]);
+        $requirements = GreatwayRankCatalog::goalRequirements()[$targetRank]
+            ?? config('goals-planning.rank_requirements.'.$targetRank, [
+                'production' => 100000,
+                'recruits' => 3,
+                'licensing' => 100,
+                'fap' => 100,
+                'training' => 100,
+            ]);
 
         $stages = config('goals-planning.funnels.rank', []);
 

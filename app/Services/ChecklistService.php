@@ -41,7 +41,7 @@ class ChecklistService
      */
     public function memberFacingTypeCodes(): array
     {
-        return ['onboarding', 'licensing', 'fap', 'cfm-training'];
+        return ['onboarding', 'licensing', 'contracting', 'fap', 'cfm-training'];
     }
 
     public function typeStartRecord(User $user, string $typeCode): ?UserChecklistTypeStart
@@ -92,7 +92,7 @@ class ChecklistService
             return false;
         }
 
-        if ($this->prerequisiteMet($member, $typeCode)) {
+        if ($this->startRequirementsMet($member, $typeCode)) {
             return true;
         }
 
@@ -118,6 +118,7 @@ class ChecklistService
             'canStartNow' => $this->canStartChecklistTypeNow($actor, $member, $typeCode),
             'isSelfStart' => (int) $actor->id === (int) $member->id,
             'unmetPrerequisites' => $unmetPrerequisites->pluck('name')->all(),
+            'requiresLicense' => $this->requiresActiveLicense($typeCode) && ! $this->associateIsLicensed($member),
         ];
     }
 
@@ -126,6 +127,7 @@ class ChecklistService
         return match ($typeCode) {
             'onboarding' => 'onboarding.index',
             'licensing' => 'licensing.index',
+            'contracting' => 'contracting.index',
             'fap' => 'apprenticeship.index',
             'cfm-training' => 'cfm-training.index',
             default => 'dashboard',
@@ -147,7 +149,7 @@ class ChecklistService
             ->when($startedTypeIds->isNotEmpty(), fn (Builder $query) => $query->whereNotIn('id', $startedTypeIds))
             ->orderBy('sort_order')
             ->get()
-            ->filter(fn (ChecklistType $type) => $this->prerequisiteMet($member, $type->code))
+            ->filter(fn (ChecklistType $type) => $this->startRequirementsMet($member, $type->code))
             ->values();
     }
 
@@ -170,9 +172,9 @@ class ChecklistService
             ]);
         }
 
-        if (! $this->prerequisiteMet($member, $typeCode) && ! $startedBy->hasAnyRole(['super-admin', 'admin'])) {
+        if (! $this->startRequirementsMet($member, $typeCode) && ! $startedBy->hasAnyRole(['super-admin', 'admin'])) {
             throw ValidationException::withMessages([
-                'type' => 'Prerequisite checklist types must be completed first.',
+                'type' => $this->startRequirementError($member, $typeCode),
             ]);
         }
 
@@ -207,7 +209,9 @@ class ChecklistService
      *     started_at: string|null,
      *     started_by: string|null,
      *     can_start: bool,
-     *     prerequisites_met: bool
+     *     prerequisites_met: bool,
+     *     start_requirements_met: bool,
+     *     requires_license: bool
      * }>
      */
     public function checklistTypeManagementPanel(User $member, ?User $actor = null): array
@@ -236,6 +240,8 @@ class ChecklistService
                         && (bool) ($type?->is_active)
                         && $this->canStartChecklistTypeNow($actor, $member, $code),
                     'prerequisites_met' => $this->prerequisiteMet($member, $code),
+                    'start_requirements_met' => $this->startRequirementsMet($member, $code),
+                    'requires_license' => $this->requiresActiveLicense($code) && ! $this->associateIsLicensed($member),
                 ];
             })
             ->values()
@@ -298,6 +304,40 @@ class ChecklistService
         return $prerequisites->every(
             fn (ChecklistType $prerequisite) => $this->isTypeFullyCompleted($user, $prerequisite->code),
         );
+    }
+
+    public function startRequirementsMet(User $user, string $typeCode): bool
+    {
+        if (! $this->prerequisiteMet($user, $typeCode)) {
+            return false;
+        }
+
+        if ($this->requiresActiveLicense($typeCode) && ! $this->associateIsLicensed($user)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function requiresActiveLicense(string $typeCode): bool
+    {
+        return $typeCode === 'contracting';
+    }
+
+    public function associateIsLicensed(User $user): bool
+    {
+        $user->loadMissing('profile');
+
+        return (bool) $user->profile?->isLicensedAssociate();
+    }
+
+    public function startRequirementError(User $user, string $typeCode): string
+    {
+        if ($this->requiresActiveLicense($typeCode) && ! $this->associateIsLicensed($user)) {
+            return 'An active life insurance license must be on the profile before Contracting can start.';
+        }
+
+        return 'Prerequisite checklist types must be completed first.';
     }
 
     public function isTypeFullyCompleted(User $user, string $typeCode): bool

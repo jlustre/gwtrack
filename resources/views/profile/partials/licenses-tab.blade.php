@@ -5,6 +5,13 @@
     $selectedLicenses = $useLivewire
         ? $insuranceLicenses
         : old('insurance_licenses', $user->profile?->insurance_licenses ?? []);
+    $selectedLicenseNumbers = $useLivewire
+        ? ($insuranceLicenseNumbers ?? [])
+        : old('insurance_license_numbers', $user->profile?->insuranceLicenseNumbersByKey() ?? []);
+    $selectedLicenseExpirations = $useLivewire
+        ? ($insuranceLicenseExpirations ?? [])
+        : old('insurance_license_expirations', $user->profile?->insuranceLicenseExpirationsByKey() ?? []);
+    $licenseRows = $user->profile?->insuranceLicenseRows() ?? [];
     $isLicensedLifeInsuranceValue = $useLivewire
         ? $isLicensedLifeInsurance
         : old(
@@ -25,7 +32,7 @@
             <h2 class="text-lg font-semibold text-gw-primary">Insurance Licenses</h2>
             <p class="mt-1 max-w-2xl text-sm text-slate-600">
                 @if ($isOwnProfile)
-                    Tell us whether you hold a life insurance license and, if so, which jurisdictions apply.
+                    Tell us whether you hold a life insurance license and, if so, which jurisdictions apply. Each selected state or province needs its license number and expiration date.
                 @else
                     Life insurance licensing details for {{ $user->name }}.
                 @endif
@@ -49,7 +56,7 @@
             </p>
             <p class="mt-1">{{ $licensesFeedbackValue['message'] }}</p>
         </div>
-    @elseif ($errors->has('insurance_licenses') || $errors->has('insurance_licenses.*') || $errors->has('is_licensed_life_insurance') || $errors->has('insuranceLicenses') || $errors->has('insuranceLicenses.*') || $errors->has('isLicensedLifeInsurance'))
+    @elseif ($errors->has('insurance_licenses') || $errors->has('insurance_licenses.*') || $errors->has('is_licensed_life_insurance') || $errors->has('insuranceLicenses') || $errors->has('insuranceLicenses.*') || $errors->has('isLicensedLifeInsurance') || $errors->has('insurance_license_numbers') || $errors->has('insurance_license_numbers.*') || $errors->has('insuranceLicenseNumbers') || $errors->has('insuranceLicenseNumbers.*') || $errors->has('insurance_license_expirations') || $errors->has('insurance_license_expirations.*') || $errors->has('insuranceLicenseExpirations') || $errors->has('insuranceLicenseExpirations.*'))
         <div id="member-licenses-feedback" class="mb-5 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800" role="alert">
             <p class="font-semibold text-red-900">Could not save licenses</p>
             <ul class="mt-2 list-disc list-inside space-y-1">
@@ -69,6 +76,30 @@
                     <li>{{ $error }}</li>
                 @endforeach
                 @foreach ($errors->get('insuranceLicenses.*') as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+                @foreach ($errors->get('insurance_license_numbers') as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+                @foreach ($errors->get('insuranceLicenseNumbers') as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+                @foreach ($errors->get('insurance_license_numbers.*') as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+                @foreach ($errors->get('insuranceLicenseNumbers.*') as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+                @foreach ($errors->get('insurance_license_expirations') as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+                @foreach ($errors->get('insuranceLicenseExpirations') as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+                @foreach ($errors->get('insurance_license_expirations.*') as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+                @foreach ($errors->get('insuranceLicenseExpirations.*') as $error)
                     <li>{{ $error }}</li>
                 @endforeach
             </ul>
@@ -125,20 +156,35 @@
                     'selectedKeys' => is_array($selectedLicenses) ? $selectedLicenses : [],
                     'inputName' => 'insurance_licenses',
                     'wireModel' => $useLivewire ? 'insuranceLicenses' : null,
+                    'showLicenseNumbers' => true,
+                    'licenseNumbers' => is_array($selectedLicenseNumbers) ? $selectedLicenseNumbers : [],
+                    'licenseNumberInputName' => 'insurance_license_numbers',
+                    'licenseNumberWireModel' => $useLivewire ? 'insuranceLicenseNumbers' : null,
+                    'licenseExpirations' => is_array($selectedLicenseExpirations) ? $selectedLicenseExpirations : [],
+                    'licenseExpirationInputName' => 'insurance_license_expirations',
+                    'licenseExpirationWireModel' => $useLivewire ? 'insuranceLicenseExpirations' : null,
                     'title' => 'License jurisdictions',
-                    'description' => 'Expand each country to select the states or provinces where you are licensed. You can choose multiple regions.',
+                    'description' => 'Expand each country to select the states or provinces where you are licensed. Enter the license number and expiration date for every selected region before saving.',
                     'sectionClass' => 'rounded-lg border border-slate-200 bg-slate-50/80 p-4',
                     'labelClass' => 'text-sm font-semibold text-gw-primary',
                     'collapsibleCountries' => true,
                 ])
             </div>
 
-            @if ($isLicensedLifeInsuranceValue && $licenseLabels !== [])
+            @if ($isLicensedLifeInsuranceValue && $licenseRows !== [])
                 <div class="rounded-lg border border-gw-accent/30 bg-gw-accent-soft/60 px-4 py-3">
                     <p class="text-xs font-semibold uppercase tracking-wide text-gw-accent-dark">Currently saved</p>
                     <div class="mt-2 flex flex-wrap gap-2">
-                        @foreach ($licenseLabels as $label)
-                            <span class="rounded-full border border-gw-accent/40 bg-white px-3 py-1 text-xs font-semibold text-gw-primary">{{ $label }}</span>
+                        @foreach ($licenseRows as $row)
+                            <span class="rounded-full border border-gw-accent/40 bg-white px-3 py-1 text-xs font-semibold text-gw-primary">
+                                {{ $row['label'] }}
+                                @if ($row['number'] !== '')
+                                    <span class="font-normal text-slate-500">· {{ $row['number'] }}</span>
+                                @endif
+                                @if ($row['expiration_label'] !== '')
+                                    <span class="font-normal text-slate-500">· exp. {{ $row['expiration_label'] }}</span>
+                                @endif
+                            </span>
                         @endforeach
                     </div>
                 </div>
@@ -173,12 +219,22 @@
             </p>
         </div>
 
-        @if ($user->profile?->is_licensed_life_insurance && $licenseLabels !== [])
+        @if ($user->profile?->is_licensed_life_insurance && $licenseRows !== [])
             <div class="mt-4">
                 <p class="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">License jurisdictions</p>
-                <div class="flex flex-wrap gap-2">
-                    @foreach ($licenseLabels as $label)
-                        <span class="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold text-gw-primary shadow-sm">{{ $label }}</span>
+                <div class="space-y-2">
+                    @foreach ($licenseRows as $row)
+                        <div class="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm shadow-sm">
+                            <span class="font-semibold text-gw-primary">{{ $row['label'] }}</span>
+                            <span class="text-slate-600">
+                                {{ $row['number'] !== '' ? $row['number'] : 'No license number on file' }}
+                                @if ($row['expiration_label'] !== '')
+                                    · Expires {{ $row['expiration_label'] }}
+                                @else
+                                    · No expiration on file
+                                @endif
+                            </span>
+                        </div>
                     @endforeach
                 </div>
             </div>

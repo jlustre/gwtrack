@@ -15,7 +15,7 @@ The system should give each user a clear view of what they need to do next, whil
 - Ensure every New Recruit or Associate has a Certified Field Mentor when required.
 - Support the Field Apprenticeship Program with progress tracking and mentor notes.
 - Centralize training, assessments, events, resources, announcements, and recognition.
-- Track progress toward rank advancement from FA through EP.
+- Track progress toward rank advancement from Training Associate through National Executive Vice Chairman.
 - Give leadership useful reporting and team visibility.
 - Create a scalable foundation for future automation, notifications, and analytics.
 
@@ -38,7 +38,7 @@ The system should give each user a clear view of what they need to do next, whil
 - Invitation links must include a tracked registration code.
 - New user registrations must store the sponsoring member as `sponsor_id`.
 - New user registrations must assign the default `member` role.
-- New user registrations must assign the default `FA` rank.
+- New user registrations must assign the default `TA` rank.
 - New user registrations must place the user on the same team as their sponsor.
 - Only users with `super-admin`, `admin`, or `agency-owner` roles may change a user's role, rank, or team after registration.
 - Unless information is explicitly tagged global, users may only see records inside their sponsorship hierarchy.
@@ -76,9 +76,9 @@ The system should give each user a clear view of what they need to do next, whil
 - Admin Management must support CRUD workflows for important setup tables.
 - Features must be protected by permissions.
 - Navigation should only show items appropriate to the authenticated user.
-- ED rank and above usually qualify for the `agency-owner` role.
-- SM rank usually qualifies for the `team-leader` role.
-- SFA rank and above may qualify for the `certified-field-mentor` role after successful CFM Training completion and approval.
+- Senior Vice President (SVP) and above usually qualify for the `agency-owner` role. SVP is the first Field Leader rank.
+- Senior Associate (SA) rank usually qualifies for the `team-leader` role.
+- Associate rank and above may qualify for the `certified-field-mentor` role after successful CFM Training completion and approval.
 - Members who completed the Field Apprenticeship Program and started CFM Training may qualify for the `trainer` role.
 - Roles grant actions and tools, but do not automatically bypass sponsorship hierarchy visibility unless an explicit exception exists.
 
@@ -155,7 +155,7 @@ The system should give each user a clear view of what they need to do next, whil
 - Users must be able to complete CFM training.
 - Users must be able to request CFM certification after completing required training.
 - Authorized users must be able to approve or reject CFM certification requests.
-- Approved users at SFA rank or above may receive the Certified Field Mentor role.
+- Approved users at Associate rank or above may receive the Certified Field Mentor role.
 
 ### Training Center
 
@@ -175,10 +175,32 @@ The system should give each user a clear view of what they need to do next, whil
 ### Rank Advancement
 
 - Admin users must be able to manage ranks and rank requirements.
+- Ranks follow the Greatway Producer track (TA → AVP) and Builder / Field Leader track (SVP → NEVC).
+- The rank advancement tracker must show current and next-rank compensation (Total FYO, compensation rate, and Personal Production Bonus where applicable).
+- SVP and above are Field Leaders. Rank-based agency-leader access (including CFM management) starts at SVP.
 - Users must be able to view progress toward the next rank.
 - Leaders must be able to view team rank progress.
-- Rank progress must support configurable requirements.
+- Rank progress must support configurable requirements aligned to Greatway income, NBA, and leg qualifications.
 - Rank advancement may require manual approval.
+- Canonical promotion and compensation figures live in `docs/greatway-promotion-compensation-guidelines.md` and `config/greatway-compensation.php`.
+
+### Monetization
+
+- Super admins and admins can enable or disable rank-based monthly subscriptions from Admin Settings.
+- Default monthly prices: SA $9.95, MB $14.95, SMB $19.95, AVP and SVP $24.95, EVP $29.95, EVC $34.95, SEVC $39.95, NEVC $49.95.
+- TA and ASC remain free. Unlicensed associates are free at every rank.
+- After a rank change, the new price begins on the next subscription anniversary month.
+- Associates can choose monthly auto-pay or an annual invoice equal to twelve months of the rank price.
+- Licensed associates pay issued invoices from My Billing. Super admins, admins, and agency owners process outstanding invoices from Subscription Payments.
+
+### Admin Checklists Hub
+
+- Authorized admins must manage checklists from a hub at `/admin/checklists`.
+- The hub must open three administration pages: Checklist Types, Checklist Instructions, and Checklist Items.
+- Each of those pages must provide a Back to Checklists action that returns to the hub.
+- Checklist Types define categories such as onboarding, licensing, contracting, FAP, CFM training, and mentoring.
+- Checklist Instructions hold rich-text help, manuals, and reference URLs shown while members complete a checklist.
+- Checklist Items are the steps members complete across those types.
 
 ### Resource Library
 
@@ -329,7 +351,7 @@ The system should give each user a clear view of what they need to do next, whil
 
 ## Open Business Questions
 
-- What exact rank requirements apply to each rank?
+- Which remaining rank-advancement evidence and approval steps still need a GWTrack workflow beyond the published Greatway income, NBA, and leg qualifications?
 - What exact licensing workflow applies by province or state?
 - Which apprenticeship steps are mandatory?
 - Who can approve CFM certification?

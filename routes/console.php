@@ -1,5 +1,6 @@
 <?php
 
+use App\Jobs\ApplySubscriptionAnniversaries;
 use App\Jobs\Fna\RollupFnaAnalytics;
 use App\Jobs\CleanupOldBackupsJob;
 use App\Jobs\CfmEffectiveness\RollupCfmEffectivenessScores;
@@ -58,6 +59,7 @@ Schedule::job(SyncCfmMilestoneDayReviews::class)->dailyAt('06:30');
 Schedule::job(RollupCfmEffectivenessScores::class)->dailyAt('06:45');
 Schedule::job(new RollupCfmEffectivenessScores('monthly'))->monthlyOn(1, '07:00');
 Schedule::job(DispatchComplianceRenewalReminders::class)->dailyAt('07:15');
+Schedule::job(ApplySubscriptionAnniversaries::class)->dailyAt('01:15');
 Schedule::job(CleanupOldBackupsJob::class)->dailyAt('02:30');
 
 Schedule::command('calendar:sync-public-holidays')->monthlyOn(1, '03:15');

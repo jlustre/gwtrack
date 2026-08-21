@@ -85,7 +85,7 @@ class CalendarModuleSeeder extends Seeder
             ];
         });
 
-        $rank = Rank::query()->where('code', 'FA')->first();
+        $rank = Rank::query()->where('code', 'TA')->first();
         $team = Team::query()->first();
         $organizer = $this->member('calendar-owner@gwtrack.com', 'Calendar Agency Owner', 'agency-owner', $team?->id, $rank?->id);
         $leader = $this->member('calendar-leader@gwtrack.com', 'Calendar Team Leader', 'team-leader', $team?->id, $rank?->id, $organizer->id);
@@ -166,10 +166,10 @@ class CalendarModuleSeeder extends Seeder
                 'start' => now()->addDays(5)->setTime(10, 0),
                 'end' => now()->addDays(5)->setTime(12, 0),
                 'visibility' => 'public_organization',
-                'description' => 'Certification training for eligible SFA+ associates preparing to become Certified Field Mentors.',
+                'description' => 'Certification training for eligible Associate+ members preparing to become Certified Field Mentors.',
             ],
             [
-                'title' => 'Rank Advancement Review: FA to SFA',
+                'title' => 'Rank Advancement Review: TA to Associate',
                 'type' => 'rank-review',
                 'organizer' => $leader,
                 'start' => now()->addDays(7)->setTime(16, 0),

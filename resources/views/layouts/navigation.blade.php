@@ -36,6 +36,10 @@
             return false;
         }
 
+        if (isset($item['session']) && ! session($item['session'])) {
+            return false;
+        }
+
         return true;
     };
 
@@ -88,7 +92,7 @@
     $groups = [
         [
             'label' => 'My Workspace',
-            'active' => ['dashboard', 'profile.*', 'tasks.*', 'invites.*', 'daily-activities.*', 'messages.*', 'calendar.*', 'bookings.my', 'bookings.calendar'],
+            'active' => ['dashboard', 'profile.*', 'tasks.*', 'invites.*', 'daily-activities.*', 'messages.*', 'calendar.*', 'bookings.my', 'bookings.calendar', 'billing.*'],
             'items' => [
                 ['label' => 'My Dashboard', 'route' => 'dashboard'],
                 ['label' => 'My Profile', 'route' => 'profile.edit', 'active' => ['profile.*']],
@@ -103,15 +107,17 @@
                 ['label' => 'My Messages', 'route' => 'messages.index', 'permissions' => ['view conversations'], 'active' => ['messages.*']],
                 ['label' => 'My Calendar', 'route' => 'calendar.index', 'active' => ['calendar.*']],
                 ['label' => 'My Appointments', 'route' => 'bookings.my', 'permissions' => ['view own bookings'], 'active' => ['bookings.my', 'bookings.calendar', 'bookings.dashboard', 'bookings.availability', 'bookings.event-types', 'bookings.links', 'bookings.requests', 'bookings.settings']],
+                ['label' => 'My Billing', 'route' => 'billing.index', 'active' => ['billing.*'], 'session' => \App\Services\MonetizationSettingsService::SESSION_KEY],
             ],
         ],
         [
             'label' => 'My Progress',
-            'active' => ['onboarding.*', 'apprenticeship.*', 'licensing.*', 'compliance.*', 'assessments.*', 'rank-advancement.*', 'cfm-training.*', 'goals.*', 'team.production'],
+            'active' => ['onboarding.*', 'apprenticeship.*', 'licensing.*', 'contracting.*', 'compliance.*', 'assessments.*', 'rank-advancement.*', 'cfm-training.*', 'goals.*', 'team.production'],
             'items' => [
                 ['label' => 'My Onboarding', 'route' => 'onboarding.index', 'active' => ['onboarding.*']],
                 ['label' => 'Field Apprenticeship', 'route' => 'apprenticeship.index', 'active' => ['apprenticeship.*']],
                 ['label' => 'Licensing Tracker', 'route' => 'licensing.index', 'active' => ['licensing.*']],
+                ['label' => 'Contracting Tracker', 'route' => 'contracting.index', 'active' => ['contracting.*']],
                 ['label' => 'Compliance & Renewals', 'route' => 'compliance.index', 'active' => ['compliance.*']],
                 ['label' => 'Assessments', 'route' => 'assessments.index', 'active' => ['assessments.*']],
                 ['label' => 'Rank Advancement', 'route' => 'rank-advancement.index', 'active' => ['rank-advancement.*']],
@@ -236,6 +242,7 @@
                 ['label' => 'All Setup Tables', 'route' => 'admin.management.index', 'active' => ['admin.management.index'], 'roles' => ['super-admin', 'admin']],
                 ['label' => 'Backup Operations', 'route' => 'admin.backups.index', 'active' => ['admin.backups.*'], 'roles' => ['super-admin'], 'permissions' => ['view backups']],
                 ['label' => 'Admin Settings', 'route' => 'admin.settings', 'roles' => ['super-admin', 'admin', 'agency-owner']],
+                ['label' => 'Subscription Payments', 'route' => 'admin.payments', 'roles' => ['super-admin', 'admin', 'agency-owner'], 'session' => \App\Services\MonetizationSettingsService::SESSION_KEY],
             ],
         ],
     ];
@@ -310,7 +317,7 @@
 
                         <a
                             href="{{ route($item['route'], $item['params'] ?? []) }}"
-                            wire:navigate.hover
+                            wire:navigate
                             class="{{ $childLinkClass($isActive($item)) }}"
                             data-sidebar-link
                             data-sidebar-group="{{ $groupKey }}"

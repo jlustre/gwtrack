@@ -37,6 +37,13 @@ class TrackerChecklistPagesTest extends TestCase
             ->assertSee('Notify:');
 
         $this->actingAs($user)
+            ->get(route('contracting.index'))
+            ->assertOk()
+            ->assertSee('Contracting Tracker')
+            ->assertSee('Confirm Contracting Eligibility')
+            ->assertSee('Select Target Carriers');
+
+        $this->actingAs($user)
             ->get(route('apprenticeship.index'))
             ->assertOk()
             ->assertSee('Field Apprenticeship')

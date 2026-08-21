@@ -44,7 +44,7 @@ class DashboardOverviewTest extends TestCase
     public function test_authenticated_member_sees_dashboard_sections(): void
     {
         $teamId = (int) DB::table('teams')->value('id');
-        $rankId = Rank::where('code', 'FA')->value('id');
+        $rankId = Rank::where('code', 'TA')->value('id');
         $user = $this->createUser('member.journey@example.com', 'Journey Member', 'member', $teamId, $rankId);
 
         $this->actingAs($user)
@@ -64,7 +64,7 @@ class DashboardOverviewTest extends TestCase
     public function test_seeded_onboarding_steps_appear_in_licensing_progress_section(): void
     {
         $teamId = (int) DB::table('teams')->value('id');
-        $rankId = Rank::where('code', 'FA')->value('id');
+        $rankId = Rank::where('code', 'TA')->value('id');
         $user = $this->createUser('onboarding.hub@example.com', 'Onboarding Hub Member', 'member', $teamId, $rankId);
 
         $this->actingAs($user)
@@ -79,7 +79,7 @@ class DashboardOverviewTest extends TestCase
     public function test_dashboard_still_renders_team_stat_cards_with_view_buttons(): void
     {
         $teamId = (int) DB::table('teams')->value('id');
-        $rankId = Rank::where('code', 'FA')->value('id');
+        $rankId = Rank::where('code', 'TA')->value('id');
         $user = $this->createUser('viewer@example.com', 'Viewer User', 'member', $teamId, $rankId);
 
         app(DownlineHierarchyService::class)->rebuild();

@@ -83,7 +83,7 @@ class MyAppointmentsSeeder extends Seeder
             ['confirmed', now()->addDays(4)->setTime(18, 0), 'Evening progress review', 'Weekly accountability and blocker review.'],
             ['pending_approval', now()->addDays(6)->setTime(11, 0), 'Pending licensing study', 'Exam prep focus: life & A&S sections.'],
             ['confirmed', now()->addDays(7)->setTime(15, 30), 'Confirmed practice presentation', 'Dry-run before Saturday field activity.'],
-            ['pending_approval', now()->addDays(9)->setTime(9, 30), 'Pending rank coaching', 'Review SFA activity gap and next actions.'],
+            ['pending_approval', now()->addDays(9)->setTime(9, 30), 'Pending rank coaching', 'Review Associate activity gap and next actions.'],
             ['confirmed', now()->addDays(11)->setTime(13, 0), 'Confirmed FAP working session', 'Checklist items 4–6 and joint prospecting.'],
             ['confirmed', now()->addDays(13)->setTime(10, 0), 'Confirmed weekly progress review', 'Pipeline health and weekly commitments.'],
             ['pending_approval', now()->addDays(15)->setTime(16, 30), 'Pending final apprenticeship review', 'Prep for FAP completion recommendation.'],

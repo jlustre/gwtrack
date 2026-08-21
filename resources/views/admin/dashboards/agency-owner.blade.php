@@ -25,6 +25,14 @@
                 description="Monitor mentor readiness and approval workflow."
                 icon="badge"
             />
+            @if (session(\App\Services\MonetizationSettingsService::SESSION_KEY))
+                <x-admin.nav-tile
+                    :href="route('admin.payments')"
+                    title="Subscription Payments"
+                    description="Collect open invoices and record office payments for billed associates."
+                    icon="clipboard"
+                />
+            @endif
         </div>
     </section>
 </x-app-layout>

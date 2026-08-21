@@ -1,9 +1,11 @@
 <div
     id="gw-page-loading"
-    class="fixed inset-0 z-[100] flex flex-col items-center justify-center gap-4 bg-[#F5F7FA]/90 backdrop-blur-sm"
+    class="pointer-events-none hidden fixed inset-0 z-[100] flex flex-col items-center justify-center gap-4 bg-[#F5F7FA]/90 backdrop-blur-sm"
+    style="display: none;"
     role="status"
     aria-live="polite"
     aria-label="Loading page"
+    aria-hidden="true"
 >
     <div class="gw-page-spinner" aria-hidden="true"></div>
     <p class="text-sm font-semibold text-gw-primary">Loading…</p>

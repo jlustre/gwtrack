@@ -547,8 +547,8 @@ return [
         'target_rank' => [
             'description' => 'The rank you are planning to achieve. Requirements are converted into production, recruiting, and training activity.',
             'examples' => [
-                'SM with production and recruit thresholds',
-                'ED when ready for broader leadership requirements',
+                'SA with $10,000 LTI for Senior Associate',
+                'SVP when planning Field Leader / Builder requirements',
             ],
         ],
     ],
@@ -571,9 +571,15 @@ return [
     ],
 
     'rank_requirements' => [
-        'SM' => ['production' => 50000, 'recruits' => 2, 'licensing' => 100, 'fap' => 100, 'training' => 80],
-        'ED' => ['production' => 150000, 'recruits' => 5, 'licensing' => 100, 'fap' => 100, 'training' => 100],
-        'SED' => ['production' => 300000, 'recruits' => 10, 'licensing' => 100, 'fap' => 100, 'training' => 100],
+        'SA' => ['production' => 10000, 'recruits' => 0, 'licensing' => 100, 'fap' => 100, 'training' => 80],
+        'MB' => ['production' => 40000, 'recruits' => 0, 'licensing' => 100, 'fap' => 100, 'training' => 90],
+        'SMB' => ['production' => 80000, 'recruits' => 0, 'licensing' => 100, 'fap' => 100, 'training' => 90],
+        'AVP' => ['production' => 100000, 'recruits' => 0, 'licensing' => 100, 'fap' => 100, 'training' => 100],
+        'SVP' => ['production' => 60000, 'recruits' => 3, 'licensing' => 100, 'fap' => 100, 'training' => 100],
+        'EVP' => ['production' => 150000, 'recruits' => 3, 'licensing' => 100, 'fap' => 100, 'training' => 100],
+        'EVC' => ['production' => 300000, 'recruits' => 7, 'licensing' => 100, 'fap' => 100, 'training' => 100],
+        'SEVC' => ['production' => 500000, 'recruits' => 12, 'licensing' => 100, 'fap' => 100, 'training' => 100],
+        'NEVC' => ['production' => 800000, 'recruits' => 18, 'licensing' => 100, 'fap' => 100, 'training' => 100],
     ],
 
 ];

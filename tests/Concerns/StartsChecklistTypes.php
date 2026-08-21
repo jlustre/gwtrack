@@ -52,7 +52,7 @@ trait StartsChecklistTypes
 
     protected function startMemberChecklistTypes(User $user, ?User $starter = null): void
     {
-        foreach (['onboarding', 'licensing', 'fap', 'cfm-training'] as $typeCode) {
+        foreach (['onboarding', 'licensing', 'contracting', 'fap', 'cfm-training'] as $typeCode) {
             $this->startChecklistType($user, $typeCode, $starter);
         }
     }

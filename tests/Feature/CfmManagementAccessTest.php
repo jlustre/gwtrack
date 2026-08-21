@@ -32,7 +32,7 @@ class CfmManagementAccessTest extends TestCase
             ->assertSee('Certified Field Mentor Management', false);
     }
 
-    public function test_executive_director_can_open_cfm_management_page(): void
+    public function test_svp_can_open_cfm_management_page(): void
     {
         $this->seed([
             RankSeeder::class,
@@ -41,14 +41,33 @@ class CfmManagementAccessTest extends TestCase
             ChecklistSeeder::class,
         ]);
 
-        $ed = User::factory()->create([
-            'rank_id' => Rank::where('code', 'ED')->value('id'),
+        $svp = User::factory()->create([
+            'rank_id' => Rank::where('code', 'SVP')->value('id'),
         ]);
-        $ed->assignRole('member');
+        $svp->assignRole('member');
 
-        $this->actingAs($ed)
+        $this->actingAs($svp)
             ->get(route('team.cfms'))
             ->assertOk();
+    }
+
+    public function test_managing_broker_cannot_open_cfm_management_page_by_rank_alone(): void
+    {
+        $this->seed([
+            RankSeeder::class,
+            RolePermissionSeeder::class,
+            ChecklistTypeSeeder::class,
+            ChecklistSeeder::class,
+        ]);
+
+        $broker = User::factory()->create([
+            'rank_id' => Rank::where('code', 'MB')->value('id'),
+        ]);
+        $broker->assignRole('member');
+
+        $this->actingAs($broker)
+            ->get(route('team.cfms'))
+            ->assertForbidden();
     }
 
     public function test_regular_member_cannot_open_cfm_management_page(): void

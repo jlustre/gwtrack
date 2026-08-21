@@ -12,6 +12,7 @@ class RankAdvancementService
 {
     public function __construct(
         private readonly DownlineHierarchyService $hierarchy,
+        private readonly CompensationService $compensation,
     ) {}
 
     public function resolveMember(User $viewer, ?int $memberId = null): User
@@ -101,11 +102,15 @@ class RankAdvancementService
                 'id' => $currentRank->id,
                 'code' => $currentRank->code,
                 'name' => $currentRank->name,
+                'track' => $currentRank->track,
+                'total_fyo_rate' => $currentRank->total_fyo_rate !== null ? (float) $currentRank->total_fyo_rate : null,
             ] : null,
             'next_rank' => $nextRank ? [
                 'id' => $nextRank->id,
                 'code' => $nextRank->code,
                 'name' => $nextRank->name,
+                'track' => $nextRank->track,
+                'total_fyo_rate' => $nextRank->total_fyo_rate !== null ? (float) $nextRank->total_fyo_rate : null,
             ] : null,
             'percent' => $percent,
             'stats' => $stats,
@@ -118,6 +123,7 @@ class RankAdvancementService
             'is_self' => $viewer->id === $member->id,
             'can_review' => $this->canReviewMember($viewer, $member),
             'at_max_rank' => $nextRank === null,
+            'compensation' => $this->compensation->snapshotForUser($member),
         ];
     }
 
@@ -323,6 +329,8 @@ class RankAdvancementService
             return [
                 'code' => $rank->code,
                 'name' => $rank->name,
+                'track' => $rank->track,
+                'total_fyo_rate' => $rank->total_fyo_rate !== null ? (float) $rank->total_fyo_rate : null,
                 'state' => $state,
             ];
         })->values()->all();

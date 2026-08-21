@@ -26,7 +26,7 @@ function showLoading() {
         return;
     }
 
-    overlay.classList.remove('hidden');
+    overlay.classList.remove('hidden', 'pointer-events-none');
     overlay.style.removeProperty('display');
     overlay.setAttribute('aria-hidden', 'false');
 }
@@ -38,7 +38,7 @@ function hideLoading() {
         return;
     }
 
-    overlay.classList.add('hidden');
+    overlay.classList.add('hidden', 'pointer-events-none');
     overlay.style.display = 'none';
     overlay.setAttribute('aria-hidden', 'true');
 }
@@ -68,11 +68,38 @@ function isGuestPath(pathname) {
 }
 
 function hasWireNavigate(anchor) {
-    return Array.from(anchor.attributes).some((attribute) => attribute.name === 'wire:navigate' || attribute.name.startsWith('wire:navigate.'));
+    return Array.from(anchor.attributes).some((attribute) => attribute.name === 'wire:navigate' || attribute.name.startsWith('wire:navigate.') || attribute.name === 'x-navigate' || attribute.name.startsWith('x-navigate.'));
 }
 
 function canUseLivewireNavigate() {
     return typeof window.Livewire?.navigate === 'function' && document.getElementById('gw-sidebar-navigation');
+}
+
+let spaNavigationResetTimer = null;
+
+function markSpaNavigation() {
+    spaNavigationInFlight = true;
+    hideLoading();
+
+    if (spaNavigationResetTimer) {
+        window.clearTimeout(spaNavigationResetTimer);
+    }
+
+    // If livewire:navigated never fires, do not leave clicks permanently blocked.
+    spaNavigationResetTimer = window.setTimeout(() => {
+        spaNavigationInFlight = false;
+        spaNavigationResetTimer = null;
+    }, 8000);
+}
+
+function clearSpaNavigation() {
+    spaNavigationInFlight = false;
+    hideLoading();
+
+    if (spaNavigationResetTimer) {
+        window.clearTimeout(spaNavigationResetTimer);
+        spaNavigationResetTimer = null;
+    }
 }
 
 function initGoToTop() {
@@ -154,8 +181,11 @@ function bindSpaLinkNavigation() {
             return;
         }
 
-        // Livewire already handles explicit wire:navigate links.
+        // Livewire already owns wire:navigate / x-navigate links. Intercepting them
+        // a second time races history (new page appears, then the previous page pops back).
         if (hasWireNavigate(link)) {
+            markSpaNavigation();
+
             return;
         }
 
@@ -171,14 +201,24 @@ function bindSpaLinkNavigation() {
             return;
         }
 
-        // Leaving the authenticated shell (guest/public layouts) should be a full reload.
         if (isGuestPath(url.pathname)) {
             return;
         }
 
+        if (url.pathname === window.location.pathname && url.search === window.location.search && url.hash === window.location.hash) {
+            event.preventDefault();
+
+            return;
+        }
+
+        if (spaNavigationInFlight) {
+            event.preventDefault();
+
+            return;
+        }
+
         event.preventDefault();
-        spaNavigationInFlight = true;
-        hideLoading();
+        markSpaNavigation();
         window.Livewire.navigate(url.pathname + url.search + url.hash);
     });
 }
@@ -190,7 +230,11 @@ export function initPageChrome() {
 
     initialized = true;
 
-    showLoading();
+    if ('scrollRestoration' in window.history) {
+        window.history.scrollRestoration = 'manual';
+    }
+
+    hideLoading();
 
     const hideWhenReady = () => hideLoading();
 
@@ -203,21 +247,25 @@ export function initPageChrome() {
     window.addEventListener('load', hideWhenReady, { once: true });
     window.setTimeout(hideWhenReady, 12000);
 
-    window.addEventListener('pageshow', (event) => {
-        if (event.persisted) {
-            hideLoading();
-        }
+    window.addEventListener('pageshow', () => {
+        clearSpaNavigation();
     });
 
     document.addEventListener('livewire:navigating', () => {
-        spaNavigationInFlight = true;
-        hideLoading();
+        markSpaNavigation();
+    });
+
+    document.addEventListener('alpine:navigate', () => {
+        markSpaNavigation();
     });
 
     document.addEventListener('livewire:navigated', () => {
-        spaNavigationInFlight = false;
-        hideLoading();
+        clearSpaNavigation();
         initGoToTop();
+    });
+
+    document.addEventListener('alpine:navigated', () => {
+        clearSpaNavigation();
     });
 
     document.addEventListener('click', (event) => {
@@ -231,15 +279,20 @@ export function initPageChrome() {
             return;
         }
 
-        // SPA navigations use Livewire's progress bar instead of the full-page overlay.
-        if (hasWireNavigate(link) || (canUseLivewireNavigate() && ! link.hasAttribute('data-no-navigate'))) {
+        // wire:navigate links are owned by Livewire. Plain in-app links are
+        // converted by bindSpaLinkNavigation; do not mark them in-flight here
+        // or that handler will abort the same click.
+        if (hasWireNavigate(link)) {
+            markSpaNavigation();
+
+            return;
+        }
+
+        if (canUseLivewireNavigate() && ! link.hasAttribute('data-no-navigate')) {
             try {
                 const url = new URL(link.href, window.location.href);
 
                 if (! isGuestPath(url.pathname)) {
-                    spaNavigationInFlight = true;
-                    hideLoading();
-
                     return;
                 }
             } catch {
@@ -261,7 +314,6 @@ export function initPageChrome() {
             return;
         }
 
-        // Livewire submits in-place; do not show the full-page loader.
         if (form.closest('[wire\\:id]') || Array.from(form.attributes).some((attribute) => attribute.name.startsWith('wire:'))) {
             return;
         }

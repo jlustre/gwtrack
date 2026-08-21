@@ -5,6 +5,7 @@ namespace App\Livewire\Goals;
 use App\Models\Goal;
 use App\Services\Goals\GoalFunnelEngine;
 use App\Services\Goals\GoalPlanningService;
+use App\Support\GreatwayRankCatalog;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
@@ -16,7 +17,7 @@ class PerformancePlannerWizard extends Component
 
     public string $targetValue = '';
 
-    public string $targetRank = 'SM';
+    public string $targetRank = 'SA';
 
     public string $planName = '';
 
@@ -89,7 +90,7 @@ class PerformancePlannerWizard extends Component
     {
         return view('livewire.goals.performance-planner-wizard', [
             'planningTypes' => config('goals-planning.planning_types', []),
-            'rankOptions' => array_keys(config('goals-planning.rank_requirements', [])),
+            'rankOptions' => array_keys(GreatwayRankCatalog::goalRequirements()),
             'fieldHelp' => config('goals-planning.wizard_fields', []),
         ]);
     }

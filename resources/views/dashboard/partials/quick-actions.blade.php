@@ -8,6 +8,8 @@
 
         'tasks' => 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2',
 
+        'invite' => 'M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z',
+
         'prospects' => 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z',
 
         'log_activity' => 'M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z',
@@ -47,6 +49,13 @@
             'icon' => 'bg-white/12 text-[#A7F3D0] group-hover:bg-white/20',
             'label' => 'text-white',
             'description' => 'text-cyan-50/85',
+        ],
+
+        'invite' => [
+            'card' => 'group flex w-full items-center gap-2 rounded-md border border-gw-accent/60 bg-gradient-to-br from-[#14532D] via-[#3F6212] to-[#84BB41] px-3 py-2 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-[#D9F99D] hover:shadow-md',
+            'icon' => 'bg-white/12 text-[#ECFCCB] group-hover:bg-white/20',
+            'label' => 'text-white',
+            'description' => 'text-lime-50/90',
         ],
 
         'prospects' => [

@@ -292,6 +292,16 @@ class ProfileTest extends TestCase
                     'Canada|British Columbia',
                     'United States|California',
                 ],
+                'insurance_license_numbers' => [
+                    'Canada|Ontario' => 'ON-1001',
+                    'Canada|British Columbia' => 'BC-2002',
+                    'United States|California' => 'CA-3003',
+                ],
+                'insurance_license_expirations' => [
+                    'Canada|Ontario' => '2027-06-30',
+                    'Canada|British Columbia' => '2028-01-15',
+                    'United States|California' => '2026-12-31',
+                ],
             ])
             ->assertSessionHasNoErrors()
             ->assertRedirect(route('profile.edit', ['tab' => 'licenses']))
@@ -303,6 +313,22 @@ class ProfileTest extends TestCase
             ['Canada|British Columbia', 'Canada|Ontario', 'United States|California'],
             $user->profile->insurance_licenses
         );
+        $this->assertSame(
+            [
+                'Canada|British Columbia' => 'BC-2002',
+                'Canada|Ontario' => 'ON-1001',
+                'United States|California' => 'CA-3003',
+            ],
+            $user->profile->insurance_license_numbers
+        );
+        $this->assertSame(
+            [
+                'Canada|British Columbia' => '2028-01-15',
+                'Canada|Ontario' => '2027-06-30',
+                'United States|California' => '2026-12-31',
+            ],
+            $user->profile->insurance_license_expirations
+        );
         $this->assertTrue($user->profile->is_licensed_life_insurance);
 
         $this->actingAs($user)
@@ -310,10 +336,18 @@ class ProfileTest extends TestCase
             ->assertOk()
             ->assertSee('Insurance Licenses', false)
             ->assertSee('I am licensed in Life Insurance', false)
-            ->assertSee('License jurisdictions', false)
+            ->assertSee('Enter the license number and expiration date for every selected region before saving.', false)
+            ->assertSee('License number', false)
+            ->assertSee('Expiration date', false)
             ->assertSee('ON:CAN', false)
             ->assertSee('BC:CAN', false)
-            ->assertSee('CA:USA', false);
+            ->assertSee('CA:USA', false)
+            ->assertSee('ON-1001', false)
+            ->assertSee('BC-2002', false)
+            ->assertSee('CA-3003', false)
+            ->assertSee('Jun 30, 2027', false)
+            ->assertSee('Jan 15, 2028', false)
+            ->assertSee('Dec 31, 2026', false);
     }
 
     public function test_cfm_profile_license_save_syncs_cfm_mentor_licensed_jurisdictions(): void
@@ -334,12 +368,20 @@ class ProfileTest extends TestCase
                 'insurance_licenses' => [
                     'United States|California',
                 ],
+                'insurance_license_numbers' => [
+                    'United States|California' => 'CA-5555',
+                ],
+                'insurance_license_expirations' => [
+                    'United States|California' => '2027-12-31',
+                ],
             ])
             ->assertSessionHasNoErrors();
 
         $user->refresh()->load(['profile', 'cfmMentorProfile']);
 
         $this->assertSame(['United States|California'], $user->profile->insurance_licenses);
+        $this->assertSame(['United States|California' => 'CA-5555'], $user->profile->insurance_license_numbers);
+        $this->assertSame(['United States|California' => '2027-12-31'], $user->profile->insurance_license_expirations);
         $this->assertSame(['United States|California'], $user->cfmMentorProfile?->licensed_jurisdictions);
     }
 
@@ -367,6 +409,69 @@ class ProfileTest extends TestCase
 
         $this->assertFalse($user->profile->is_licensed_life_insurance);
         $this->assertSame([], $user->profile->insurance_licenses);
+        $this->assertSame([], $user->profile->insurance_license_numbers);
+        $this->assertSame([], $user->profile->insurance_license_expirations);
+    }
+
+    public function test_member_cannot_save_a_selected_jurisdiction_without_a_license_number(): void
+    {
+        $this->seed([
+            CountrySeeder::class,
+            StateProvinceSeeder::class,
+            TimezoneSeeder::class,
+            RolePermissionSeeder::class,
+        ]);
+
+        $user = User::factory()->create();
+        $user->assignRole('member');
+
+        $this->actingAs($user)
+            ->from(route('profile.edit', ['tab' => 'licenses']))
+            ->patch(route('profile.licenses.update'), [
+                'is_licensed_life_insurance' => true,
+                'insurance_licenses' => [
+                    'Canada|Ontario',
+                ],
+                'insurance_license_numbers' => [
+                    'Canada|Ontario' => '',
+                ],
+            ])
+            ->assertRedirect(route('profile.edit', ['tab' => 'licenses']))
+            ->assertSessionHasErrors('insurance_license_numbers.Canada|Ontario');
+
+        $this->assertNull($user->fresh()->profile?->insurance_licenses);
+    }
+
+    public function test_member_cannot_save_a_selected_jurisdiction_without_an_expiration_date(): void
+    {
+        $this->seed([
+            CountrySeeder::class,
+            StateProvinceSeeder::class,
+            TimezoneSeeder::class,
+            RolePermissionSeeder::class,
+        ]);
+
+        $user = User::factory()->create();
+        $user->assignRole('member');
+
+        $this->actingAs($user)
+            ->from(route('profile.edit', ['tab' => 'licenses']))
+            ->patch(route('profile.licenses.update'), [
+                'is_licensed_life_insurance' => true,
+                'insurance_licenses' => [
+                    'Canada|Ontario',
+                ],
+                'insurance_license_numbers' => [
+                    'Canada|Ontario' => 'ON-1001',
+                ],
+                'insurance_license_expirations' => [
+                    'Canada|Ontario' => '',
+                ],
+            ])
+            ->assertRedirect(route('profile.edit', ['tab' => 'licenses']))
+            ->assertSessionHasErrors('insurance_license_expirations.Canada|Ontario');
+
+        $this->assertNull($user->fresh()->profile?->insurance_licenses);
     }
 
     public function test_profile_update_shows_validation_errors_on_profile_tab(): void

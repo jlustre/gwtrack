@@ -8,7 +8,7 @@
 
 ## 1. Executive Summary
 
-The Prospect Management & Sales Funnel Module is GWTrack’s primary **CRM**, **pipeline engine**, and **activity hub** for insurance associates, CFMs, Sales Managers, Executive Directors, and Agency Owners.
+The Prospect Management & Sales Funnel Module is GWTrack’s primary **CRM**, **pipeline engine**, and **activity hub** for insurance associates, CFMs, Managing Brokers, Field Leaders (SVP and above), and Agency Owners.
 
 It must remain **privacy-first** (prospects belong to one owner by default) while supporting **controlled collaboration**, **mentorship visibility**, **team analytics**, and deep integration with Calendar, Tasks, Mentorship, Training, Notifications, Dashboard, Downline Hierarchy, Goals, and AI Recommendations.
 
@@ -91,7 +91,7 @@ app/
 
 ### Spatie permissions (extend existing)
 
-| Permission | Associate | CFM | Sales Mgr | Agency Owner | Admin |
+| Permission | Associate | CFM | Team Leader | Agency Owner | Admin |
 |------------|-----------|-----|-----------|--------------|-------|
 | `manage prospects` | ✅ own | ✅ shared/trainee* | ✅ team agg† | ✅ org agg† | ✅ all |
 | `share prospects` | ✅ | ❌ | ❌ | ✅ policy | ✅ |
@@ -110,8 +110,8 @@ app/
 1. **Owner** — full CRUD on owned prospects.
 2. **Shared user** — actions limited by `prospect_share_permissions` row.
 3. **CFM** — view trainee prospects if `prospect_shares` OR `mentor_assignments` + `cfm_prospect_visibility` grant.
-4. **Sales Manager / ED** — no row-level access unless shared; dashboard shows aggregates scoped via `DownlineHierarchyService`.
-5. **Agency Owner** — org funnel reports + optional agency-wide policy flag (off by default).
+4. **Senior Associate / Managing Broker** — Producer ranks below Field Leader; no row-level access unless shared; dashboard shows aggregates scoped via `DownlineHierarchyService`.
+5. **Agency Owner (SVP and above)** — org funnel reports + optional agency-wide policy flag (off by default).
 6. **Admin / Super Admin** — operational override with audit log.
 
 ### Visibility presets (Access Control Panel)
@@ -121,7 +121,7 @@ app/
 | Private | Owner only |
 | Shared with CFM | Active share to assigned CFM |
 | Shared with Sponsor | Share to `users.sponsor_id` |
-| Shared with Manager | Share to team leader / SM in hierarchy |
+| Shared with Manager | Share to team leader / Senior Associate in hierarchy |
 | Shared with Team | All direct downline with `view shared prospects` |
 | Shared with User | Explicit user picker |
 

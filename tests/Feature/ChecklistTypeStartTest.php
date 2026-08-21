@@ -34,6 +34,7 @@ class ChecklistTypeStartTest extends TestCase
             ->assertOk()
             ->assertSee('My Onboarding')
             ->assertSee('Licensing Tracker')
+            ->assertSee('Contracting Tracker')
             ->assertSee('Field Apprenticeship')
             ->assertSee('CFM Training');
 
@@ -125,6 +126,101 @@ class ChecklistTypeStartTest extends TestCase
             ])
             ->assertRedirect(route('cfm-training.index'))
             ->assertSessionHasErrors('type');
+    }
+
+    public function test_member_cannot_start_contracting_without_licensing_complete(): void
+    {
+        $this->seed([
+            RolePermissionSeeder::class,
+            CountrySeeder::class,
+            ChecklistTypeSeeder::class,
+            ChecklistSeeder::class,
+        ]);
+
+        $member = $this->member();
+
+        $this->actingAs($member)
+            ->get(route('contracting.index'))
+            ->assertOk()
+            ->assertSee('Not started yet')
+            ->assertSee('Prerequisites required')
+            ->assertDontSee('Start checklist');
+
+        $this->actingAs($member)
+            ->from(route('contracting.index'))
+            ->post(route('checklists.type.start', 'contracting'), [
+                'started_at' => '2026-04-15',
+            ])
+            ->assertRedirect(route('contracting.index'))
+            ->assertSessionHasErrors('type');
+    }
+
+    public function test_member_cannot_start_contracting_until_licensed(): void
+    {
+        $this->seed([
+            RolePermissionSeeder::class,
+            CountrySeeder::class,
+            ChecklistTypeSeeder::class,
+            ChecklistSeeder::class,
+        ]);
+
+        $member = $this->member();
+
+        foreach (['onboarding', 'licensing'] as $typeCode) {
+            $this->startChecklistType($member, $typeCode);
+            $this->completeChecklistType($member, $typeCode);
+        }
+
+        $this->actingAs($member)
+            ->get(route('contracting.index'))
+            ->assertOk()
+            ->assertSee('Not started yet')
+            ->assertSee('Life license required')
+            ->assertDontSee('Start checklist');
+
+        $this->actingAs($member)
+            ->from(route('contracting.index'))
+            ->post(route('checklists.type.start', 'contracting'), [
+                'started_at' => '2026-06-01',
+            ])
+            ->assertRedirect(route('contracting.index'))
+            ->assertSessionHasErrors('type');
+    }
+
+    public function test_member_can_start_contracting_when_licensed_and_prerequisites_are_complete(): void
+    {
+        $this->seed([
+            RolePermissionSeeder::class,
+            CountrySeeder::class,
+            ChecklistTypeSeeder::class,
+            ChecklistSeeder::class,
+        ]);
+
+        $member = $this->member();
+        $this->markLicensed($member);
+
+        foreach (['onboarding', 'licensing'] as $typeCode) {
+            $this->startChecklistType($member, $typeCode);
+            $this->completeChecklistType($member, $typeCode);
+        }
+
+        $this->actingAs($member)
+            ->get(route('contracting.index'))
+            ->assertOk()
+            ->assertSee('Not started yet')
+            ->assertSee('Start checklist');
+
+        $this->actingAs($member)
+            ->post(route('checklists.type.start', 'contracting'), [
+                'started_at' => '2026-06-01',
+            ])
+            ->assertRedirect(route('contracting.index'));
+
+        $this->actingAs($member)
+            ->get(route('contracting.index'))
+            ->assertOk()
+            ->assertSee('Contracting Checklist')
+            ->assertDontSee('Not started yet');
     }
 
     public function test_member_can_start_cfm_training_when_onboarding_licensing_and_fap_are_complete(): void
@@ -278,5 +374,14 @@ class ChecklistTypeStartTest extends TestCase
         ], LocationOptions::profileLocationIds('Canada')));
 
         return $user;
+    }
+
+    private function markLicensed(User $user): void
+    {
+        $user->profile->update([
+            'license_number' => 'LIC-'.$user->id,
+            'is_licensed_life_insurance' => true,
+            'insurance_licenses' => ['Canada|Ontario'],
+        ]);
     }
 }

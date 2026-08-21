@@ -28,11 +28,17 @@ class ChecklistTypeManagementTest extends TestCase
         ]);
 
         $this->assertDatabaseHas('checklist_types', [
+            'code' => 'contracting',
+            'name' => 'Contracting',
+            'is_active' => true,
+        ]);
+
+        $this->assertDatabaseHas('checklist_types', [
             'code' => 'cfm-mentoring',
             'name' => 'CFM Mentoring',
         ]);
 
-        $this->assertSame(7, ChecklistType::query()->count());
+        $this->assertSame(8, ChecklistType::query()->count());
     }
 
     public function test_admin_can_manage_checklist_types(): void
@@ -47,6 +53,8 @@ class ChecklistTypeManagementTest extends TestCase
             ->get(route('admin.management.resource.index', 'checklist-types'))
             ->assertOk()
             ->assertSee('Checklist Types')
+            ->assertSee('Back to Checklists')
+            ->assertSee(route('admin.checklists.index'), false)
             ->assertSee('Update Seeder')
             ->assertSee('onboarding')
             ->assertSee('CFM Mentoring');
@@ -83,11 +91,16 @@ class ChecklistTypeManagementTest extends TestCase
         $admin = User::factory()->create();
         $admin->assignRole('admin');
 
-        $this->actingAs($admin)
+        $html = $this->actingAs($admin)
             ->get(route('admin.checklists.index'))
             ->assertOk()
             ->assertSee('Checklist Types')
-            ->assertSee(route('admin.management.resource.index', 'checklist-types'), false);
+            ->getContent();
+
+        $this->assertMatchesRegularExpression(
+            '/href="'.preg_quote(route('admin.management.resource.index', 'checklist-types'), '/').'"[^>]*\bwire:navigate\b/',
+            $html,
+        );
     }
 
     public function test_admin_can_update_checklist_type_seeder_from_list(): void

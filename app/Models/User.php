@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Services\NewMemberRegistrationService;
+use App\Support\GreatwayRankCatalog;
 use App\Support\SystemTaskAssignor;
 use App\Support\UserAvatar;
 use App\Support\UserRankRoleLabel;
@@ -70,6 +71,16 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         static::created(function (User $user): void {
             $user->ensureDefaultRole();
+
+            if ($user->rank_id) {
+                app(\App\Services\SubscriptionService::class)->sync($user);
+            }
+        });
+
+        static::updated(function (User $user): void {
+            if ($user->wasChanged('rank_id')) {
+                app(\App\Services\SubscriptionService::class)->sync($user);
+            }
         });
 
         static::deleting(function (User $user): void {
@@ -120,6 +131,16 @@ class User extends Authenticatable implements MustVerifyEmail
     public function rank(): BelongsTo
     {
         return $this->belongsTo(Rank::class);
+    }
+
+    public function subscription(): HasOne
+    {
+        return $this->hasOne(UserSubscription::class);
+    }
+
+    public function subscriptionInvoices(): HasMany
+    {
+        return $this->hasMany(SubscriptionInvoice::class);
     }
 
     public function team(): BelongsTo
@@ -280,7 +301,7 @@ class User extends Authenticatable implements MustVerifyEmail
             return true;
         }
 
-        return $this->rank?->code === 'ED';
+        return $this->rank?->isAtLeast(GreatwayRankCatalog::agencyLeaderCode()) ?? false;
     }
 
     public function canAccessCfmPortal(): bool

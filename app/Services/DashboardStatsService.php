@@ -8,8 +8,8 @@ namespace App\Services;
 
 use App\Models\Checklist;
 use App\Models\Prospect;
-use App\Models\Rank;
 use App\Models\User;
+use App\Support\GreatwayRankCatalog;
 use App\Services\Fna\FnaAnalyticsService;
 use App\Services\Prospects\ProspectActivityLogSummaryService;
 use App\Services\Prospects\ProspectAnalyticsService;
@@ -299,7 +299,7 @@ class DashboardStatsService
 
     {
 
-        if ($this->userIsSfaOrAbove($user)) {
+        if ($this->userIsAssociateOrAbove($user)) {
 
             return false;
 
@@ -347,7 +347,7 @@ class DashboardStatsService
 
     {
 
-        if ($this->userIsSfaOrAbove($user)) {
+        if ($this->userIsAssociateOrAbove($user)) {
 
             return false;
 
@@ -387,7 +387,7 @@ class DashboardStatsService
 
 
 
-    public function userIsSfaOrAbove(User $user): bool
+    public function userIsAssociateOrAbove(User $user): bool
 
     {
 
@@ -395,35 +395,7 @@ class DashboardStatsService
 
 
 
-        $rank = $user->rank;
-
-
-
-        if ($rank === null) {
-
-            return false;
-
-        }
-
-
-
-        $sfaSortOrder = Rank::query()
-
-            ->where('code', 'SFA')
-
-            ->value('sort_order');
-
-
-
-        if ($sfaSortOrder === null) {
-
-            return false;
-
-        }
-
-
-
-        return $rank->sort_order >= $sfaSortOrder;
+        return $user->rank?->isAtLeast(GreatwayRankCatalog::associateCode()) ?? false;
 
     }
 

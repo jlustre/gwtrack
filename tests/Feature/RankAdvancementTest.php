@@ -29,19 +29,21 @@ class RankAdvancementTest extends TestCase
 
     public function test_member_can_view_rank_advancement_tracker(): void
     {
-        $member = $this->memberWithRank('FA');
+        $member = $this->memberWithRank('TA');
 
         $this->actingAs($member)
             ->get(route('rank-advancement.index'))
             ->assertOk()
             ->assertSee('Rank Advancement')
             ->assertSee('Rank ladder')
-            ->assertSee('Senior Field Associate');
+            ->assertSee('Associate')
+            ->assertSee('Compensation')
+            ->assertSee('80%');
     }
 
     public function test_member_can_start_and_submit_requirement(): void
     {
-        $member = $this->memberWithRank('FA');
+        $member = $this->memberWithRank('TA');
         $progress = $this->firstProgressFor($member);
 
         Livewire::actingAs($member)
@@ -61,7 +63,7 @@ class RankAdvancementTest extends TestCase
         $leader = User::factory()->create();
         $leader->assignRole('team-leader');
 
-        $member = $this->memberWithRank('FA');
+        $member = $this->memberWithRank('TA');
         $member->update(['sponsor_id' => $leader->id]);
 
         DB::table('user_hierarchy_paths')->insert([
@@ -86,7 +88,7 @@ class RankAdvancementTest extends TestCase
 
     public function test_seeder_creates_requirements_for_advancement_ranks(): void
     {
-        $sfaRankId = Rank::query()->where('code', 'SFA')->value('id');
+        $sfaRankId = Rank::query()->where('code', 'ASC')->value('id');
 
         $this->assertGreaterThan(
             0,

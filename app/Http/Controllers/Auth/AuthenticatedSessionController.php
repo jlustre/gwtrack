@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Services\MonetizationSettingsService;
 use App\Services\ProfileCompletionService;
 use App\Services\TodaysAgendaService;
 use Illuminate\Http\RedirectResponse;
@@ -29,6 +30,8 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
+
+        app(MonetizationSettingsService::class)->syncToSession();
 
         $user = $request->user();
 

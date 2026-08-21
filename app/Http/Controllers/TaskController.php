@@ -534,6 +534,7 @@ class TaskController extends Controller
             'Email Follow-Up' => 'Member Invitations',
             'Promotion Review' => 'Rank Advancement',
             'Confirmation' => match (true) {
+                str_contains($meta, 'contracting') => 'Contracting',
                 str_contains($meta, 'licensing') => 'Licensing',
                 str_contains($meta, 'apprenticeship') => 'Field Apprenticeship',
                 str_contains($meta, 'cfm') => 'CFM Mentorship',
@@ -553,6 +554,7 @@ class TaskController extends Controller
             'Email Follow-Up' => 'Profile',
             'Promotion Review' => 'Rank Advancement',
             'Confirmation' => match (true) {
+                str_contains($meta, 'contracting') => 'Contracting',
                 str_contains($meta, 'licensing') => 'Licensing',
                 str_contains($meta, 'apprenticeship') => 'Training',
                 default => 'Training',
@@ -576,6 +578,7 @@ class TaskController extends Controller
             'bg-emerald-500' => 'bg-emerald-500/20 text-emerald-300',
             'bg-amber-500' => 'bg-amber-500/20 text-amber-300',
             'bg-blue-500' => 'bg-blue-500/20 text-blue-300',
+            'bg-rose-500' => 'bg-rose-500/20 text-rose-300',
             'bg-violet-500' => 'bg-purple-500/20 text-purple-300',
             'bg-indigo-500' => 'bg-indigo-500/20 text-indigo-300',
             'bg-sky-500' => 'bg-sky-500/20 text-sky-300',
@@ -862,6 +865,14 @@ class TaskController extends Controller
                 'route' => 'licensing.index',
                 'review_route' => 'licensing.review',
                 'tone' => 'bg-amber-500',
+            ],
+            [
+                'key' => 'contracting',
+                'label' => 'Contracting',
+                'typeCode' => 'contracting',
+                'route' => 'contracting.index',
+                'review_route' => 'contracting.review',
+                'tone' => 'bg-rose-500',
             ],
             [
                 'key' => 'apprenticeship',

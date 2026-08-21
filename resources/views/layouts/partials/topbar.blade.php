@@ -72,7 +72,7 @@
                                 <li>
                                     <a
                                         :href="result.url"
-                                        wire:navigate.hover
+                                        wire:navigate
                                         class="block px-4 py-3 transition hover:bg-gw-accent-soft"
                                     >
                                         <p class="text-sm font-semibold text-gw-primary" x-text="result.title"></p>
@@ -208,6 +208,9 @@
                             <div class="py-1">
                                 <x-dropdown-link :href="route('dashboard')">Dashboard</x-dropdown-link>
                                 <x-dropdown-link :href="route('profile.edit')">My Profile</x-dropdown-link>
+                                @if (session(\App\Services\MonetizationSettingsService::SESSION_KEY))
+                                    <x-dropdown-link :href="route('billing.index')">My Billing</x-dropdown-link>
+                                @endif
                                 @if ($canInviteMembers)
                                     <x-dropdown-link :href="route('invites.index')">My Invites</x-dropdown-link>
                                 @endif

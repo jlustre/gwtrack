@@ -336,7 +336,7 @@ class DownlineHierarchyService
                 'depth' => $branchDepth,
                 'name' => MemberDisplayName::for($member),
                 'email' => $member->email,
-                'rank' => $member->rank?->code ?? 'FA',
+                'rank' => $member->rank?->code ?? \App\Support\GreatwayRankCatalog::entryCode(),
                 'sponsor' => $member->sponsor?->name ?? '—',
                 'country' => $member->profile?->country ?? 'Global',
                 'direct_recruits' => (int) ($member->direct_recruits_count ?? $directRecruitsByMember[$member->id] ?? 0),

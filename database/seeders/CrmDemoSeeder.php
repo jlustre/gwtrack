@@ -37,8 +37,8 @@ class CrmDemoSeeder extends Seeder
         ]);
 
         $this->teamId = $this->teamId();
-        $rankId = Rank::query()->where('code', 'FA')->value('id');
-        $seniorRankId = Rank::query()->where('code', 'SFA')->value('id') ?: $rankId;
+        $rankId = Rank::query()->where('code', 'TA')->value('id');
+        $seniorRankId = Rank::query()->where('code', 'ASC')->value('id') ?: $rankId;
 
         $this->agencyOwner = $this->demoUser('crm-ao@gwtrack.com', 'CRM Demo Agency Owner', 'agency-owner', $seniorRankId);
         $this->cfm = $this->demoUser('crm-cfm@gwtrack.com', 'CRM Demo CFM', 'certified-field-mentor', $seniorRankId, $this->agencyOwner->id);

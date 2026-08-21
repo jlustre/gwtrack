@@ -31,7 +31,7 @@ class TrackerChecklistPage extends Component
             ? $trackerKey
             : TrackerChecklistConfig::keyFromRoute(request()->route()?->getName());
 
-        abort_unless(in_array($this->trackerKey, ['onboarding', 'licensing', 'apprenticeship', 'cfm-training'], true), 404);
+        abort_unless(in_array($this->trackerKey, ['onboarding', 'licensing', 'contracting', 'apprenticeship', 'cfm-training'], true), 404);
 
         $this->startedAt = now()->toDateString();
 

@@ -27,7 +27,7 @@ class BookingSchedulingSeeder extends Seeder
 {
     public function run(): void
     {
-        $rank = Rank::query()->where('code', 'SFA')->first() ?? Rank::query()->first();
+        $rank = Rank::query()->where('code', 'ASC')->first() ?? Rank::query()->first();
         $team = Team::query()->first();
 
         $cfm = $this->member('booking-cfm@gwtrack.com', 'Booking Certified Field Mentor', 'certified-field-mentor', $team?->id, $rank?->id);

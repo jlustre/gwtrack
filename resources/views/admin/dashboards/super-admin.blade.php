@@ -28,7 +28,7 @@
             <x-admin.nav-tile
                 :href="route('admin.ranks.index')"
                 title="Ranks & Teams"
-                description="Adjust FA defaults, rank paths, and team placement."
+                description="Adjust TA defaults, rank paths, and team placement."
                 icon="rank"
             />
             <x-admin.nav-tile
@@ -37,6 +37,14 @@
                 description="Edit transactional email copy, subjects, and activation status."
                 icon="mail"
             />
+            @if (session(\App\Services\MonetizationSettingsService::SESSION_KEY))
+                <x-admin.nav-tile
+                    :href="route('admin.payments')"
+                    title="Subscription Payments"
+                    description="Collect open invoices, record card, cash, check, or bank payments, and review paid history."
+                    icon="clipboard"
+                />
+            @endif
         </div>
     </section>
 </x-app-layout>

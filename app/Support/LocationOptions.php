@@ -724,6 +724,61 @@ class LocationOptions
 
     /**
      * @param  list<string>  $keys
+     * @param  array<string, mixed>  $numbers
+     * @return array<string, string>
+     */
+    public static function normalizeLicenseNumbers(array $keys, array $numbers): array
+    {
+        $normalized = [];
+
+        foreach (self::normalizeLicensedJurisdictionKeys($keys) as $key) {
+            $value = $numbers[$key] ?? $numbers[str_replace('|', '~', $key)] ?? '';
+            $normalized[$key] = trim((string) $value);
+        }
+
+        return $normalized;
+    }
+
+    /**
+     * @param  list<string>  $keys
+     * @param  array<string, mixed>  $dates
+     * @return array<string, string>
+     */
+    public static function normalizeLicenseExpirations(array $keys, array $dates): array
+    {
+        $normalized = [];
+
+        foreach (self::normalizeLicensedJurisdictionKeys($keys) as $key) {
+            $value = $dates[$key] ?? $dates[str_replace('|', '~', $key)] ?? '';
+            $normalized[$key] = self::normalizeLicenseExpirationDate((string) $value);
+        }
+
+        return $normalized;
+    }
+
+    public static function normalizeLicenseExpirationDate(string $value): string
+    {
+        $value = trim($value);
+
+        if ($value === '') {
+            return '';
+        }
+
+        $date = \DateTimeImmutable::createFromFormat('Y-m-d', $value);
+
+        if ($date instanceof \DateTimeImmutable && $date->format('Y-m-d') === $value) {
+            return $value;
+        }
+
+        try {
+            return \Illuminate\Support\Carbon::parse($value)->toDateString();
+        } catch (\Throwable) {
+            return '';
+        }
+    }
+
+    /**
+     * @param  list<string>  $keys
      * @return list<string>
      */
     public static function labelsForJurisdictionKeys(array $keys): array

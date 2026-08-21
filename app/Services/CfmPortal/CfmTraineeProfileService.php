@@ -79,7 +79,7 @@ class CfmTraineeProfileService
                 'phone' => $trainee->profile?->phone ?? '—',
                 'photo_url' => $trainee->profilePhotoUrl(),
                 'initials' => $trainee->initials(),
-                'rank' => $trainee->rank?->code ?? 'FA',
+                'rank' => $trainee->rank?->code ?? \App\Support\GreatwayRankCatalog::entryCode(),
                 'rank_name' => $trainee->rank?->name ?? '—',
                 'target_rank' => $trainee->rank?->name ?? '—',
                 'sponsor' => $trainee->sponsor?->name ?? '—',

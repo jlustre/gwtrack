@@ -56,8 +56,8 @@ class CrmModuleTestSeeder extends Seeder
         $this->ensureFoundation();
 
         $this->teamId = $this->teamId();
-        $faRankId = (int) Rank::query()->where('code', 'FA')->value('id');
-        $sfaRankId = (int) (Rank::query()->where('code', 'SFA')->value('id') ?: $faRankId);
+        $faRankId = (int) Rank::query()->where('code', 'TA')->value('id');
+        $sfaRankId = (int) (Rank::query()->where('code', 'ASC')->value('id') ?: $faRankId);
 
         $this->cfm = $this->user(
             'crm-test-cfm@gwtrack.com',

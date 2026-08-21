@@ -43,6 +43,59 @@
         </div>
     </div>
 
+    <section class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+        <div class="flex flex-col gap-3 border-b border-slate-100 px-6 py-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+                <h2 class="text-lg font-semibold text-gw-primary">Life insurance licenses</h2>
+                <p class="mt-1 text-sm text-slate-600">
+                    License numbers and expiration dates from
+                    @if ($hub['is_self'])
+                        your profile.
+                    @else
+                        this member’s profile.
+                    @endif
+                    They drive renewal status below.
+                </p>
+            </div>
+            @if ($hub['is_self'])
+                <a href="{{ $hub['profile_licenses_url'] }}" class="text-sm font-semibold text-gw-accent-dark hover:underline">
+                    Edit on My Profile
+                </a>
+            @endif
+        </div>
+
+        @if ($hub['profile_licenses'] !== [])
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-slate-200 text-left text-sm">
+                    <thead class="bg-slate-50 text-xs font-semibold uppercase tracking-wide text-slate-500">
+                        <tr>
+                            <th class="px-6 py-3">Jurisdiction</th>
+                            <th class="px-6 py-3">License number</th>
+                            <th class="px-6 py-3">Expiration</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        @foreach ($hub['profile_licenses'] as $license)
+                            <tr>
+                                <td class="px-6 py-3 font-semibold text-gw-primary">{{ $license['label'] }}</td>
+                                <td class="px-6 py-3 text-slate-700">{{ $license['number'] !== '' ? $license['number'] : 'Not on file' }}</td>
+                                <td class="px-6 py-3 text-slate-700">{{ $license['expiration_label'] !== '' ? $license['expiration_label'] : 'Not on file' }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        @else
+            <div class="px-6 py-8 text-sm text-slate-600">
+                No life insurance licenses on the profile yet.
+                @if ($hub['is_self'])
+                    <a href="{{ $hub['profile_licenses_url'] }}" class="font-semibold text-gw-accent-dark hover:underline">Add them on the Licenses tab</a>
+                    so numbers and expiration dates appear here.
+                @endif
+            </div>
+        @endif
+    </section>
+
     @if (session('compliance_status'))
         <div class="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-800">
             {{ session('compliance_status') }}
@@ -154,8 +207,11 @@
                                     <span class="rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase {{ $badgeClass }}">{{ $item['status_label'] }}</span>
                                 </div>
                                 <dl class="mt-2 grid gap-1 text-sm text-slate-600 sm:grid-cols-2">
+                                    @if ($item['jurisdiction_label'])
+                                        <div><span class="font-medium text-slate-500">Jurisdiction:</span> {{ $item['jurisdiction_label'] }}</div>
+                                    @endif
                                     @if ($item['identifier'])
-                                        <div><span class="font-medium text-slate-500">ID:</span> {{ $item['identifier'] }}</div>
+                                        <div><span class="font-medium text-slate-500">{{ $item['identifier_label'] }}:</span> {{ $item['identifier'] }}</div>
                                     @endif
                                     @if ($item['carrier_name'])
                                         <div><span class="font-medium text-slate-500">Carrier:</span> {{ $item['carrier_name'] }}</div>

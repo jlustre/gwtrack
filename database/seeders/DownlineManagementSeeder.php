@@ -79,17 +79,17 @@ class DownlineManagementSeeder extends Seeder
         $this->root = $this->seedUser(
             email: 'downline-owner@gwtrack.com',
             name: 'Morgan Executive',
-            rankCode: 'ED',
+            rankCode: 'SVP',
             role: 'agency-owner',
             sponsor: null,
             joinedMonthsAgo: 36,
         );
 
         $leaders = [
-            $this->seedUser('avery.stone@gwtrack.com', 'Avery Stone', 'SM', 'team-leader', $this->root, 28),
-            $this->seedUser('bianca.reyes@gwtrack.com', 'Bianca Reyes', 'SFA', 'certified-field-mentor', $this->root, 26),
-            $this->seedUser('caleb.morgan@gwtrack.com', 'Caleb Morgan', 'SM', 'team-leader', $this->root, 24),
-            $this->seedUser('dana.chen@gwtrack.com', 'Dana Chen', 'SFA', 'trainer', $this->root, 22),
+            $this->seedUser('avery.stone@gwtrack.com', 'Avery Stone', 'SA', 'team-leader', $this->root, 28),
+            $this->seedUser('bianca.reyes@gwtrack.com', 'Bianca Reyes', 'ASC', 'certified-field-mentor', $this->root, 26),
+            $this->seedUser('caleb.morgan@gwtrack.com', 'Caleb Morgan', 'SA', 'team-leader', $this->root, 24),
+            $this->seedUser('dana.chen@gwtrack.com', 'Dana Chen', 'ASC', 'trainer', $this->root, 22),
         ];
 
         $this->defaultMentor = $leaders[1];
@@ -114,7 +114,7 @@ class DownlineManagementSeeder extends Seeder
             $direct = $this->seedUser(
                 email: $email,
                 name: $this->randomName(),
-                rankCode: $i % 3 === 0 ? 'SFA' : 'FA',
+                rankCode: $i % 3 === 0 ? 'ASC' : 'TA',
                 role: 'member',
                 sponsor: $leader,
                 joinedMonthsAgo: 20 - ($i % 12),
@@ -147,7 +147,7 @@ class DownlineManagementSeeder extends Seeder
             $sponsor = $this->seedUser(
                 email: $email,
                 name: $this->randomName(),
-                rankCode: $level <= 2 ? 'SFA' : 'FA',
+                rankCode: $level <= 2 ? 'ASC' : 'TA',
                 role: 'member',
                 sponsor: $sponsor,
                 joinedMonthsAgo: 22 - $level,
@@ -162,7 +162,7 @@ class DownlineManagementSeeder extends Seeder
             $this->seedUser(
                 email: $this->nextEmail("mixed.{$prefix}.leaf"),
                 name: $this->randomName(),
-                rankCode: 'FA',
+                rankCode: 'TA',
                 role: 'member',
                 sponsor: $leader,
                 joinedMonthsAgo: 16 - ($i % 10),
@@ -177,7 +177,7 @@ class DownlineManagementSeeder extends Seeder
                     ? "genealogy.mixed.{$prefix}.leg-root@gwtrack.com"
                     : $this->nextEmail("mixed.{$prefix}.leg"),
                 name: $this->randomName(),
-                rankCode: 'FA',
+                rankCode: 'TA',
                 role: 'member',
                 sponsor: $leader,
                 joinedMonthsAgo: 14,
@@ -200,7 +200,7 @@ class DownlineManagementSeeder extends Seeder
             $captainUser = $this->seedUser(
                 email: $this->nextEmail("captain.{$prefix}"),
                 name: $this->randomName(),
-                rankCode: $captain % 2 === 0 ? 'SFA' : 'FA',
+                rankCode: $captain % 2 === 0 ? 'ASC' : 'TA',
                 role: 'member',
                 sponsor: $leader,
                 joinedMonthsAgo: 15 - $captain,
@@ -215,7 +215,7 @@ class DownlineManagementSeeder extends Seeder
                 $this->seedUser(
                     email: $email,
                     name: $this->randomName(),
-                    rankCode: 'FA',
+                    rankCode: 'TA',
                     role: 'member',
                     sponsor: $captainUser,
                     joinedMonthsAgo: 12 - ($leaf % 8),
@@ -247,7 +247,7 @@ class DownlineManagementSeeder extends Seeder
             $child = $this->seedUser(
                 email: $this->nextEmail($emailPrefix),
                 name: $this->randomName(),
-                rankCode: $index % 4 === 0 ? 'SFA' : 'FA',
+                rankCode: $index % 4 === 0 ? 'ASC' : 'TA',
                 role: 'member',
                 sponsor: $sponsor,
                 joinedMonthsAgo: $this->randomInt(3, 18),
@@ -311,7 +311,7 @@ class DownlineManagementSeeder extends Seeder
             [
                 'name' => $name,
                 'password' => Hash::make('Password123'),
-                'rank_id' => $this->rankIds[$rankCode] ?? $this->rankIds['FA'],
+                'rank_id' => $this->rankIds[$rankCode] ?? $this->rankIds['TA'] ?? null,
                 'team_id' => $this->team->id,
                 'sponsor_id' => $sponsor?->id,
                 'mentor_id' => $mentor?->id,

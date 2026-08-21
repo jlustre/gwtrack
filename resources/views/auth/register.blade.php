@@ -7,6 +7,12 @@
         $provinceOptions = $locationOptions['provincesByCountryId'][$currentCountryId] ?? [];
         $provinceIsLegacy = filled($currentProvinceId)
             && ! array_key_exists($currentProvinceId, $provinceOptions);
+        $subscriptionDisclosure = $subscriptionDisclosure ?? ['enabled' => false, 'price_groups' => []];
+        $monetizationEnabled = (bool) ($subscriptionDisclosure['enabled'] ?? false);
+        $subscriptionTermsAccepted = (bool) old('subscription_terms_accepted');
+        $openSubscriptionTerms = $monetizationEnabled && (
+            ! $subscriptionTermsAccepted || $errors->has('subscription_terms_accepted')
+        );
     @endphp
 
     <div class="min-h-screen bg-[radial-gradient(circle_at_10%_20%,#111111,#000000)] px-4 py-8 text-slate-100 sm:px-6 lg:px-8">
@@ -80,6 +86,9 @@
                                 editCountryId: @js($currentCountryId),
                                 editProvinceId: @js($currentProvinceId),
                                 editProvinces: @js($locationOptions['provincesByCountryId']),
+                                monetizationEnabled: @js($monetizationEnabled),
+                                showSubscriptionTerms: @js($openSubscriptionTerms),
+                                subscriptionTermsAccepted: @js($subscriptionTermsAccepted),
                                 get editProvinceOptions() {
                                     return this.editProvinces[String(this.editCountryId)] || {};
                                 },
@@ -89,7 +98,24 @@
                                         this.editProvinceId = '';
                                     }
                                 },
+                                openSubscriptionTerms() {
+                                    this.showSubscriptionTerms = true;
+                                },
+                                closeSubscriptionTerms() {
+                                    this.showSubscriptionTerms = false;
+                                },
+                                acceptSubscriptionTerms() {
+                                    this.subscriptionTermsAccepted = true;
+                                    this.showSubscriptionTerms = false;
+                                },
+                                interceptSubmit(event) {
+                                    if (this.monetizationEnabled && ! this.subscriptionTermsAccepted) {
+                                        event.preventDefault();
+                                        this.showSubscriptionTerms = true;
+                                    }
+                                },
                             }"
+                            @submit="interceptSubmit($event)"
                         >
                             @csrf
 
@@ -232,6 +258,28 @@
                                     <span>I confirm that I am an active associate of Greatway Financial Group. <span class="text-red-400">*</span></span>
                                 </label>
                                 <x-input-error :messages="$errors->get('active_associate_confirmed')" class="mt-2" />
+
+                                @if ($monetizationEnabled)
+                                    <input type="hidden" name="subscription_terms_accepted" :value="subscriptionTermsAccepted ? '1' : ''">
+                                    <div class="rounded-xl border border-gw-accent/30 bg-black/40 px-4 py-3">
+                                        <p class="text-sm font-semibold text-white">Monthly subscription terms</p>
+                                        <p class="mt-1 text-sm leading-6 text-slate-300">
+                                            GWTrack billing is on. Review the rank prices and agree before creating your account.
+                                        </p>
+                                        <button
+                                            type="button"
+                                            class="mt-3 text-sm font-semibold text-gw-accent hover:text-gw-accent-hover hover:underline"
+                                            @click="openSubscriptionTerms()"
+                                        >
+                                            Review subscription charges
+                                        </button>
+                                        <p class="mt-2 text-xs" :class="subscriptionTermsAccepted ? 'text-emerald-400' : 'text-amber-300'">
+                                            <span x-show="subscriptionTermsAccepted">You agreed to the subscription charges.</span>
+                                            <span x-show="! subscriptionTermsAccepted">Agreement required before you can register.</span>
+                                        </p>
+                                        <x-input-error :messages="$errors->get('subscription_terms_accepted')" class="mt-2" />
+                                    </div>
+                                @endif
                             </div>
 
                             <button type="submit" class="w-full rounded-full bg-gradient-to-r from-gw-accent-dark via-gw-accent to-gw-accent-hover px-5 py-3 text-sm font-extrabold uppercase tracking-wider text-black shadow-lg transition hover:-translate-y-0.5 hover:shadow-gw-accent/20">
@@ -246,6 +294,80 @@
                             <p class="text-center text-xs text-slate-400">
                                 <span class="text-red-400">*</span> Required
                             </p>
+
+                            @if ($monetizationEnabled)
+                                <div
+                                    x-show="showSubscriptionTerms"
+                                    x-cloak
+                                    class="fixed inset-0 z-50 flex items-center justify-center p-4"
+                                    role="dialog"
+                                    aria-modal="true"
+                                    aria-labelledby="subscription-terms-title"
+                                >
+                                    <div class="absolute inset-0 bg-black/80" @click="closeSubscriptionTerms()"></div>
+                                    <div class="relative z-10 flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-3xl border border-gw-accent/30 bg-[#0b0b0c] text-slate-100 shadow-[0_25px_45px_-12px_rgba(0,0,0,0.8)]">
+                                        <div class="border-b border-gw-accent/20 bg-gradient-to-r from-black to-[#141416] px-6 py-5">
+                                            <p class="text-xs font-semibold uppercase tracking-[0.14em] text-gw-accent">Before you continue</p>
+                                            <h3 id="subscription-terms-title" class="mt-1 text-2xl font-semibold text-white">GWTrack subscription charges</h3>
+                                            <p class="mt-2 text-sm leading-6 text-slate-300">
+                                                Review the upcoming monthly costs if you want to keep using GWTrack after you become licensed and advance in rank.
+                                            </p>
+                                        </div>
+                                        <div class="space-y-4 overflow-y-auto px-6 py-5 text-sm leading-6 text-slate-300">
+                                            <p>
+                                                New associates start at Training Associate and are <span class="font-semibold text-white">free while unlicensed</span>. TA and ASC ranks stay free. After you are licensed and reach Senior Associate or above, you can choose monthly auto-pay or one annual invoice.
+                                            </p>
+                                            <p>
+                                                If you later change rank, the new price starts on your next subscription anniversary month&mdash;not the day of the promotion.
+                                            </p>
+                                            <div class="overflow-hidden rounded-2xl border border-gw-accent/20 bg-[#070707]">
+                                                <table class="gw-table-unstriped min-w-full divide-y divide-gw-accent/15 text-left text-slate-200">
+                                                    <thead class="bg-[#131316] text-xs font-semibold uppercase tracking-wide text-gw-accent">
+                                                        <tr class="bg-[#131316]">
+                                                            <th class="px-4 py-3">Rank</th>
+                                                            <th class="px-4 py-3 text-right">Monthly</th>
+                                                            <th class="px-4 py-3 text-right">Annual</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="divide-y divide-gw-accent/10">
+                                                        <tr class="bg-[#0b0b0c]">
+                                                            <td class="px-4 py-2.5">Training Associate (TA) &amp; Associate (ASC)</td>
+                                                            <td class="px-4 py-2.5 text-right font-semibold text-white">Free</td>
+                                                            <td class="px-4 py-2.5 text-right font-semibold text-white">Free</td>
+                                                        </tr>
+                                                        @foreach ($subscriptionDisclosure['price_groups'] as $group)
+                                                            <tr class="{{ $loop->odd ? 'bg-[#111113]' : 'bg-[#0b0b0c]' }}">
+                                                                <td class="px-4 py-2.5">{{ $group['label'] }}</td>
+                                                                <td class="px-4 py-2.5 text-right font-semibold text-white">{{ $group['amount_label'] }}</td>
+                                                                <td class="px-4 py-2.5 text-right font-semibold text-white">{{ $group['annual_amount_label'] }}</td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <p class="text-xs text-slate-400">
+                                                Unlicensed associates remain free at every rank. Continuing to register means you understand these charges may apply as you license and promote.
+                                            </p>
+                                        </div>
+                                        <div class="flex flex-col gap-3 border-t border-gw-accent/20 bg-[#070707] px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
+                                            <button
+                                                type="button"
+                                                class="rounded-full border border-slate-600 px-4 py-2 text-sm font-semibold text-slate-200 hover:bg-white/5"
+                                                @click="closeSubscriptionTerms()"
+                                            >
+                                                Review later
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="rounded-full bg-gradient-to-r from-gw-accent-dark via-gw-accent to-gw-accent-hover px-5 py-2 text-sm font-extrabold uppercase tracking-wider text-black"
+                                                @click="acceptSubscriptionTerms()"
+                                            >
+                                                I agree to these charges
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
                         </form>
                     </main>
                 </div>

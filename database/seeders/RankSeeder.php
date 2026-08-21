@@ -3,32 +3,32 @@
 namespace Database\Seeders;
 
 use App\Models\Rank;
+use App\Support\GreatwayRankCatalog;
 use Illuminate\Database\Seeder;
 
 class RankSeeder extends Seeder
 {
     public function run(): void
     {
-        $ranks = [
-            ['code' => 'FA', 'name' => 'Field Associate'],
-            ['code' => 'SFA', 'name' => 'Senior Field Associate'],
-            ['code' => 'SM', 'name' => 'Sales Manager'],
-            ['code' => 'ED', 'name' => 'Executive Director'],
-            ['code' => 'SED', 'name' => 'Senior Executive Director'],
-            ['code' => 'NED', 'name' => 'National Executive Director'],
-            ['code' => 'SNED', 'name' => 'Senior National Executive Director'],
-            ['code' => 'EP', 'name' => 'Executive Partner'],
-        ];
+        GreatwayRankCatalog::remapLegacyRanks();
 
-        foreach ($ranks as $index => $rank) {
-            Rank::updateOrCreate(
+        foreach (GreatwayRankCatalog::seederPayload() as $rank) {
+            $model = Rank::withTrashed()->updateOrCreate(
                 ['code' => $rank['code']],
-                [
-                    'name' => $rank['name'],
-                    'sort_order' => $index + 1,
-                    'is_active' => true,
-                ]
+                $rank,
             );
+
+            if ($model->trashed()) {
+                $model->restore();
+            }
         }
+
+        $keep = array_keys(GreatwayRankCatalog::ranks());
+
+        Rank::query()
+            ->whereNotIn('code', $keep)
+            ->whereIn('code', array_keys(GreatwayRankCatalog::legacyCodeMap()))
+            ->get()
+            ->each(fn (Rank $rank) => $rank->delete());
     }
 }

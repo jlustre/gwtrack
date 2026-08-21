@@ -134,7 +134,7 @@ Core identity:
 - `registration_invitations`: tracked invitation codes, sponsor, invited email, usage, expiry, email delivery, acceptance, and revocation state.
 - `email_templates`: database-managed templates for invitation and future portal emails.
 - `profiles`: extended user data, phone, province/state, license number, recruit date.
-- `ranks`: FA through EP.
+- `ranks`: Training Associate through National Executive Vice Chairman, with FYO compensation rates.
 - `teams`: hierarchical team ownership and leadership.
 
 Tracking:
@@ -216,9 +216,9 @@ Rank and role distinction:
 
 - Ranks are Greatway Financial Group advancement levels.
 - Roles are GWTrack access and permission groups.
-- ED and above usually carry the `agency-owner` role.
-- SM usually carries the `team-leader` role.
-- CFM can be granted to SFA and above after successful CFM Training completion and approval.
+- Senior Vice President (SVP) and above usually carry the `agency-owner` role.
+- Senior Associate usually carries the `team-leader` role.
+- CFM can be granted to Associate and above after successful CFM Training completion and approval.
 - Trainer can be granted after successful Field Apprenticeship Program completion and once CFM Training has started.
 
 Hierarchy visibility:

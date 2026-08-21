@@ -1,8 +1,8 @@
 # GWTrack — Goals & Performance Module
 **User Guide**
 
-**Version:** 1.1  
-**Last updated:** June 2026  
+**Version:** 1.2  
+**Last updated:** August 2026  
 **Audience:** Associates, CFMs, team leaders, and agency owners using GWTrack  
 **Hub URL:** `/goals` (sidebar: **Goals & Performance**)
 
@@ -197,7 +197,7 @@ Reverse-engineers a top-level target into a funnel of linked goals.
 | **Annual Income** | Plan from take-home income | `$100,000` |
 | **Production** | Plan from premium target | `$250,000` production |
 | **Recruiting** | Plan from recruit count | `12` recruits/year |
-| **Rank Advancement** | Roadmap to SM, ED, SED | Select rank + date |
+| **Rank Advancement** | Roadmap to SA, MB, SVP, and higher Greatway ranks | Select rank + date |
 
 1. Click a planning type card
 2. Enter **Target value** (and **Target rank** for rank goals)
@@ -549,9 +549,19 @@ number (counts) · currency (dollars) · percentage · completion (checklist-sty
 
 | Rank | Production | Recruits | Licensing | FAP | Training |
 |---|---|---|---|---|---|
-| SM | $50,000 | 2 | 100% | 100% | 80% |
-| ED | $150,000 | 5 | 100% | 100% | 100% |
-| SED | $300,000 | 10 | 100% | 100% | 100% |
+| TA | — | — | 100% | 100% | 60% |
+| ASC | — | 3 | 100% | 100% | 80% |
+| SA | $10,000 LTI | — | 100% | 100% | 80% |
+| MB | $40,000 LTI | — | 100% | 100% | 90% |
+| SMB | $80,000 LTI | — | 100% | 100% | 90% |
+| AVP | $100,000 12MI | — | 100% | 100% | 100% |
+| SVP | $60,000 12MI | 3 MB legs or 1 SVP | 100% | 100% | 100% |
+| EVP | $150,000 12MI | 3 SVP legs | 100% | 100% | 100% |
+| EVC | $300,000 12MI | 7 SVP legs | 100% | 100% | 100% |
+| SEVC | $500,000 12MI | 12 SVP legs | 100% | 100% | 100% |
+| NEVC | $800,000 12MI | 18 SVP legs | 100% | 100% | 100% |
+
+These defaults follow `docs/greatway-promotion-compensation-guidelines.md`. SVP is the first Field Leader / agency-owner rank.
 
 ### D. Income planning defaults
 

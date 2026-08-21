@@ -101,6 +101,14 @@ class ProfileLivewireTest extends TestCase
                 'Canada|Ontario',
                 'United States|California',
             ])
+            ->set('insuranceLicenseNumbers', [
+                'Canada|Ontario' => 'ON-7777',
+                'United States|California' => 'CA-8888',
+            ])
+            ->set('insuranceLicenseExpirations', [
+                'Canada|Ontario' => '2027-06-30',
+                'United States|California' => '2028-01-15',
+            ])
             ->call('saveLicenses')
             ->assertHasNoErrors()
             ->assertSet('licensesFeedback.type', 'success')
@@ -113,6 +121,71 @@ class ProfileLivewireTest extends TestCase
             ['Canada|Ontario', 'United States|California'],
             $user->profile->insurance_licenses
         );
+        $this->assertSame(
+            [
+                'Canada|Ontario' => 'ON-7777',
+                'United States|California' => 'CA-8888',
+            ],
+            $user->profile->insurance_license_numbers
+        );
+        $this->assertSame(
+            [
+                'Canada|Ontario' => '2027-06-30',
+                'United States|California' => '2028-01-15',
+            ],
+            $user->profile->insurance_license_expirations
+        );
+    }
+
+    public function test_livewire_requires_a_license_number_for_each_selected_jurisdiction(): void
+    {
+        $this->seed([
+            CountrySeeder::class,
+            StateProvinceSeeder::class,
+            TimezoneSeeder::class,
+            RolePermissionSeeder::class,
+        ]);
+
+        $user = User::factory()->create();
+        $user->assignRole('member');
+
+        Livewire::actingAs($user)
+            ->test(ProfilePage::class)
+            ->set('tab', 'licenses')
+            ->set('isLicensedLifeInsurance', true)
+            ->set('insuranceLicenses', ['Canada|Ontario'])
+            ->set('insuranceLicenseNumbers', ['Canada|Ontario' => ''])
+            ->call('saveLicenses')
+            ->assertHasErrors(['insuranceLicenseNumbers.Canada|Ontario'])
+            ->assertSet('licensesFeedback.type', 'error');
+
+        $this->assertNull($user->fresh()->profile?->insurance_licenses);
+    }
+
+    public function test_livewire_requires_an_expiration_date_for_each_selected_jurisdiction(): void
+    {
+        $this->seed([
+            CountrySeeder::class,
+            StateProvinceSeeder::class,
+            TimezoneSeeder::class,
+            RolePermissionSeeder::class,
+        ]);
+
+        $user = User::factory()->create();
+        $user->assignRole('member');
+
+        Livewire::actingAs($user)
+            ->test(ProfilePage::class)
+            ->set('tab', 'licenses')
+            ->set('isLicensedLifeInsurance', true)
+            ->set('insuranceLicenses', ['Canada|Ontario'])
+            ->set('insuranceLicenseNumbers', ['Canada|Ontario' => 'ON-1001'])
+            ->set('insuranceLicenseExpirations', ['Canada|Ontario' => ''])
+            ->call('saveLicenses')
+            ->assertHasErrors(['insuranceLicenseExpirations.Canada|Ontario'])
+            ->assertSet('licensesFeedback.type', 'error');
+
+        $this->assertNull($user->fresh()->profile?->insurance_licenses);
     }
 
     public function test_livewire_can_create_invitation_without_redirect(): void

@@ -290,8 +290,10 @@ return [
       'Advancement Tracking' => 
       [
         0 => 'FA requirements complete',
-        1 => 'SFA readiness review',
-        2 => 'Promotion recommendation submitted',
+        1 => 'TA requirements complete',
+        2 => 'SFA readiness review',
+        3 => 'Associate readiness review',
+        4 => 'Promotion recommendation submitted',
       ],
     ],
   ],

@@ -16,7 +16,7 @@ This document defines the operating rules and primary workflows for GWTrack.com.
 - Registration codes are stored and audited so the portal can identify who sponsored each new member.
 - A newly registered member must receive `sponsor_id` from the sponsoring member tied to the invitation code.
 - A newly registered member receives the default `member` role.
-- A newly registered member receives the default `FA` rank.
+- A newly registered member receives the default `TA` (Training Associate) rank.
 - A newly registered member is assigned to the same team as their sponsor.
 - Only users with `super-admin`, `admin`, or `agency-owner` roles may change a user's role, rank, or team after registration.
 - Only active Greatway Financial Group associates may complete registration.
@@ -55,21 +55,39 @@ This document defines the operating rules and primary workflows for GWTrack.com.
 - Ranks are Greatway Financial Group advancement levels and represent business progression.
 - Roles are GWTrack application access groups and determine portal permissions.
 - Rank changes do not automatically equal role changes unless a GWTrack workflow explicitly grants the corresponding role.
-- ED, SED, NED, and EP rank members usually qualify for the `agency-owner` role.
-- SM rank members usually qualify for the `team-leader` role.
-- The `certified-field-mentor` role may be granted to members at SFA rank and above after successfully completing CFM training and approval.
+- Senior Vice President (SVP) and above usually qualify for the `agency-owner` role. SVP is the first Field Leader rank.
+- Senior Associate rank members usually qualify for the `team-leader` role.
+- The `certified-field-mentor` role may be granted to members at Associate rank and above after successfully completing CFM training and approval.
 - The `trainer` role may be granted to members who successfully completed the Field Apprenticeship Program and have started CFM Training.
 - Final role assignment remains controlled by authorized administrators unless automated approval workflows are implemented later.
 
 ## Rank Path
 
-- FA - Field Associate
-- SFA - Senior Field Associate
-- SM - Sales Manager
-- ED - Executive Director
-- SED - Senior Executive Director
-- NED - National Executive Director
-- EP - Executive Partner
+Producer track (personal production):
+
+- TA - Training Associate (80% Total FYO)
+- ASC - Associate (100% Total FYO; 3 NBAs)
+- SA - Senior Associate (110% Total FYO; $10,000 LTI)
+- MB - Managing Broker (120% Total FYO; $40,000 LTI)
+- SMB - Senior Managing Broker (130% Total FYO; $80,000 LTI)
+- AVP - Associate Vice President (145% Total FYO; $100,000 12MI)
+
+Builder track (Field Leaders, SVP and above):
+
+- SVP - Senior Vice President (145% Total FYO; $60,000 12MI plus 3 MB legs or 1 SVP). Agency-owner rank.
+- EVP - Executive Vice President (150% Total FYO including 5% PPB)
+- EVC - Executive Vice Chairman (155% Total FYO including 10% PPB)
+- SEVC - Senior Executive Vice Chairman (160% Total FYO including 15% PPB)
+- NEVC - National Executive Vice Chairman (165% Total FYO including 20% PPB)
+
+Canonical figures: `docs/greatway-promotion-compensation-guidelines.md` and `config/greatway-compensation.php`.
+
+## Compensation Rules
+
+- Each rank stores track (producer or builder), Total FYO, compensation rate, PPB rate, non-FYC rate, income metric, and Field Leader flag.
+- The rank advancement tracker shows current and next-rank compensation.
+- Generational overrides apply at SVP and above.
+- Rank-based CFM management access starts at SVP. The `agency-owner` role also grants that access independently of rank.
 
 ## Access Control Rules
 
@@ -178,7 +196,7 @@ This document defines the operating rules and primary workflows for GWTrack.com.
 15. The prospective member must enter an GW Associate ID and confirm that they are an active Greatway Financial Group associate.
 16. When the form is submitted, the system validates the code, sponsor status, invited email when present, expiry, revocation status, and usage count.
 17. The new member account is created with `sponsor_id` set to the sponsor's user ID.
-18. The new member account receives the `member` role, `FA` rank, and the sponsor's current team.
+18. The new member account receives the `member` role, `TA` rank, and the sponsor's current team.
 19. The registration invitation records `accepted_by`, `accepted_at`, and updated usage count.
 20. After successful registration, the invitation code must be deactivated so it cannot be reused.
 21. Accepted invitations must not appear in the sponsor's Recent Invitations panel.
@@ -305,7 +323,7 @@ This document defines the operating rules and primary workflows for GWTrack.com.
 13. Request enters pending status.
 14. Authorized reviewer approves or rejects the request.
 15. Reviewer notes are stored.
-16. Approved users at SFA rank or above may be assigned the Certified Field Mentor role.
+16. Approved users at Associate rank or above may be assigned the Certified Field Mentor role.
 17. Rejected user can review feedback and reapply if allowed.
 
 ## Training Workflow
@@ -332,13 +350,23 @@ This document defines the operating rules and primary workflows for GWTrack.com.
 
 ## Rank Advancement Workflow
 
-1. Admin defines rank requirements for each rank.
+1. Admin defines rank requirements for each Greatway rank (Producer TA–AVP and Builder SVP–NEVC).
 2. User progress is tracked against each requirement.
-3. Requirements may include licensing, onboarding, training, assessments, production, recruiting, leadership, mentorship, or manual approval.
-4. User and leadership can view progress toward next rank.
-5. Authorized users may approve rank advancement when requirements are met.
-6. User current rank is updated.
-7. Rank progress history remains available for reporting.
+3. Requirements may include licensing, onboarding, training, assessments, production, recruiting, Field Leader legs, mentorship, or manual approval.
+4. The tracker shows current and next-rank compensation (Total FYO, compensation rate, and PPB).
+5. User and leadership can view progress toward next rank.
+6. Authorized users may approve rank advancement when requirements are met.
+7. User current rank is updated.
+8. Rank progress history remains available for reporting.
+
+## Admin Checklists Hub Workflow
+
+1. Authorized admins open `/admin/checklists`.
+2. The hub links to Checklist Types, Checklist Instructions, and Checklist Items.
+3. Types define checklist categories (onboarding, licensing, contracting, FAP, CFM training, mentoring, and future types).
+4. Instructions store rich-text help, manuals, and reference URLs shown while members complete a checklist.
+5. Items are the steps members complete across those types.
+6. Types, Instructions, and Items pages include a Back to Checklists action that returns to the hub.
 
 ## Team Hierarchy Workflow
 
@@ -408,15 +436,15 @@ This document defines the operating rules and primary workflows for GWTrack.com.
 ## Portal Navigation Rules
 
 - Sidebar navigation is grouped into Dashboard, Trackers, My Team, Communications, Resources, and Admin Management.
-- Trackers includes My Onboarding, Licensing Tracker, My Tasks, Field Apprenticeship, CFM Training, Training Center, and Assessments.
+- Trackers includes My Onboarding, Licensing Tracker, Contracting Tracker, My Tasks, Field Apprenticeship, CFM Training, Training Center, and Assessments.
 - Communications includes Announcements, Events, Calendar, Notifications, Rank Advancement, and Recognition.
 - Resources includes Documents, Videos, Recorded Webinars, and Zoom Links.
-- Admin Management links are shown only to roles or permissions that can access the related admin areas.
+- Admin Management links are shown only to roles or permissions that can access the related admin areas. Checklist administration starts at `/admin/checklists` (Types, Instructions, Items).
 - The topbar includes global search, notifications, and avatar/profile actions.
 
 ## Open Workflow Decisions
 
-- Exact rank advancement criteria by rank.
+- Which remaining rank-advancement evidence and approval steps still need a GWTrack workflow beyond the published Greatway income, NBA, and Field Leader leg qualifications.
 - Exact licensing workflow by province or state.
 - Mandatory apprenticeship step list.
 - CFM certification approval criteria.

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Rank;
 use App\Models\User;
 use App\Services\DownlineHierarchyService;
 use Illuminate\Database\Seeder;
@@ -15,6 +16,10 @@ class UsersSeeder extends Seeder
 {
     public function run(): void
     {
+        $smbRankId = Rank::where('code', 'SMB')->value('id');
+        $svpRankId = Rank::where('code', 'SVP')->value('id');
+        $saRankId = Rank::where('code', 'SA')->value('id');
+
         $superAdmin = User::updateOrCreate(
             ['email' => 'super-admin@gwtrack.com'],
             [
@@ -23,7 +28,7 @@ class UsersSeeder extends Seeder
                 'joined_at' => now(),
                 'sponsor_id' => null,
                 'mentor_id' => null,
-                'rank_id' => 5,
+                'rank_id' => $smbRankId,
                 'team_id' => 1,
                 'is_online' => false,
                 'is_active' => true,
@@ -58,7 +63,7 @@ class UsersSeeder extends Seeder
                     'joined_at' => now(),
                     'sponsor_id' => $superAdmin->id,
                     'mentor_id' => $superAdmin->id,
-                    'rank_id' => 4,
+                    'rank_id' => $svpRankId,
                     'team_id' => $teamId,
                     'is_online' => false,
                     'is_active' => true,
@@ -81,7 +86,7 @@ class UsersSeeder extends Seeder
                     'joined_at' => now(),
                     'sponsor_id' => $agencyOwner->id,
                     'mentor_id' => $superAdmin->id,
-                    'rank_id' => 3,
+                    'rank_id' => $saRankId,
                     'team_id' => $teamId,
                     'is_online' => false,
                     'is_active' => true,

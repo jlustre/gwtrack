@@ -13,6 +13,16 @@
     $optionLabelClass = $optionLabelClass ?? 'flex items-start gap-2 text-xs text-slate-700 cursor-pointer';
     $collapsibleCountries = $collapsibleCountries ?? true;
     $wireModel = $wireModel ?? null;
+    $showLicenseNumbers = $showLicenseNumbers ?? false;
+    $licenseNumbers = is_array($licenseNumbers ?? null) ? $licenseNumbers : [];
+    $licenseNumberInputName = $licenseNumberInputName ?? 'insurance_license_numbers';
+    $licenseNumberWireModel = $licenseNumberWireModel ?? ($wireModel ? 'insuranceLicenseNumbers' : null);
+    $licenseExpirations = is_array($licenseExpirations ?? null) ? $licenseExpirations : [];
+    $licenseExpirationInputName = $licenseExpirationInputName ?? 'insurance_license_expirations';
+    $licenseExpirationWireModel = $licenseExpirationWireModel ?? ($wireModel ? 'insuranceLicenseExpirations' : null);
+    $optionWrapperClass = $showLicenseNumbers
+        ? 'rounded-md border border-slate-200 bg-slate-50/70 p-2.5'
+        : '';
 
     $countryPanels = [];
     foreach ($locationOptions['countries'] ?? [] as $country) {
@@ -90,25 +100,25 @@
                         x-transition:leave-end="opacity-0 -translate-y-1"
                         class="border-t border-slate-100 px-3 py-3"
                     >
-                        <div class="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                        <div class="{{ $showLicenseNumbers ? 'grid grid-cols-1 gap-3 sm:grid-cols-2' : 'grid grid-cols-1 gap-2 sm:grid-cols-2' }}">
                             @foreach ($panel['provinces'] as $provinceValue => $provinceLabel)
-                                @php
-                                    $jurisdictionKey = \App\Support\LocationOptions::jurisdictionKey($panel['country'], $provinceValue);
-                                @endphp
-                                <label class="{{ $optionLabelClass }}">
-                                    <input
-                                        type="checkbox"
-                                        @if ($wireModel)
-                                            wire:model="{{ $wireModel }}"
-                                        @else
-                                            name="{{ $checkboxName }}"
-                                        @endif
-                                        value="{{ $jurisdictionKey }}"
-                                        @checked(in_array($jurisdictionKey, $selectedKeys, true))
-                                        class="{{ $checkboxClass }}"
-                                    >
-                                    <span>{{ \App\Support\LocationOptions::formatJurisdictionLabel($panel['country'], $provinceValue) }}</span>
-                                </label>
+                                @include('cfm.partials.licensed-jurisdiction-option', [
+                                    'country' => $panel['country'],
+                                    'provinceValue' => $provinceValue,
+                                    'selectedKeys' => $selectedKeys,
+                                    'wireModel' => $wireModel,
+                                    'checkboxName' => $checkboxName,
+                                    'checkboxClass' => $checkboxClass,
+                                    'optionLabelClass' => $optionLabelClass,
+                                    'optionWrapperClass' => $optionWrapperClass,
+                                    'showLicenseNumbers' => $showLicenseNumbers,
+                                    'licenseNumbers' => $licenseNumbers,
+                                    'licenseNumberInputName' => $licenseNumberInputName,
+                                    'licenseNumberWireModel' => $licenseNumberWireModel,
+                                    'licenseExpirations' => $licenseExpirations,
+                                    'licenseExpirationInputName' => $licenseExpirationInputName,
+                                    'licenseExpirationWireModel' => $licenseExpirationWireModel,
+                                ])
                             @endforeach
                         </div>
                     </div>
@@ -120,25 +130,25 @@
             @foreach ($countryPanels as $panel)
                 <div>
                     <p class="{{ $countryLabelClass }} mb-2">{{ $panel['country'] }}</p>
-                    <div class="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                    <div class="{{ $showLicenseNumbers ? 'grid grid-cols-1 gap-3 sm:grid-cols-2' : 'grid grid-cols-1 gap-2 sm:grid-cols-2' }}">
                         @foreach ($panel['provinces'] as $provinceValue => $provinceLabel)
-                            @php
-                                $jurisdictionKey = \App\Support\LocationOptions::jurisdictionKey($panel['country'], $provinceValue);
-                            @endphp
-                            <label class="{{ $optionLabelClass }}">
-                                <input
-                                    type="checkbox"
-                                    @if ($wireModel)
-                                        wire:model="{{ $wireModel }}"
-                                    @else
-                                        name="{{ $checkboxName }}"
-                                    @endif
-                                    value="{{ $jurisdictionKey }}"
-                                    @checked(in_array($jurisdictionKey, $selectedKeys, true))
-                                    class="{{ $checkboxClass }}"
-                                >
-                                <span>{{ \App\Support\LocationOptions::formatJurisdictionLabel($panel['country'], $provinceValue) }}</span>
-                            </label>
+                            @include('cfm.partials.licensed-jurisdiction-option', [
+                                'country' => $panel['country'],
+                                'provinceValue' => $provinceValue,
+                                'selectedKeys' => $selectedKeys,
+                                'wireModel' => $wireModel,
+                                'checkboxName' => $checkboxName,
+                                'checkboxClass' => $checkboxClass,
+                                'optionLabelClass' => $optionLabelClass,
+                                'optionWrapperClass' => $optionWrapperClass,
+                                'showLicenseNumbers' => $showLicenseNumbers,
+                                'licenseNumbers' => $licenseNumbers,
+                                'licenseNumberInputName' => $licenseNumberInputName,
+                                'licenseNumberWireModel' => $licenseNumberWireModel,
+                                'licenseExpirations' => $licenseExpirations,
+                                'licenseExpirationInputName' => $licenseExpirationInputName,
+                                'licenseExpirationWireModel' => $licenseExpirationWireModel,
+                            ])
                         @endforeach
                     </div>
                 </div>

@@ -10,6 +10,7 @@ use App\Models\Profile;
 use App\Models\Rank;
 use App\Models\User;
 use App\Services\Prospects\ProspectConversionService;
+use App\Services\MonetizationSettingsService;
 use App\Support\LocationOptions;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -49,11 +50,13 @@ class RegisteredUserController extends Controller
         $registrationCountries = collect($locationOptions['countries'])
             ->filter(fn (string $name): bool => in_array($name, self::REGISTRATION_COUNTRIES, true))
             ->all();
+        $subscriptionDisclosure = app(MonetizationSettingsService::class)->registrationDisclosure();
 
         return view('auth.register', [
             'invitation' => $invitation,
             'locationOptions' => $locationOptions,
             'registrationCountries' => $registrationCountries,
+            'subscriptionDisclosure' => $subscriptionDisclosure,
         ]);
     }
 
@@ -64,6 +67,8 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        $monetizationEnabled = app(MonetizationSettingsService::class)->enabled();
+
         $request->validate([
             'registration_code' => ['required', 'string', 'exists:registration_invitations,code'],
             'first_name' => ['required', 'string', 'max:100'],
@@ -76,6 +81,7 @@ class RegisteredUserController extends Controller
             'timezone_id' => ['required', 'integer', 'exists:timezones,id'],
             'sponsor_confirmed' => ['accepted'],
             'active_associate_confirmed' => ['accepted'],
+            'subscription_terms_accepted' => $monetizationEnabled ? ['accepted'] : ['nullable'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
@@ -95,7 +101,7 @@ class RegisteredUserController extends Controller
             ]);
         }
 
-        $user = DB::transaction(function () use ($request, $countryId, $stateProvinceId): User {
+        $user = DB::transaction(function () use ($request, $countryId, $stateProvinceId, $monetizationEnabled): User {
             $invitation = RegistrationInvitation::query()
                 ->with('sponsor')
                 ->where('code', $request->string('registration_code')->toString())
@@ -124,13 +130,13 @@ class RegisteredUserController extends Controller
                 ]);
             }
 
-            $fieldAssociateRank = Rank::where('code', 'FA')->first();
+            $entryRank = Rank::entry();
 
             $user = User::create([
                 'name' => trim($request->first_name.' '.$request->last_name),
                 'email' => $email,
                 'password' => Hash::make($request->password),
-                'rank_id' => $fieldAssociateRank?->id,
+                'rank_id' => $entryRank?->id,
                 'team_id' => $invitation->sponsor?->team_id,
                 'sponsor_id' => $invitation->sponsor_id,
                 'is_active' => true,
@@ -150,6 +156,7 @@ class RegisteredUserController extends Controller
                 'state_province_id' => $locationIds['state_province_id'],
                 'timezone_id' => $locationIds['timezone_id'],
                 'is_gw_active_associate' => true,
+                'subscription_terms_accepted_at' => $monetizationEnabled ? now() : null,
             ]);
 
             $user->syncRoles([User::DEFAULT_ROLE]);

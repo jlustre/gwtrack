@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\BackupDownloadController;
 use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\AssessmentController;
 use App\Http\Controllers\AssociateParticipationAgreementController;
+use App\Http\Controllers\BillingController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\CfmAssignmentConfirmationController;
@@ -42,6 +43,8 @@ use App\Http\Controllers\TrainingPathController;
 use App\Http\Controllers\TrainingPlanController;
 use App\Http\Controllers\TrainingReportController;
 use App\Http\Controllers\TrainingSessionController;
+use App\Livewire\Admin\AdminSettingsPage;
+use App\Livewire\Admin\SubscriptionPaymentsPage;
 use App\Livewire\Admin\Backups\BackupDashboard;
 use App\Livewire\Admin\Backups\BackupHistory;
 use App\Livewire\Admin\Backups\CreateBackup;
@@ -130,11 +133,19 @@ Route::middleware(['auth', 'verified', 'active'])->group(function () {
     Route::get('/licensing', TrackerChecklistPage::class)->name('licensing.index');
     Route::patch('/licensing/{step}', [TrackerChecklistController::class, 'updateLicensing'])->name('licensing.update');
     Route::patch('/licensing-progress/{progress}/review', [TrackerChecklistController::class, 'reviewLicensing'])->name('licensing.review');
+    Route::get('/contracting', TrackerChecklistPage::class)->name('contracting.index');
+    Route::patch('/contracting/{step}', [TrackerChecklistController::class, 'updateContracting'])->name('contracting.update');
+    Route::patch('/contracting-progress/{progress}/review', [TrackerChecklistController::class, 'reviewContracting'])->name('contracting.review');
     Route::get('/compliance', ComplianceLifecycleHub::class)->name('compliance.index');
     Route::get('/tasks', [TaskController::class, 'index'])->name('tasks.index');
     Route::post('/tasks/{taskUser}/comments', [TaskController::class, 'storeComment'])->name('tasks.comments.store');
     Route::get('/invites', MyInvitesPage::class)->name('invites.index');
     Route::get('/daily-activities', DailyActivitiesPage::class)->name('daily-activities.index');
+    Route::get('/billing', [BillingController::class, 'index'])->name('billing.index');
+    Route::patch('/billing/plan', [BillingController::class, 'updatePlan'])->name('billing.plan.update');
+    Route::get('/billing/invoices/{invoice}', [BillingController::class, 'show'])->name('billing.invoices.show');
+    Route::get('/billing/invoices/{invoice}/pay', [BillingController::class, 'pay'])->name('billing.invoices.pay');
+    Route::post('/billing/invoices/{invoice}/pay', [BillingController::class, 'processPayment'])->name('billing.invoices.pay.store');
 
     Route::prefix('crm')
         ->name('crm.')
@@ -432,7 +443,8 @@ Route::middleware(['auth', 'verified', 'active'])->group(function () {
         ->middleware('role:super-admin|admin|agency-owner|team-leader|certified-field-mentor|trainer')
         ->group(function () {
             Route::get('/', AdminDashboardController::class)->name('index');
-            Route::view('/settings', 'admin.settings')->middleware('role:super-admin|admin|agency-owner')->name('settings');
+            Route::get('/settings', AdminSettingsPage::class)->middleware('role:super-admin|admin|agency-owner')->name('settings');
+            Route::get('/payments', SubscriptionPaymentsPage::class)->middleware('role:super-admin|admin|agency-owner')->name('payments');
             Route::get('/crm/pipelines', PipelineManager::class)
                 ->middleware('permission:manage crm funnels')
                 ->name('crm.pipelines');

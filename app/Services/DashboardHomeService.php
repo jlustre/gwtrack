@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\User;
 use App\Services\Goals\GoalDashboardService;
+use App\Services\Members\MemberInvitationService;
 use App\Services\Teams\CreateMyTeamService;
 use App\Support\ResourceLinkCategories;
 use Illuminate\Support\Collection;
@@ -18,6 +19,7 @@ class DashboardHomeService
         private readonly GoalDashboardService $goals,
         private readonly ResourceLinksService $resourceLinks,
         private readonly CreateMyTeamService $createMyTeam,
+        private readonly MemberInvitationService $invitations,
     ) {}
 
     /**
@@ -133,6 +135,13 @@ class DashboardHomeService
                 'description' => 'Review open tasks and priorities.',
                 'action' => 'open-my-tasks-modal',
                 'icon' => 'tasks',
+            ],
+            [
+                'label' => 'Invite New Member',
+                'description' => 'Generate a registration link and invite someone onto your team.',
+                'action' => 'open-invite-member-modal',
+                'icon' => 'invite',
+                'visible' => fn (User $actor): bool => $this->invitations->canCreateInvitation($actor),
             ],
             [
                 'label' => 'Create My Team',

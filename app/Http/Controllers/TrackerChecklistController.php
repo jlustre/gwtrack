@@ -27,6 +27,21 @@ class TrackerChecklistController extends Controller
         return $this->review($request, $this->config('licensing'), $progress);
     }
 
+    public function contracting(Request $request): View
+    {
+        return $this->show($request, $this->config('contracting'));
+    }
+
+    public function updateContracting(Request $request, int $step): RedirectResponse
+    {
+        return $this->update($request, $this->config('contracting'), $step);
+    }
+
+    public function reviewContracting(Request $request, int $progress): RedirectResponse
+    {
+        return $this->review($request, $this->config('contracting'), $progress);
+    }
+
     public function apprenticeship(Request $request): View
     {
         return $this->show($request, $this->config('apprenticeship'));
@@ -202,6 +217,26 @@ class TrackerChecklistController extends Controller
                 'indexRoute' => 'licensing.index',
                 'updateRoute' => 'licensing.update',
                 'reviewRoute' => 'licensing.review',
+            ],
+            'contracting' => [
+                'key' => 'contracting',
+                'typeCode' => 'contracting',
+                'view' => 'contracting.index',
+                'eyebrow' => 'Contracting Tracker',
+                'title' => 'Move from licensing to carrier appointments',
+                'description' => 'Track carrier contracting packages, signatures, appointments, product training, portal access, and production authorization.',
+                'checklistTitle' => 'Contracting Checklist',
+                'checklistDescription' => 'Submit completed contracting milestones for sponsor, mentor, or agency confirmation.',
+                'emptyTitle' => 'No contracting items available',
+                'emptyDescription' => 'Your contracting checklist will appear when active contracting steps are available.',
+                'itemCountLabel' => 'contracting items',
+                'completedLabel' => 'contracting milestones complete',
+                'graphLabel' => 'Overall contracting',
+                'requiredLabel' => 'Required contracting',
+                'statusPrefix' => 'contracting',
+                'indexRoute' => 'contracting.index',
+                'updateRoute' => 'contracting.update',
+                'reviewRoute' => 'contracting.review',
             ],
             'apprenticeship' => [
                 'key' => 'apprenticeship',

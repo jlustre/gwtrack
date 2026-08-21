@@ -35,8 +35,10 @@
                         <td class="px-4 py-3">
                             @if ($type['started'])
                                 <span class="rounded-full bg-emerald-50 px-2 py-1 text-xs font-semibold text-emerald-700">Started</span>
-                            @elseif ($type['prerequisites_met'])
+                            @elseif ($type['start_requirements_met'])
                                 <span class="rounded-full bg-amber-50 px-2 py-1 text-xs font-semibold text-amber-800">Ready to start</span>
+                            @elseif ($type['requires_license'] ?? false)
+                                <span class="rounded-full bg-amber-50 px-2 py-1 text-xs font-semibold text-amber-800">License required</span>
                             @else
                                 <span class="rounded-full bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-600">Waiting on prerequisites</span>
                             @endif
@@ -64,6 +66,8 @@
                                         Start
                                     </button>
                                 </form>
+                            @elseif (! $type['started'] && ($type['requires_license'] ?? false))
+                                <span class="text-xs text-slate-500">Add a life license on the profile first</span>
                             @elseif (! $type['started'] && ! $type['prerequisites_met'])
                                 <span class="text-xs text-slate-500">Complete prerequisites first</span>
                             @else

@@ -31,6 +31,11 @@ class ChecklistManagementTest extends TestCase
             'is_active' => true,
         ]);
 
+        $this->assertDatabaseHas('checklists', [
+            'title' => 'Select Target Carriers',
+            'is_active' => true,
+        ]);
+
         $onboardingTypeId = ChecklistType::query()->where('code', 'onboarding')->value('id');
         $this->assertGreaterThan(0, Checklist::query()->where('checklist_type_id', $onboardingTypeId)->count());
 
@@ -80,6 +85,8 @@ class ChecklistManagementTest extends TestCase
             ->assertOk()
             ->assertSee('Checklist Type', false)
             ->assertSee('Onboarding', false)
+            ->assertSee('Licensing', false)
+            ->assertSee('Contracting', false)
             ->assertSee('FAP', false)
             ->assertSee('CFM Mentoring', false)
             ->assertSee('CFM Training', false);
@@ -166,12 +173,18 @@ class ChecklistManagementTest extends TestCase
         $admin = User::factory()->create();
         $admin->assignRole('admin');
 
+        $onboardingTypeId = ChecklistType::query()->where('code', 'onboarding')->value('id');
         $typeId = ChecklistType::query()->where('code', 'licensing')->value('id');
 
         $this->actingAs($admin)
-            ->get(route('admin.management.resource.index', 'checklists'))
+            ->get(route('admin.management.resource.index', [
+                'checklists',
+                'checklist_type' => $onboardingTypeId,
+            ]))
             ->assertOk()
             ->assertSee('Checklists')
+            ->assertSee('Back to Checklists')
+            ->assertSee(route('admin.checklists.index'), false)
             ->assertSee('Complete Member Profile')
             ->assertSee('Confirmation Needed', false)
             ->assertSee('Needed', false)
@@ -320,5 +333,24 @@ class ChecklistManagementTest extends TestCase
             'checklist_id' => $confirmItem->id,
             'status' => 'pending_confirmation',
         ]);
+    }
+
+    public function test_checklists_hub_links_to_checklist_items(): void
+    {
+        $this->seed(RolePermissionSeeder::class);
+
+        $admin = User::factory()->create();
+        $admin->assignRole('admin');
+
+        $html = $this->actingAs($admin)
+            ->get(route('admin.checklists.index'))
+            ->assertOk()
+            ->assertSee('Checklist Items')
+            ->getContent();
+
+        $this->assertMatchesRegularExpression(
+            '/href="'.preg_quote(route('admin.management.resource.index', 'checklists'), '/').'"[^>]*\bwire:navigate\b/',
+            $html,
+        );
     }
 }

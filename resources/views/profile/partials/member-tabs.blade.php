@@ -9,7 +9,15 @@
     $hasLicenseValidationErrors = $errors->has('insurance_licenses')
         || $errors->has('insurance_licenses.*')
         || $errors->has('insuranceLicenses')
-        || $errors->has('insuranceLicenses.*');
+        || $errors->has('insuranceLicenses.*')
+        || $errors->has('insurance_license_numbers')
+        || $errors->has('insurance_license_numbers.*')
+        || $errors->has('insuranceLicenseNumbers')
+        || $errors->has('insuranceLicenseNumbers.*')
+        || $errors->has('insurance_license_expirations')
+        || $errors->has('insurance_license_expirations.*')
+        || $errors->has('insuranceLicenseExpirations')
+        || $errors->has('insuranceLicenseExpirations.*');
     $tabs = [
         'profile' => 'Profile Details',
         'licenses' => 'Licenses',

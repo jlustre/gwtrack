@@ -23,7 +23,7 @@
 
         <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             @foreach ([
-                'Rank' => $member->rank?->code ?? 'FA',
+                'Rank' => $member->rank?->code ?? \App\Support\GreatwayRankCatalog::entryCode(),
                 'Direct Recruits' => $metrics['direct_recruits'],
                 'Total Downline' => $metrics['total_downline'],
                 'Prospects' => $metrics['prospects'],

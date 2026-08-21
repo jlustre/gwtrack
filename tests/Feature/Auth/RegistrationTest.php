@@ -7,6 +7,7 @@ use App\Models\RegistrationInvitation;
 use App\Models\Team;
 use App\Models\User;
 use App\Support\LocationOptions;
+use App\Services\MonetizationSettingsService;
 use Database\Seeders\CountrySeeder;
 use Database\Seeders\EmailTemplateSeeder;
 use Database\Seeders\NotificationConfigSeeder;
@@ -134,7 +135,7 @@ class RegistrationTest extends TestCase
 
         $this->assertSame($sponsor->id, $newUser->sponsor_id);
         $this->assertSame($team->id, $newUser->team_id);
-        $this->assertSame(Rank::where('code', 'FA')->firstOrFail()->id, $newUser->rank_id);
+        $this->assertSame(Rank::where('code', 'TA')->firstOrFail()->id, $newUser->rank_id);
         $this->assertSame('Test User', $newUser->name);
         $this->assertTrue($newUser->hasRole('member'));
         $this->assertNotNull($newUser->joined_at);
@@ -361,5 +362,85 @@ class RegistrationTest extends TestCase
         $this->assertDatabaseMissing('users', [
             'email' => 'missing-location@example.com',
         ]);
+    }
+
+    public function test_registration_shows_subscription_terms_when_monetization_is_enabled(): void
+    {
+        app(MonetizationSettingsService::class)->save(true, []);
+
+        $invitation = RegistrationInvitation::factory()->create();
+
+        $this->get(route('register.invitation', $invitation->code))
+            ->assertOk()
+            ->assertSee('GWTrack subscription charges')
+            ->assertSee('Senior Associate (SA)')
+            ->assertSee('$9.95')
+            ->assertSee('I agree to these charges')
+            ->assertSee('Agreement required before you can register');
+    }
+
+    public function test_registration_requires_subscription_agreement_when_monetization_is_enabled(): void
+    {
+        $this->seed([
+            RankSeeder::class,
+            RolePermissionSeeder::class,
+        ]);
+
+        app(MonetizationSettingsService::class)->save(true, []);
+
+        $invitation = RegistrationInvitation::factory()->create();
+
+        $response = $this->post('/register', [
+            'registration_code' => $invitation->code,
+            'first_name' => 'Test',
+            'last_name' => 'User',
+            'email' => 'billing@example.com',
+            'gw_associate_id' => 'GW-BILL-1',
+            'city' => 'Vancouver',
+            ...$this->registrationLocationIds(),
+            'sponsor_confirmed' => '1',
+            'active_associate_confirmed' => '1',
+            'password' => 'password',
+            'password_confirmation' => 'password',
+        ]);
+
+        $response->assertSessionHasErrors('subscription_terms_accepted');
+        $this->assertGuest();
+        $this->assertDatabaseMissing('users', [
+            'email' => 'billing@example.com',
+        ]);
+    }
+
+    public function test_registration_succeeds_after_subscription_agreement_when_monetization_is_enabled(): void
+    {
+        $this->seed([
+            RankSeeder::class,
+            RolePermissionSeeder::class,
+            EmailTemplateSeeder::class,
+            NotificationConfigSeeder::class,
+            ProfileCompletionFieldSeeder::class,
+        ]);
+
+        app(MonetizationSettingsService::class)->save(true, []);
+
+        $invitation = RegistrationInvitation::factory()->create();
+
+        $this->post('/register', [
+            'registration_code' => $invitation->code,
+            'first_name' => 'Test',
+            'last_name' => 'User',
+            'email' => 'agreed@example.com',
+            'gw_associate_id' => 'GW-BILL-2',
+            'city' => 'Vancouver',
+            ...$this->registrationLocationIds(),
+            'sponsor_confirmed' => '1',
+            'active_associate_confirmed' => '1',
+            'subscription_terms_accepted' => '1',
+            'password' => 'password',
+            'password_confirmation' => 'password',
+        ])->assertRedirect(route('login', absolute: false));
+
+        $user = User::where('email', 'agreed@example.com')->firstOrFail();
+        $this->assertNotNull($user->profile->subscription_terms_accepted_at);
     }
 }

@@ -654,7 +654,7 @@ class DashboardStatDetailsService
             'id' => $member->id,
             'name' => MemberDisplayName::for($member),
             'email' => $member->email,
-            'rank' => $member->rank?->code ?? 'FA',
+            'rank' => $member->rank?->code ?? \App\Support\GreatwayRankCatalog::entryCode(),
             'percent' => $percent,
             'status' => $this->statusLabelForPercent($percent),
         ];

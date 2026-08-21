@@ -1,7 +1,7 @@
 # GWTrack — Application User Guide
 
-**Version:** 1.0  
-**Last updated:** June 2026  
+**Version:** 1.1  
+**Last updated:** August 2026  
 **Audience:** All GWTrack users — associates, trainees, CFMs, team leaders, agency owners, and administrators
 
 ---
@@ -139,7 +139,7 @@ Your **Dashboard** shows a **Development Journey** with shortcuts to onboarding,
 |---|---|---|
 | 1 | **Admin Dashboard** | System overview |
 | 2 | **User Management** | Create users, assign roles, restore accounts |
-| 3 | **Checklists** | Onboarding, licensing, FAP, CFM training steps |
+| 3 | **Checklists** | Hub for Types, Instructions, and Items |
 | 4 | **Training Setup** | Courses, paths, assignments |
 | 5 | **All Setup Tables** | Ranks, teams, email templates, bookings |
 | 6 | **Support Queue** | Resolve member tickets |
@@ -165,7 +165,7 @@ Ongoing Compliance & Renewals
 **Sales path:** Prospect Management → FNA → production posted on profile / Production Dashboard  
 **Recruiting path:** Recruiting Pipeline → registration invitation → onboarding  
 **Mentoring path:** CFM Portal ↔ trainee checklists, FNA review, goals coaching  
-**Learning path:** Training Center + program trackers (onboarding, licensing, FAP, CFM training)
+**Learning path:** Training Center + program trackers (onboarding, licensing, contracting, FAP, CFM training)
 
 ---
 
@@ -192,6 +192,7 @@ Everything below matches the **left sidebar**. Items you do not see are hidden b
 | **My Tasks** | `/tasks` | Personal and team tasks — list, board, calendar views |
 | **My Onboarding** | `/onboarding` | New-member orientation checklist |
 | **Licensing Tracker** | `/licensing` | Pre-licensing and licensing milestone checklist |
+| **Contracting Tracker** | `/contracting` | Carrier contracting, appointments, product training, and production authorization |
 | **Compliance & Renewals** | `/compliance` | Ongoing licenses, E&O, AML, CE, carrier appointments |
 | **Field Apprenticeship** | `/field-apprenticeship` | FAP program checklist (trainees) |
 | **CFM Training** | `/cfm-training` | CFM certification checklist |
@@ -226,7 +227,7 @@ Everything below matches the **left sidebar**. Items you do not see are hidden b
 | **Calendar** | `/calendar` | Personal and shared calendar |
 | **Mentor Scheduling** | `/bookings` | Public booking pages, availability, requests |
 | **Notifications** | `/notifications` | Full notification inbox |
-| **Rank Advancement** | `/rank-advancement` | Rank ladder, requirements, evidence submission |
+| **Rank Advancement** | `/rank-advancement` | Greatway rank ladder, compensation (FYO/PPB), requirements, and evidence |
 | **Recognition** | `/communications/recognition` | Team recognition wall |
 | **Campaigns** | `/communications/campaigns` | Multi-step communication campaigns |
 
@@ -250,7 +251,7 @@ Visible to admins, agency owners, and some leadership roles.
 | **Support Queue** | All member support tickets |
 | **User Management** | Create, edit, archive users |
 | **Roles & Permissions** | Role and permission matrix |
-| **Ranks / Teams / Checklists** | Core reference data |
+| **Ranks / Teams / Checklists** | Ranks (Greatway compensation), teams, and the Checklists hub |
 | **Calendar & Booking setup** | Event types, categories, booking links |
 | **Email Templates** | System email content and tokens |
 | **Training Setup** | Academy content administration |
@@ -311,6 +312,10 @@ Step-by-step checklist for new associates: orientation, agreements, system setup
 ## Licensing Tracker (`/licensing`)
 
 Tracks your path to becoming licensed: study, exam, application, appointments, and related milestones. Progress rolls up to your Dashboard and CFM visibility.
+
+## Contracting Tracker (`/contracting`)
+
+Tracks carrier contracting after licensing: eligibility, target carriers, packages, signatures, appointments, product training, portal access, and ready-to-submit confirmation. Onboarding and licensing must be complete, and an active life insurance license must be on the profile, before this checklist can be started.
 
 ## Compliance & Renewals (`/compliance`)
 
@@ -502,8 +507,10 @@ Members can book time with mentors via public links (`/book/{username}`). CFMs m
 
 ## Rank Advancement (`/rank-advancement`)
 
-- View rank ladder and current position
-- See requirements for next rank (production, recruiting, training, FAP, etc.)
+- View the Greatway rank ladder (Producer TA–AVP and Builder / Field Leader SVP–NEVC) and current position
+- See current and next-rank compensation (Total FYO, compensation rate, Personal Production Bonus)
+- See requirements for next rank (income, NBAs, Field Leader legs, training, FAP, licensing)
+- SVP and above are Field Leaders and the usual agency-owner rank
 - Submit evidence and track review status
 - Leaders review submissions where permitted
 
@@ -557,7 +564,15 @@ For users with admin, agency owner, or designated leadership roles.
 
 ## Checklists (Admin)
 
-Configure checklist **types**, **instructions**, and **steps** for:
+Open **Admin Management → Checklists** (`/admin/checklists`). The hub has three pages; each includes **Back to Checklists**:
+
+| Page | What it manages |
+|---|---|
+| **Types** | Checklist categories such as onboarding, FAP, CFM training, mentoring, and licensing |
+| **Instructions** | Rich-text help, manuals, and reference URLs shown while members complete a checklist |
+| **Items** | The steps members complete across those types |
+
+Configure types, instructions, and steps for:
 
 - Onboarding
 - Licensing

@@ -4,6 +4,7 @@ namespace App\Livewire\Goals;
 
 use App\Models\Goal;
 use App\Services\Goals\GoalWhatIfService;
+use App\Support\GreatwayRankCatalog;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
@@ -13,7 +14,7 @@ class WhatIfCalculator extends Component
 
     public string $targetValue = '100000';
 
-    public string $targetRank = 'SM';
+    public string $targetRank = 'SA';
 
     /** @var array{funnel: list<array<string, mixed>>, summary: array<string, float>}|null */
     public ?array $results = null;
@@ -41,7 +42,7 @@ class WhatIfCalculator extends Component
     {
         return view('livewire.goals.what-if-calculator', [
             'planningTypes' => config('goals-planning.planning_types', []),
-            'rankOptions' => array_keys(config('goals-planning.rank_requirements', [])),
+            'rankOptions' => array_keys(GreatwayRankCatalog::goalRequirements()),
         ]);
     }
 }

@@ -46,8 +46,8 @@ class CfmManagementSeeder extends Seeder
         }
 
         $teamId = $agencyOwner->team_id;
-        $rankSfa = Rank::where('code', 'SFA')->value('id');
-        $rankFa = Rank::where('code', 'FA')->value('id');
+        $rankSfa = Rank::where('code', 'ASC')->value('id');
+        $rankFa = Rank::where('code', 'TA')->value('id');
         $categoryId = $this->calendarCategoryId();
 
         $maria = $this->cfmUser(
@@ -154,7 +154,7 @@ class CfmManagementSeeder extends Seeder
             ]);
         }
 
-        $completedApprentice = $this->member('celeste.completed@example.com', 'Jordan Ellis', $agencyOwner->team_id, $agencyOwner->id, null, Rank::where('code', 'FA')->value('id'));
+        $completedApprentice = $this->member('celeste.completed@example.com', 'Jordan Ellis', $agencyOwner->team_id, $agencyOwner->id, null, Rank::where('code', 'TA')->value('id'));
         $this->seedAssociateLocation($completedApprentice, 'Canada', 'Ontario', 'Ottawa', 'Canada Eastern Time');
         $this->mentorAssignment($celeste, $completedApprentice, $agencyOwner, 'completed', now()->subMonths(8), now()->subMonths(2));
 

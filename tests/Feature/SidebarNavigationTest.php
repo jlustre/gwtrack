@@ -36,6 +36,7 @@ class SidebarNavigationTest extends TestCase
             ->assertSee('My Invites', false)
             ->assertSee('My Calendar', false)
             ->assertSee('My Appointments', false)
+            ->assertDontSee('My Billing', false)
             ->assertSee('data-sidebar-group="my-workspace"', false)
             ->assertSee('My Messages', false)
             ->assertDontSee('Pre-employment', false);
@@ -78,6 +79,45 @@ class SidebarNavigationTest extends TestCase
             ->get(route('messages.index'))
             ->assertOk()
             ->assertSee('data-server-active-item="my-workspace-my-messages"', false);
+    }
+
+    public function test_billing_link_highlights_on_billing_page(): void
+    {
+        $this->seed(RolePermissionSeeder::class);
+
+        app(\App\Services\MonetizationSettingsService::class)->save(true, []);
+
+        $user = User::factory()->create();
+        $user->assignRole('member');
+
+        Profile::query()->create([
+            'user_id' => $user->id,
+        ]);
+
+        $this->actingAs($user)
+            ->get(route('billing.index'))
+            ->assertOk()
+            ->assertSee('data-server-active-item="my-workspace-my-billing"', false);
+    }
+
+    public function test_subscription_payments_link_highlights_for_admins_when_billing_is_on(): void
+    {
+        $this->seed(RolePermissionSeeder::class);
+
+        app(\App\Services\MonetizationSettingsService::class)->save(true, []);
+
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+
+        Profile::query()->create([
+            'user_id' => $user->id,
+        ]);
+
+        $this->actingAs($user)
+            ->get(route('admin.payments'))
+            ->assertOk()
+            ->assertSee('Subscription Payments', false)
+            ->assertSee('data-server-active-item="admin-management-subscription-payments"', false);
     }
 
     public function test_sidebar_groups_are_organized_by_relevancy(): void

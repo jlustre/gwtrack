@@ -33,8 +33,8 @@ class CfmEvaluationDemoSeeder extends Seeder
         }
 
         $teamId = $agencyOwner->team_id;
-        $rankFa = Rank::query()->where('code', 'FA')->value('id') ?? Rank::query()->value('id');
-        $rankSfa = Rank::query()->where('code', 'SFA')->value('id') ?? $rankFa;
+        $rankFa = Rank::query()->where('code', 'TA')->value('id') ?? Rank::query()->value('id');
+        $rankSfa = Rank::query()->where('code', 'ASC')->value('id') ?? $rankFa;
 
         $celeste = $this->user(
             'cfm@gwtrack.com',

@@ -38,6 +38,21 @@ class ChecklistTypeSeeder extends Seeder
           ],
           2 => 
           [
+            'code' => 'contracting',
+            'name' => 'Contracting',
+            'description' => 'Carrier contracting, appointments, product training, and production authorization after licensing.',
+            'icon' => 'document',
+            'sort_order' => 25,
+            'max_complete_days' => 45,
+            'prerequisite_codes' => 
+            [
+              0 => 'onboarding',
+              1 => 'licensing',
+            ],
+            'is_active' => true,
+          ],
+          3 => 
+          [
             'code' => 'fap',
             'name' => 'Field Apprenticeship Program',
             'description' => 'Field Apprenticeship Program milestones for associates and trainees.',
@@ -49,7 +64,7 @@ class ChecklistTypeSeeder extends Seeder
             ],
             'is_active' => true,
           ],
-          3 => 
+          4 => 
           [
             'code' => 'cfm-training',
             'name' => 'CFM Training',
@@ -65,7 +80,7 @@ class ChecklistTypeSeeder extends Seeder
             ],
             'is_active' => true,
           ],
-          4 => 
+          5 => 
           [
             'code' => 'cfm-mentoring',
             'name' => 'CFM Mentoring',
@@ -78,7 +93,7 @@ class ChecklistTypeSeeder extends Seeder
             ],
             'is_active' => true,
           ],
-          5 => 
+          6 => 
           [
             'code' => 'training',
             'name' => 'Training',
@@ -91,11 +106,11 @@ class ChecklistTypeSeeder extends Seeder
             ],
             'is_active' => true,
           ],
-          6 => 
+          7 => 
           [
             'code' => 'rank-advancement-sm',
-            'name' => 'Rank Advancement To SM',
-            'description' => 'Rank promotion requirements and advancement milestones to SM rank.',
+            'name' => 'Rank Advancement To Senior Associate',
+            'description' => 'Rank promotion requirements and advancement milestones to Senior Associate.',
             'icon' => 'rank',
             'sort_order' => 70,
             'max_complete_days' => 45,

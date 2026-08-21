@@ -61,8 +61,8 @@ class ProspectModuleTestSeeder extends Seeder
         $this->ensureFoundation();
 
         $teamId = (int) DB::table('teams')->where('name', 'Wealth Legacy Alliance')->value('id');
-        $faRankId = Rank::where('code', 'FA')->value('id');
-        $sfaRankId = Rank::where('code', 'SFA')->value('id');
+        $faRankId = Rank::where('code', 'TA')->value('id');
+        $sfaRankId = Rank::where('code', 'ASC')->value('id');
 
         $this->sponsor = $this->user('prospect-sponsor@gwtrack.com', 'Prospect QA Sponsor', 'team-leader', $sfaRankId, $teamId);
         $this->owner = $this->user('prospects@gwtrack.com', 'Prospect Demo Owner', 'member', $faRankId, $teamId, $this->sponsor->id);
@@ -121,7 +121,7 @@ class ProspectModuleTestSeeder extends Seeder
             $this->call(RolePermissionSeeder::class);
         }
 
-        if (! Rank::where('code', 'FA')->exists()) {
+        if (! Rank::where('code', 'TA')->exists()) {
             $this->call(RankSeeder::class);
         }
     }

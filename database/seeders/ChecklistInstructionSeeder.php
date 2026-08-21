@@ -23,6 +23,12 @@ class ChecklistInstructionSeeder extends Seeder
                 'other_link' => null,
                 'sort_order' => 10,
             ],
+            'contracting' => [
+                'instructions' => '<p><strong>Carrier contracting</strong></p><p>Complete contracting after licensing is approved. Work with your sponsor and agency contracting desk to select carriers, submit packages, finish product training, and confirm appointments before submitting business.</p><ul><li>Keep license, E&amp;O, and hierarchy details current.</li><li>Record agent or producer numbers when appointments are approved.</li><li>Do not submit production until the selected carriers show as ready.</li></ul>',
+                'doc_link' => '/resources/documents/contracting-guide',
+                'other_link' => '/crm/funnels/contracting',
+                'sort_order' => 10,
+            ],
             'fap' => [
                 'instructions' => '<p><strong>Field Apprenticeship Program</strong></p><p>Work through each step with your assigned CFM. Mark items complete only after the mentor confirms the activity.</p>',
                 'doc_link' => null,

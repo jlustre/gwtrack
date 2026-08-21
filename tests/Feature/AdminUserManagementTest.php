@@ -57,7 +57,7 @@ class AdminUserManagementTest extends TestCase
 
         $sponsor = User::factory()->create();
         $team = Team::create(['name' => 'Alpha Team']);
-        $rank = Rank::where('code', 'FA')->firstOrFail();
+        $rank = Rank::where('code', 'TA')->firstOrFail();
 
         $response = $this
             ->actingAs($admin)
@@ -97,7 +97,7 @@ class AdminUserManagementTest extends TestCase
 
         $sponsor = User::factory()->create();
         $team = Team::create(['name' => 'Beta Team']);
-        $rank = Rank::where('code', 'SFA')->firstOrFail();
+        $rank = Rank::where('code', 'ASC')->firstOrFail();
 
         $response = $this
             ->actingAs($agencyOwner)

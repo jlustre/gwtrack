@@ -73,6 +73,17 @@
                             <p class="mt-1">Complete these checklist types first: {{ implode(', ', $unmetPrerequisites) }}.</p>
                         </div>
                     @endif
+                    @if ($requiresLicense ?? false)
+                        <div class="rounded-md border border-amber-200 bg-amber-50 px-4 py-3 text-amber-900">
+                            <p class="font-semibold">Life license required</p>
+                            <p class="mt-1">Contracting can start only after an active life insurance license is on the associate profile.</p>
+                            @if ($isSelfStart ?? false)
+                                <a href="{{ route('profile.edit', ['tab' => 'licenses']) }}" class="mt-2 inline-flex text-sm font-semibold text-gw-primary underline decoration-gw-accent underline-offset-2">
+                                    Add license details
+                                </a>
+                            @endif
+                        </div>
+                    @endif
                     @if (! ($isSelfStart ?? false))
                         <div class="rounded-md border border-slate-200 bg-slate-50 px-4 py-3">
                             <p class="font-semibold text-gw-primary">Need help?</p>

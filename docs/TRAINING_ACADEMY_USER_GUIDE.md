@@ -1,8 +1,8 @@
 # GWTrack — Training Academy Module
 **User Guide**
 
-**Version:** 1.1  
-**Last updated:** June 2026  
+**Version:** 1.2  
+**Last updated:** August 2026  
 **Audience:** Associates, new recruits, CFMs, trainers, team leaders, and agency owners  
 **Hub URL:** `/training` (sidebar: **Training** / **GWTrack Academy**)
 
@@ -492,7 +492,7 @@ Only **published** courses appear in catalog and paths.
 | **FAP** | Dashboard %; coaching sign-off; learning plan recommendations |
 | **Licensing** | Dashboard %; recommendations when behind |
 | **CFM Training** | Checklist at `/cfm-training` |
-| **Rank advancement** | Training % may factor into rank requirements |
+| **Rank advancement** | Training % may factor into Greatway rank requirements (TA through NEVC). Rank advancement also shows Total FYO compensation. |
 | [Goals & Performance](/support/documentation/goals-and-performance) | Goal metrics sync training/FAP progress |
 | [FNA Management](/support/documentation/fna-management) | FNA courses in New Associate path |
 | [Prospects](/support/documentation/prospect-sales-funnel) | Prospecting courses support CRM activity |

@@ -34,7 +34,7 @@ class DashboardStatDetailsUrlTest extends TestCase
         ]);
 
         $teamId = (int) DB::table('teams')->value('id');
-        $rankId = Rank::where('code', 'FA')->value('id');
+        $rankId = Rank::where('code', 'TA')->value('id');
 
         $user = User::factory()->create([
             'name' => 'Dashboard Viewer',

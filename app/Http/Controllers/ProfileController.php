@@ -12,6 +12,7 @@ use App\Models\EmailTemplate;
 use App\Models\RegistrationInvitation;
 use App\Models\User;
 use App\Services\CfmManagementService;
+use App\Services\ComplianceLifecycleService;
 use App\Services\DownlineHierarchyService;
 use App\Services\MemberProductionService;
 use App\Services\Members\MemberInvitationService;
@@ -162,18 +163,24 @@ class ProfileController extends Controller
         $user = $request->user();
         $isLicensed = $request->isLicensedLifeInsurance();
         $licenses = $request->normalizedInsuranceLicenses();
+        $licenseNumbers = $request->normalizedInsuranceLicenseNumbers();
+        $licenseExpirations = $request->normalizedInsuranceLicenseExpirations();
 
         $user->profile()->updateOrCreate(
             ['user_id' => $user->id],
             [
                 'is_licensed_life_insurance' => $isLicensed,
                 'insurance_licenses' => $licenses,
+                'insurance_license_numbers' => $licenseNumbers,
+                'insurance_license_expirations' => $licenseExpirations,
             ],
         );
 
         if ($user->hasRole('certified-field-mentor')) {
             app(CfmManagementService::class)->syncLicensedJurisdictions($user, $licenses);
         }
+
+        app(ComplianceLifecycleService::class)->syncLicenseRecordsFromProfile($user->fresh(['profile']));
 
         $this->validatedTasks->completeProfileTaskIfOpen($user->fresh(['profile']));
 

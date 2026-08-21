@@ -46,32 +46,46 @@ class ComplianceLifecycleService
 
     public function syncLicenseRecordsFromProfile(User $member): int
     {
-        $keys = $member->profile?->insurance_licenses ?? [];
+        $member->loadMissing('profile');
+
+        $rows = $member->profile?->insuranceLicenseRows() ?? [];
+        $syncedKeys = [];
         $created = 0;
 
-        foreach ($keys as $jurisdictionKey) {
-            if (! is_string($jurisdictionKey) || $jurisdictionKey === '') {
-                continue;
-            }
+        foreach ($rows as $row) {
+            $jurisdictionKey = $row['key'];
+            $syncedKeys[] = $jurisdictionKey;
 
-            $label = LocationOptions::labelsForJurisdictionKeys([$jurisdictionKey])[0] ?? $jurisdictionKey;
+            $record = MemberComplianceRecord::query()->firstOrNew([
+                'user_id' => $member->id,
+                'compliance_type' => 'state_license',
+                'jurisdiction_key' => $jurisdictionKey,
+            ]);
 
-            $record = MemberComplianceRecord::query()->firstOrCreate(
-                [
-                    'user_id' => $member->id,
-                    'compliance_type' => 'state_license',
-                    'jurisdiction_key' => $jurisdictionKey,
-                ],
-                [
-                    'title' => $label.' Life License',
-                    'status' => 'not_started',
-                    'renewal_window_days' => config('compliance-lifecycle.types.state_license.renewal_window_days', 90),
-                ],
-            );
-
-            if ($record->wasRecentlyCreated) {
+            if (! $record->exists) {
+                $record->status = 'not_started';
+                $record->renewal_window_days = config('compliance-lifecycle.types.state_license.renewal_window_days', 90);
                 $created++;
             }
+
+            $record->fill([
+                'title' => $row['label'].' Life License',
+                'identifier' => $row['number'] !== '' ? $row['number'] : null,
+                'expiration_date' => $row['expiration'] !== '' ? $row['expiration'] : null,
+            ]);
+            $record->save();
+            $this->refreshStatus($record);
+        }
+
+        $stale = MemberComplianceRecord::query()
+            ->where('user_id', $member->id)
+            ->where('compliance_type', 'state_license')
+            ->whereNotNull('jurisdiction_key');
+
+        if ($syncedKeys === []) {
+            $stale->delete();
+        } else {
+            $stale->whereNotIn('jurisdiction_key', $syncedKeys)->delete();
         }
 
         return $created;
@@ -99,6 +113,7 @@ class ComplianceLifecycleService
             ->get();
 
         $stats = $this->statsFor($records);
+        $profileLicenses = $member->profile?->insuranceLicenseRows() ?? [];
 
         return [
             'member' => [
@@ -108,12 +123,13 @@ class ComplianceLifecycleService
             'stats' => $stats,
             'records' => $records->map(fn (MemberComplianceRecord $record) => $this->serializeRecord($record))->all(),
             'groups' => $this->groupRecords($records),
+            'profile_licenses' => $profileLicenses,
             'types' => config('compliance-lifecycle.types', []),
             'is_self' => $viewer->id === $member->id,
             'can_manage' => $this->canManageMember($viewer, $member),
             'can_edit' => $viewer->id === $member->id || $this->canManageMember($viewer, $member),
             'licensing_tracker_url' => route('licensing.index'),
-            'profile_licenses_url' => route('profile.edit').'#licenses',
+            'profile_licenses_url' => route('profile.edit', ['tab' => 'licenses']),
         ];
     }
 
@@ -324,7 +340,11 @@ class ComplianceLifecycleService
             'type_label' => $record->typeLabel(),
             'title' => $record->title,
             'jurisdiction_key' => $record->jurisdiction_key,
+            'jurisdiction_label' => $record->jurisdiction_key
+                ? (LocationOptions::labelsForJurisdictionKeys([$record->jurisdiction_key])[0] ?? $record->jurisdiction_key)
+                : null,
             'identifier' => $record->identifier,
+            'identifier_label' => $record->compliance_type === 'state_license' ? 'License #' : 'ID',
             'status' => $record->status,
             'status_label' => $record->statusLabel(),
             'effective_date' => $record->effective_date?->format('M j, Y'),

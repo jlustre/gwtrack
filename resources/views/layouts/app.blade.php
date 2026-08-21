@@ -40,7 +40,7 @@
                     x-bind:class="{ 'translate-x-0': $store.shell.sidebarOpen }"
                 >
                     <div class="flex h-16 shrink-0 items-center border-b border-white/10 px-6">
-                        <a href="{{ Route::has('dashboard') ? route('dashboard') : url('/') }}" wire:navigate.hover>
+                        <a href="{{ Route::has('dashboard') ? route('dashboard') : url('/') }}" wire:navigate>
                             <div class="text-lg font-semibold tracking-wide">GWTrack</div>
                             <div class="text-xs uppercase text-gw-accent">Greatway Team Portal</div>
                         </a>

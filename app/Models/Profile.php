@@ -25,6 +25,9 @@ class Profile extends Model
         'license_number',
         'is_licensed_life_insurance',
         'insurance_licenses',
+        'insurance_license_numbers',
+        'insurance_license_expirations',
+        'subscription_terms_accepted_at',
         'gw_associate_id',
         'gw_invite_link',
         'is_gw_active_associate',
@@ -43,6 +46,9 @@ class Profile extends Model
             'is_gw_active_associate' => 'boolean',
             'is_licensed_life_insurance' => 'boolean',
             'insurance_licenses' => 'array',
+            'insurance_license_numbers' => 'array',
+            'insurance_license_expirations' => 'array',
+            'subscription_terms_accepted_at' => 'datetime',
         ];
     }
 
@@ -94,9 +100,63 @@ class Profile extends Model
         return LocationOptions::labelsForJurisdictionKeys($this->insurance_licenses ?? []);
     }
 
+    /**
+     * @return list<array{key: string, label: string, number: string, expiration: string, expiration_label: string}>
+     */
+    public function insuranceLicenseRows(): array
+    {
+        $numbers = is_array($this->insurance_license_numbers) ? $this->insurance_license_numbers : [];
+        $expirations = is_array($this->insurance_license_expirations) ? $this->insurance_license_expirations : [];
+        $rows = [];
+
+        foreach (LocationOptions::normalizeLicensedJurisdictionKeys($this->insurance_licenses ?? []) as $key) {
+            $labels = LocationOptions::labelsForJurisdictionKeys([$key]);
+            $expiration = LocationOptions::normalizeLicenseExpirationDate((string) ($expirations[$key] ?? ''));
+
+            $rows[] = [
+                'key' => $key,
+                'label' => $labels[0] ?? $key,
+                'number' => trim((string) ($numbers[$key] ?? '')),
+                'expiration' => $expiration,
+                'expiration_label' => $expiration !== ''
+                    ? \Illuminate\Support\Carbon::parse($expiration)->format('M j, Y')
+                    : '',
+            ];
+        }
+
+        return $rows;
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public function insuranceLicenseNumbersByKey(): array
+    {
+        return LocationOptions::normalizeLicenseNumbers(
+            $this->insurance_licenses ?? [],
+            is_array($this->insurance_license_numbers) ? $this->insurance_license_numbers : [],
+        );
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public function insuranceLicenseExpirationsByKey(): array
+    {
+        return LocationOptions::normalizeLicenseExpirations(
+            $this->insurance_licenses ?? [],
+            is_array($this->insurance_license_expirations) ? $this->insurance_license_expirations : [],
+        );
+    }
+
     public function hasInsuranceLicenses(): bool
     {
         return $this->isLicensedLifeInsurance() && ($this->insurance_licenses ?? []) !== [];
+    }
+
+    public function isLicensedAssociate(): bool
+    {
+        return filled($this->license_number) || $this->hasInsuranceLicenses();
     }
 
     public function isLicensedLifeInsurance(): bool
@@ -118,6 +178,18 @@ class Profile extends Model
     {
         static::deleting(function (Profile $profile): void {
             app(ProfilePhotoService::class)->deleteStoredFile($profile->profile_photo_path);
+        });
+
+        static::saved(function (Profile $profile): void {
+            if (! $profile->wasChanged(['license_number', 'is_licensed_life_insurance', 'insurance_licenses', 'insurance_license_numbers'])) {
+                return;
+            }
+
+            $user = $profile->relationLoaded('user') ? $profile->user : $profile->user()->first();
+
+            if ($user) {
+                app(\App\Services\SubscriptionService::class)->sync($user);
+            }
         });
     }
 }

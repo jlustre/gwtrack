@@ -31,6 +31,7 @@ class InviteMemberModalTest extends TestCase
             ->get(route('dashboard'))
             ->assertOk()
             ->assertSee('Invite Member', false)
+            ->assertSee('Invite New Member', false)
             ->assertSee('open-invite-member-modal', false);
     }
 

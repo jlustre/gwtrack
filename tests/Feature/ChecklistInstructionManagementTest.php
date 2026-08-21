@@ -33,7 +33,14 @@ class ChecklistInstructionManagementTest extends TestCase
             ->firstOrFail();
 
         $this->assertStringContainsString('Welcome to onboarding', $instruction->instructions);
-        $this->assertGreaterThanOrEqual(5, ChecklistInstruction::query()->count());
+        $this->assertGreaterThanOrEqual(6, ChecklistInstruction::query()->count());
+
+        $contracting = ChecklistType::query()->where('code', 'contracting')->firstOrFail();
+        $this->assertDatabaseHas('checklist_instructions', [
+            'checklist_type_id' => $contracting->id,
+            'doc_link' => '/resources/documents/contracting-guide',
+            'is_active' => true,
+        ]);
     }
 
     public function test_admin_can_manage_checklist_instructions(): void
@@ -49,7 +56,9 @@ class ChecklistInstructionManagementTest extends TestCase
         $this->actingAs($admin)
             ->get(route('admin.management.resource.index', 'checklist-instructions'))
             ->assertOk()
-            ->assertSee('Checklist Instructions');
+            ->assertSee('Checklist Instructions')
+            ->assertSee('Back to Checklists')
+            ->assertSee(route('admin.checklists.index'), false);
 
         $this->actingAs($admin)
             ->post(route('admin.management.store', 'checklist-instructions'), [
@@ -76,10 +85,15 @@ class ChecklistInstructionManagementTest extends TestCase
         $admin = User::factory()->create();
         $admin->assignRole('admin');
 
-        $this->actingAs($admin)
+        $html = $this->actingAs($admin)
             ->get(route('admin.checklists.index'))
             ->assertOk()
             ->assertSee('Checklist Instructions')
-            ->assertSee(route('admin.management.resource.index', 'checklist-instructions'), false);
+            ->getContent();
+
+        $this->assertMatchesRegularExpression(
+            '/href="'.preg_quote(route('admin.management.resource.index', 'checklist-instructions'), '/').'"[^>]*\bwire:navigate\b/',
+            $html,
+        );
     }
 }

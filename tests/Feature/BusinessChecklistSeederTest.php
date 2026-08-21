@@ -24,7 +24,7 @@ class BusinessChecklistSeederTest extends TestCase
 
         $typeId = $this->typeId('licensing');
 
-        $this->assertSame(13, DB::table('checklists')->where('checklist_type_id', $typeId)->count());
+        $this->assertSame(17, DB::table('checklists')->where('checklist_type_id', $typeId)->count());
         $this->assertDatabaseHas('checklists', [
             'checklist_type_id' => $typeId,
             'title' => 'Confirm Licensing Jurisdiction',
@@ -54,7 +54,7 @@ class BusinessChecklistSeederTest extends TestCase
 
         $typeId = $this->typeId('fap');
 
-        $this->assertSame(14, DB::table('checklists')->where('checklist_type_id', $typeId)->count());
+        $this->assertSame(18, DB::table('checklists')->where('checklist_type_id', $typeId)->count());
         $this->assertDatabaseHas('checklists', [
             'checklist_type_id' => $typeId,
             'title' => 'FAP Orientation With Sponsor And CFM',
@@ -65,9 +65,33 @@ class BusinessChecklistSeederTest extends TestCase
         $this->assertDatabaseHas('checklists', [
             'checklist_type_id' => $typeId,
             'title' => 'Receive FAP Approval',
-            'sort_order' => 140,
             'responsible_parties' => 'SP, AO, CFM',
             'notified_parties' => 'SP, CFM, AO',
+        ]);
+    }
+
+    public function test_contracting_checklist_seeder_populates_carrier_steps(): void
+    {
+        $this->seed(ChecklistTypeSeeder::class);
+        $this->seed(ChecklistSeeder::class);
+
+        $typeId = $this->typeId('contracting');
+
+        $this->assertSame(14, DB::table('checklists')->where('checklist_type_id', $typeId)->count());
+        $this->assertDatabaseHas('checklists', [
+            'checklist_type_id' => $typeId,
+            'title' => 'Confirm Contracting Eligibility',
+            'sort_order' => 10,
+            'responsible_parties' => 'Self, SP, AO',
+            'notified_parties' => 'SP, AO, CFM',
+            'is_required' => true,
+        ]);
+        $this->assertDatabaseHas('checklists', [
+            'checklist_type_id' => $typeId,
+            'title' => 'Confirm Ready To Submit Business',
+            'responsible_parties' => 'Self, SP, AO, CFM',
+            'notified_parties' => 'SP, AO, CFM',
+            'is_required' => true,
         ]);
     }
 
@@ -112,8 +136,9 @@ class BusinessChecklistSeederTest extends TestCase
             ChecklistSeeder::class,
         ]);
 
-        $this->assertSame(13, DB::table('checklists')->where('checklist_type_id', $this->typeId('licensing'))->count());
-        $this->assertSame(14, DB::table('checklists')->where('checklist_type_id', $this->typeId('fap'))->count());
+        $this->assertSame(17, DB::table('checklists')->where('checklist_type_id', $this->typeId('licensing'))->count());
+        $this->assertSame(14, DB::table('checklists')->where('checklist_type_id', $this->typeId('contracting'))->count());
+        $this->assertSame(18, DB::table('checklists')->where('checklist_type_id', $this->typeId('fap'))->count());
         $this->assertSame(11, DB::table('checklists')->where('checklist_type_id', $this->typeId('cfm-training'))->count());
         $this->assertSame(1, DB::table('checklists')
             ->where('checklist_type_id', $this->typeId('licensing'))

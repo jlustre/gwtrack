@@ -17,7 +17,7 @@
                     <div class="flex items-start justify-between gap-4">
                         <div>
                             <p class="text-xs font-bold uppercase tracking-wide text-gw-accent">Sponsor Invite</p>
-                            <h3 id="invite-member-modal-title" class="mt-1 text-lg font-semibold">Invite a member</h3>
+                            <h3 id="invite-member-modal-title" class="mt-1 text-lg font-semibold">Invite New Member</h3>
                             <p class="mt-1 text-sm text-slate-300">Generate a single-use registration link and code. New members register under you as their sponsor.</p>
                         </div>
                         <button type="button" wire:click="close" class="text-2xl leading-none text-slate-300 hover:text-white">&times;</button>

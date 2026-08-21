@@ -134,13 +134,13 @@ class ComplianceLifecycleHub extends Component
         abort_unless($this->canEdit(), 403);
 
         $member = $compliance->resolveMember(auth()->user(), $this->member);
-        $created = $compliance->syncLicenseRecordsFromProfile($member);
+        $compliance->syncLicenseRecordsFromProfile($member);
 
         session()->flash(
             'compliance_status',
-            $created > 0
-                ? "Synced {$created} license record(s) from your profile."
-                : 'Profile licenses are already synced.',
+            $member->fresh('profile')?->profile?->hasInsuranceLicenses()
+                ? 'License numbers and expiration dates were synced from the profile.'
+                : 'No life insurance licenses were found on the profile.',
         );
     }
 

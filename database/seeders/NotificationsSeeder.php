@@ -147,7 +147,7 @@ class NotificationsSeeder extends Seeder
             ],
             [
                 'trigger' => 'rank_advanced',
-                'tokens' => ['member_name' => $primary->name, 'rank_name' => 'Senior Field Associate'],
+                'tokens' => ['member_name' => $primary->name, 'rank_name' => 'Associate'],
                 'action' => ['label' => 'View profile', 'url' => '/profile'],
                 'priority' => 'medium',
                 'module' => 'rank_advancement',
