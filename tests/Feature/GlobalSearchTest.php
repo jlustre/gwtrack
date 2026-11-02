@@ -78,7 +78,7 @@ class GlobalSearchTest extends TestCase
         $this->actingAs($user)
             ->get(route('search.index', ['q' => 'Searchable']))
             ->assertOk()
-            ->assertSee('Search GWTrack', false)
+            ->assertSee('Search GWTracks', false)
             ->assertSee('Searchable Prospect', false)
             ->assertSee('Searchable follow-up task', false);
     }
@@ -117,6 +117,6 @@ class GlobalSearchTest extends TestCase
         $this->actingAs($user)
             ->get(route('search.index', ['q' => 'Welcome', 'type' => 'videos']))
             ->assertOk()
-            ->assertSee('Welcome to GWTrack', false);
+            ->assertSee('Welcome to GWTracks', false);
     }
 }

@@ -1,6 +1,6 @@
-# GWTrack Development Roadmap
+# GWTracks Development Roadmap
 
-This roadmap organizes GWTrack.com into practical delivery phases. The first priority is a clean Laravel foundation, then progressively adding the business modules around onboarding, licensing, mentorship, apprenticeship, training, assessments, rank advancement, and team visibility.
+This roadmap organizes GWTracks.com into practical delivery phases. The first priority is a clean Laravel foundation, then progressively adding the business modules around onboarding, licensing, mentorship, apprenticeship, training, assessments, rank advancement, and team visibility.
 
 ## Phase 0: Project Setup And Architecture
 
@@ -58,7 +58,7 @@ This roadmap organizes GWTrack.com into practical delivery phases. The first pri
 - [x] Remap leftover legacy rank codes onto Greatway codes.
 - [x] Create RolePermissionSeeder.
 - [x] Convert role names to lowercase dash slugs.
-- [x] Document distinction between Greatway ranks and GWTrack permission roles.
+- [x] Document distinction between Greatway ranks and GWTracks permission roles.
 - [x] Add default `member` role.
 - [x] Add operational `admin` role.
 - [x] Create initial `super-admin` user seeder.

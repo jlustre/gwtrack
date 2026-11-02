@@ -11,8 +11,8 @@
             <div class="grid bg-[#0b0b0c] lg:grid-cols-[0.95fr_1fr]">
                 <aside class="border-b border-gw-accent/25 bg-gradient-to-br from-black to-[#101012] p-6 sm:p-8 lg:border-b-0 lg:border-r">
                     <div>
-                        <a href="/" class="inline-block bg-gradient-to-br from-gw-accent-hover via-gw-accent to-gw-accent-dark bg-clip-text text-3xl font-extrabold tracking-normal text-transparent">
-                            GW<span class="font-black">Track</span>.com
+                        <a href="/" class="inline-flex items-center rounded-xl bg-white px-3 py-2">
+                            <img src="{{ asset('images/gwtrackslogo_small.png') }}" alt="GWTracks" class="h-8 w-auto sm:h-9">
                         </a>
                         <div class="mt-2 border-l-2 border-gw-accent pl-3 text-xs font-semibold uppercase tracking-[0.16em] text-gw-accent">
                             Financial Intelligence &middot; Insurance Team Portal
@@ -22,7 +22,7 @@
                     <div class="mt-8 overflow-hidden rounded-3xl border border-gw-accent/20 bg-[#070707] shadow-[0_18px_34px_-24px_rgba(132, 187, 65,0.55)]">
                         <img
                             src="{{ asset('images/authimage.jpg') }}"
-                            alt="GWTrack secure access"
+                            alt="GWTracks secure access"
                             class="h-64 w-full object-cover object-top sm:h-80 lg:h-[22rem]"
                             style="-webkit-mask-image: linear-gradient(to bottom, black 0%, black 62%, rgba(0,0,0,0.3) 100%); mask-image: linear-gradient(to bottom, black 0%, black 62%, rgba(0,0,0,0.3) 100%);"
                         >

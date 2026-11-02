@@ -216,7 +216,7 @@ class DashboardActivityTest extends TestCase
             TaskScenarioSeeder::class,
         ]);
 
-        $agencyOwner = User::where('email', 'agency-owner@gwtrack.com')->firstOrFail();
+        $agencyOwner = User::where('email', 'agency-owner@gwtracks.com')->firstOrFail();
 
         $payload = app(TaskController::class)->openTasksByPriorityFor($agencyOwner);
 
@@ -274,7 +274,7 @@ class DashboardActivityTest extends TestCase
             TaskScenarioSeeder::class,
         ]);
 
-        $agencyOwner = User::where('email', 'agency-owner@gwtrack.com')->firstOrFail();
+        $agencyOwner = User::where('email', 'agency-owner@gwtracks.com')->firstOrFail();
 
         $panels = app(DashboardActivityService::class)->panelsFor($agencyOwner);
         $myTasks = $panels['my_tasks'];
@@ -325,21 +325,18 @@ class DashboardActivityTest extends TestCase
         $this->assertCount($quote['total'], $quote['quotes']);
     }
 
-    public function test_daily_quote_rotates_by_calendar_day(): void
+    public function test_daily_quote_changes_on_successive_calls(): void
     {
         $service = app(DailyQuoteService::class);
 
-        $dayOne = $service->forDate(now()->startOfYear());
-        $dayTwo = $service->forDate(now()->startOfYear()->addDay());
+        $first = $service->forDate();
+        $second = $service->forDate();
 
-        $this->assertNotNull($dayOne);
-        $this->assertNotNull($dayTwo);
-        $this->assertNotSame($dayOne['quote'], $dayTwo['quote']);
-
-        $this->assertSame(
-            $dayOne['quote'],
-            $service->forDate(now()->startOfYear())['quote'],
-        );
+        $this->assertNotNull($first);
+        $this->assertNotNull($second);
+        $this->assertGreaterThan(1, $first['total']);
+        $this->assertNotSame($first['index'], $second['index']);
+        $this->assertNotSame($first['quote'], $second['quote']);
     }
 
     public function test_dashboard_daily_quote_exposes_prev_next_controls(): void
@@ -354,6 +351,24 @@ class DashboardActivityTest extends TestCase
             ->assertSee('Next quote', false)
             ->assertSee('x-on:click="prev()"', false)
             ->assertSee('x-on:click="next()"', false);
+    }
+
+    public function test_dashboard_daily_quote_changes_on_refresh(): void
+    {
+        $user = $this->createMember('quote.refresh@example.com');
+
+        $first = $this->actingAs($user)->get(route('dashboard'));
+        $second = $this->actingAs($user)->get(route('dashboard'));
+
+        $first->assertOk();
+        $second->assertOk();
+
+        preg_match('/index:\s*(\d+),/', $first->getContent(), $firstMatch);
+        preg_match('/index:\s*(\d+),/', $second->getContent(), $secondMatch);
+
+        $this->assertArrayHasKey(1, $firstMatch);
+        $this->assertArrayHasKey(1, $secondMatch);
+        $this->assertNotSame($firstMatch[1], $secondMatch[1]);
     }
 
     public function test_home_service_returns_progress_trackers(): void

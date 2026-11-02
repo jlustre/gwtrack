@@ -24,7 +24,7 @@
         <div class="shrink-0 border-b border-slate-200 bg-gradient-to-r from-gw-primary to-gw-primary-hover px-6 py-5 text-white">
             <div class="flex items-start justify-between gap-4">
                 <div>
-                    <p class="text-xs font-semibold uppercase tracking-wide text-gw-accent">Welcome to GWTrack</p>
+                    <p class="text-xs font-semibold uppercase tracking-wide text-gw-accent">Welcome to GWTracks</p>
                     <h2 id="profile-completion-modal-title" class="mt-1 text-2xl font-semibold">Complete your profile</h2>
                     <p class="mt-2 text-sm text-slate-200">Finish your member details so your team can support your onboarding.</p>
                 </div>

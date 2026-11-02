@@ -284,7 +284,7 @@ class DownlineController extends Controller
 
         return response($csv, 200, [
             'Content-Type' => 'text/csv',
-            'Content-Disposition' => 'attachment; filename="gwtrack-downline.csv"',
+            'Content-Disposition' => 'attachment; filename="gwtracks-downline.csv"',
         ]);
     }
 

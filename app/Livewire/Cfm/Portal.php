@@ -289,7 +289,7 @@ class Portal extends Component
 
         session()->flash('profile_feedback', [
             'type' => 'success',
-            'message' => 'Message sent to '.$trainee->name.' via GWTrack messaging.',
+            'message' => 'Message sent to '.$trainee->name.' via GWTracks messaging.',
         ]);
     }
 

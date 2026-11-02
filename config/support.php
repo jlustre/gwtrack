@@ -104,7 +104,7 @@ return [
         'trainee' => 'My trainee(s)',
         'team' => 'My team',
         'agency' => 'Whole agency',
-        'all' => 'Everyone on GWTrack',
+        'all' => 'Everyone on GWTracks',
         'unknown' => 'Not sure',
     ],
 

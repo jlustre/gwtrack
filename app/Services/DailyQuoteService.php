@@ -8,9 +8,12 @@ use Illuminate\Support\Collection;
 
 class DailyQuoteService
 {
+    public const SESSION_KEY = 'dashboard_daily_quote_index';
+
     /**
-     * Deterministically select one active quote for the given calendar day,
-     * plus the full active list for dashboard prev/next browsing.
+     * Select a random active quote for this dashboard visit, plus the full
+     * active list for prev/next browsing. Avoids repeating the previous quote
+     * when more than one quote is available.
      *
      * @return array{
      *     quote: string,
@@ -28,14 +31,22 @@ class DailyQuoteService
             return null;
         }
 
-        $index = ($date ?? now())->dayOfYear % $quotes->count();
+        $count = $quotes->count();
+        $index = random_int(0, $count - 1);
+        $previous = session(self::SESSION_KEY);
+
+        if ($count > 1 && $previous !== null && (int) $previous === $index) {
+            $index = ($index + random_int(1, $count - 1)) % $count;
+        }
+
+        session([self::SESSION_KEY => $index]);
         $selected = $quotes->get($index);
 
         return [
             'quote' => $selected['quote'],
             'author' => $selected['author'],
             'index' => $index,
-            'total' => $quotes->count(),
+            'total' => $count,
             'quotes' => $quotes->all(),
         ];
     }

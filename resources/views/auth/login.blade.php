@@ -5,8 +5,8 @@
                 <div class="grid bg-[#0b0b0c] lg:grid-cols-[0.95fr_1fr]">
                     <aside class="border-b border-gw-accent/25 bg-gradient-to-br from-black to-[#101012] p-6 sm:p-8 lg:border-b-0 lg:border-r">
                         <div>
-                            <a href="/" class="inline-block bg-gradient-to-br from-gw-accent-hover via-gw-accent to-gw-accent-dark bg-clip-text text-3xl font-extrabold tracking-normal text-transparent">
-                                GW<span class="font-black">Track</span>.com
+                            <a href="/" class="inline-flex items-center rounded-xl bg-white px-3 py-2">
+                                <img src="{{ asset('images/gwtrackslogo_small.png') }}" alt="GWTracks" class="h-8 w-auto sm:h-9">
                             </a>
                             <div class="mt-2 border-l-2 border-gw-accent pl-3 text-xs font-semibold uppercase tracking-[0.16em] text-gw-accent">
                                 Financial Intelligence &middot; Insurance Team Portal
@@ -16,7 +16,7 @@
                         <div class="mt-8 overflow-hidden rounded-3xl border border-gw-accent/20 bg-[#070707] shadow-[0_18px_34px_-24px_rgba(132, 187, 65,0.55)]">
                             <img
                                 src="{{ asset('images/authimage.jpg') }}"
-                                alt="GWTrack portal access"
+                                alt="GWTracks portal access"
                                 class="h-64 w-full object-cover object-top sm:h-80 lg:h-[22rem]"
                                 style="-webkit-mask-image: linear-gradient(to bottom, black 0%, black 62%, rgba(0,0,0,0.3) 100%); mask-image: linear-gradient(to bottom, black 0%, black 62%, rgba(0,0,0,0.3) 100%);"
                             >
@@ -68,7 +68,7 @@
 
                                 <div>
                                     <label for="password" class="block text-xs font-bold uppercase tracking-wide text-gw-accent">Password</label>
-                                    <input id="password" name="password" type="password" required autocomplete="current-password" placeholder="Enter password" class="mt-2 block w-full rounded-2xl border border-[#2a2a2e] bg-[#131316] px-4 py-3 text-sm text-slate-100 placeholder:text-slate-600 focus:border-gw-accent focus:ring-gw-accent">
+                                    <x-password-input variant="guest" id="password" name="password" required autocomplete="current-password" placeholder="Enter password" class="mt-2" />
                                     <x-input-error :messages="$errors->get('password')" class="mt-2" />
                                 </div>
 

@@ -259,7 +259,7 @@ class CfmAssignmentWorkflowService
         return EmailTemplateTokens::merge(array_merge(
             EmailTemplateTokens::forMember($member),
             [
-            'app_name' => config('app.name', 'GWTrack'),
+            'app_name' => config('app.name', 'GWTracks'),
             'cfm_name' => $cfm->name,
             'cfm_email' => $cfm->email,
             'sponsor_name' => $sponsor?->name ?? 'the sponsor',

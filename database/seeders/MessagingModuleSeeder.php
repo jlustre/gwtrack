@@ -16,8 +16,8 @@ class MessagingModuleSeeder extends Seeder
     {
         $this->seedTemplates();
 
-        $member = User::where('email', 'calendar-member@gwtrack.com')->first();
-        $cfm = User::where('email', 'calendar-cfm@gwtrack.com')->first();
+        $member = User::where('email', 'calendar-member@gwtracks.com')->first();
+        $cfm = User::where('email', 'calendar-cfm@gwtracks.com')->first();
 
         if (! $member || ! $cfm) {
             return;
@@ -34,7 +34,7 @@ class MessagingModuleSeeder extends Seeder
         Message::create([
             'conversation_id' => $conversation->id,
             'user_id' => $cfm->id,
-            'body' => 'Welcome to GWTrack messaging! Use this thread for mentoring questions, licensing support, and FAP coaching.',
+            'body' => 'Welcome to GWTracks messaging! Use this thread for mentoring questions, licensing support, and FAP coaching.',
             'message_type' => 'text',
             'created_at' => now()->subHour(),
         ]);
@@ -78,7 +78,7 @@ class MessagingModuleSeeder extends Seeder
     private function seedTemplates(): void
     {
         $templates = [
-            ['welcome-message', 'Welcome Message', 'welcome', "Welcome to GWTrack! I'm excited to support you through onboarding, licensing, and your Field Apprenticeship journey."],
+            ['welcome-message', 'Welcome Message', 'welcome', "Welcome to GWTracks! I'm excited to support you through onboarding, licensing, and your Field Apprenticeship journey."],
             ['mentorship-intro', 'Mentorship Introduction', 'mentoring', "Hi! I'm your Certified Field Mentor. Let's schedule our first coaching session and review your onboarding checklist."],
             ['licensing-reminder', 'Licensing Reminder', 'licensing', 'Friendly reminder to complete your next licensing milestone. Let me know if you need study support.'],
             ['fap-reminder', 'FAP Reminder', 'fap', 'Please update your Field Apprenticeship activity log and share any blockers before our next review.'],

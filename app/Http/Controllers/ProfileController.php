@@ -69,6 +69,7 @@ class ProfileController extends Controller
             'memberUserId' => $isOwnProfile ? null : $user->id,
             'tab' => (string) $request->query('tab', 'profile'),
             'openInvitations' => $request->boolean('open_invitations'),
+            'alreadyLicensed' => $request->boolean('already_licensed'),
         ]);
     }
 
@@ -334,15 +335,15 @@ class ProfileController extends Controller
             ->first();
 
         $tokens = EmailTemplateTokens::merge([
-            'app_name' => config('app.name', 'GWTrack'),
-            'sponsor_name' => $invitation->sponsor?->name ?? 'A GWTrack member',
+            'app_name' => config('app.name', 'GWTracks'),
+            'sponsor_name' => $invitation->sponsor?->name ?? 'A GWTracks member',
             'registration_link' => $invitation->invitationUrl(),
             'registration_code' => $invitation->code,
             'expires_at' => $invitation->expires_at?->format('F j, Y') ?? 'the expiration date',
         ], EmailTemplateTokens::pathFromUrl($invitation->invitationUrl()));
 
         return [
-            'subject' => $template?->renderSubject($tokens) ?? 'You are invited to join '.config('app.name', 'GWTrack'),
+            'subject' => $template?->renderSubject($tokens) ?? 'You are invited to join '.config('app.name', 'GWTracks'),
             'body' => $template?->renderBody($tokens) ?? $invitation->invitationUrl(),
         ];
     }

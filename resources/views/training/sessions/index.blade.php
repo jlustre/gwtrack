@@ -5,7 +5,7 @@
                 <div>
                     <a href="{{ route('training.coaching.index') }}" class="text-sm font-semibold text-gw-accent transition hover:text-gw-accent-hover">&larr; FAP & Coaching</a>
                     <h1 class="mt-2 text-3xl font-semibold">Live Training Sessions</h1>
-                    <p class="mt-2 max-w-3xl text-sm leading-6 text-slate-200">Register for academy sessions and sync them to your GWTrack calendar.</p>
+                    <p class="mt-2 max-w-3xl text-sm leading-6 text-slate-200">Register for academy sessions and sync them to your GWTracks calendar.</p>
                 </div>
                 <a href="{{ route('calendar.index') }}" class="inline-flex rounded-md border border-gw-accent/50 bg-white/10 px-4 py-2 text-sm font-semibold text-white transition hover:bg-gw-accent/20">
                     Open calendar

@@ -1,7 +1,7 @@
 <x-guest-layout>
     <x-auth-premium-shell
         headline="Confirm Secure Access"
-        intro="For sensitive actions, GWTrack asks you to confirm your password before continuing."
+        intro="For sensitive actions, GWTracks asks you to confirm your password before continuing."
         title="Confirm Password"
         subtitle="Protected area · account verification"
     >

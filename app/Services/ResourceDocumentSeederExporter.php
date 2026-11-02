@@ -110,12 +110,12 @@ class ResourceDocumentSeeder extends Seeder
         app(ResourcePdfService::class)->ensureCodeOfConductPdf();
         app(DocumentationPdfService::class)->ensurePortalResource(
             'welcome-orientation',
-            'GWTrack Welcome Orientation',
+            'GWTracks Welcome Orientation',
             'resources/welcome-orientation.pdf',
         );
         app(DocumentationPdfService::class)->ensurePortalResource(
             'application',
-            'GWTrack Application User Guide',
+            'GWTracks Application User Guide',
             'resources/application.pdf',
         );
         app(DocumentationPdfService::class)->ensurePortalResource(

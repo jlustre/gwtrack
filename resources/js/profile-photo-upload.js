@@ -1,5 +1,12 @@
-const ALLOWED_PHOTO_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+const ALLOWED_PHOTO_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+const ALLOWED_PHOTO_EXTENSIONS = ['jpg', 'jpeg', 'png', 'webp'];
 const MAX_PHOTO_BYTES = 2 * 1024 * 1024;
+
+function hasAllowedExtension(filename) {
+    const extension = filename.split('.').pop()?.toLowerCase();
+
+    return !! extension && ALLOWED_PHOTO_EXTENSIONS.includes(extension);
+}
 
 function readFileAsDataUrl(file) {
     return new Promise((resolve, reject) => {
@@ -17,6 +24,7 @@ export default function profilePhotoUpload(currentUrl = null, initials = 'EF', p
         initials,
         imageFailed: false,
         persistedSelection: false,
+        clientError: null,
 
         init() {
             if (! persistKey) {
@@ -38,19 +46,26 @@ export default function profilePhotoUpload(currentUrl = null, initials = 'EF', p
             const file = event.target.files?.[0];
 
             if (! file) {
+                this.clientError = null;
                 this.resetToCurrent();
                 return;
             }
 
-            if (! ALLOWED_PHOTO_TYPES.includes(file.type) || file.size > MAX_PHOTO_BYTES) {
+            const typeAllowed = ALLOWED_PHOTO_TYPES.includes(file.type) || hasAllowedExtension(file.name);
+
+            if (! typeAllowed || file.size > MAX_PHOTO_BYTES) {
                 if (this.$refs.photoInput) {
                     this.$refs.photoInput.value = '';
                 }
 
+                this.clientError = ! typeAllowed
+                    ? 'Please choose a valid profile photo (JPEG, PNG, or WebP, up to 2 MB).'
+                    : 'Profile photos must be 2 MB or smaller.';
                 this.resetToCurrent();
                 return;
             }
 
+            this.clientError = null;
             this.revokeBlobUrl();
             this.previewUrl = URL.createObjectURL(file);
             this.imageFailed = false;
@@ -69,6 +84,7 @@ export default function profilePhotoUpload(currentUrl = null, initials = 'EF', p
             this.revokeBlobUrl();
             this.resetToCurrent();
             this.persistedSelection = false;
+            this.clientError = null;
             this.clearPersistedPhoto();
 
             if (this.$refs.photoInput) {

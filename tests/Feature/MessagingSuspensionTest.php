@@ -22,7 +22,7 @@ class MessagingSuspensionTest extends TestCase
     {
         $this->seedMessaging();
 
-        $member = User::where('email', 'calendar-member@gwtrack.com')->firstOrFail();
+        $member = User::where('email', 'calendar-member@gwtracks.com')->firstOrFail();
 
         $this->actingAs($member)
             ->get(route('messages.index'))
@@ -35,7 +35,7 @@ class MessagingSuspensionTest extends TestCase
     {
         $this->seedMessaging();
 
-        $member = User::where('email', 'calendar-member@gwtrack.com')->firstOrFail();
+        $member = User::where('email', 'calendar-member@gwtracks.com')->firstOrFail();
         $conversation = Conversation::query()->where('type', 'direct')->firstOrFail();
 
         $member->forceFill([
@@ -66,7 +66,7 @@ class MessagingSuspensionTest extends TestCase
         $admin = User::factory()->create();
         $admin->assignRole('admin');
 
-        $member = User::where('email', 'calendar-member@gwtrack.com')->firstOrFail();
+        $member = User::where('email', 'calendar-member@gwtracks.com')->firstOrFail();
 
         $this->actingAs($admin)
             ->patch(route('admin.users.messaging.suspend', $member), [

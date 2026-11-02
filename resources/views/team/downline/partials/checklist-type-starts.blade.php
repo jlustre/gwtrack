@@ -2,7 +2,7 @@
     <div class="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
         <div>
             <h2 class="text-lg font-semibold text-gw-primary">Checklist Schedules</h2>
-            <p class="mt-1 text-sm text-slate-600">Start checklist types for this member. Day 1 is the date you enter below — not their GWTrack join date.</p>
+            <p class="mt-1 text-sm text-slate-600">Start checklist types for this member. Day 1 is the date you enter below — not their GWTracks join date.</p>
         </div>
     </div>
 

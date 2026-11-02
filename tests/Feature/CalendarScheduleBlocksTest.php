@@ -23,7 +23,7 @@ class CalendarScheduleBlocksTest extends TestCase
     {
         $this->seedCalendar();
 
-        $user = User::where('email', 'calendar-member@gwtrack.com')->firstOrFail();
+        $user = User::where('email', 'calendar-member@gwtracks.com')->firstOrFail();
 
         $this->actingAs($user)
             ->post(route('calendar.schedule-blocks.store'), [
@@ -51,8 +51,8 @@ class CalendarScheduleBlocksTest extends TestCase
     {
         $this->seedCalendar();
 
-        $cfm = User::where('email', 'calendar-cfm@gwtrack.com')->firstOrFail();
-        $trainee = User::where('email', 'calendar-member@gwtrack.com')->firstOrFail();
+        $cfm = User::where('email', 'calendar-cfm@gwtracks.com')->firstOrFail();
+        $trainee = User::where('email', 'calendar-member@gwtracks.com')->firstOrFail();
 
         $trainee->update(['mentor_id' => $cfm->id]);
 
@@ -83,9 +83,9 @@ class CalendarScheduleBlocksTest extends TestCase
     {
         $this->seedCalendar();
 
-        $cfm = User::where('email', 'calendar-cfm@gwtrack.com')->firstOrFail();
-        $trainee = User::where('email', 'calendar-member@gwtrack.com')->firstOrFail();
-        $other = User::where('email', 'calendar-leader@gwtrack.com')->firstOrFail();
+        $cfm = User::where('email', 'calendar-cfm@gwtracks.com')->firstOrFail();
+        $trainee = User::where('email', 'calendar-member@gwtracks.com')->firstOrFail();
+        $other = User::where('email', 'calendar-leader@gwtracks.com')->firstOrFail();
 
         CalendarScheduleBlock::create([
             'user_id' => $other->id,
@@ -108,7 +108,7 @@ class CalendarScheduleBlocksTest extends TestCase
     {
         $this->seedCalendar();
 
-        $user = User::where('email', 'calendar-member@gwtrack.com')->firstOrFail();
+        $user = User::where('email', 'calendar-member@gwtracks.com')->firstOrFail();
 
         $this->actingAs($user)
             ->post(route('calendar.schedule-blocks.store'), [
@@ -136,7 +136,7 @@ class CalendarScheduleBlocksTest extends TestCase
     {
         $this->seedCalendar();
 
-        $user = User::where('email', 'calendar-member@gwtrack.com')->firstOrFail();
+        $user = User::where('email', 'calendar-member@gwtracks.com')->firstOrFail();
         $friday = now()->startOfWeek()->addDays(4);
 
         CalendarScheduleBlock::create([
@@ -163,7 +163,7 @@ class CalendarScheduleBlocksTest extends TestCase
     {
         $this->seedCalendar();
 
-        $user = User::where('email', 'calendar-member@gwtrack.com')->firstOrFail();
+        $user = User::where('email', 'calendar-member@gwtracks.com')->firstOrFail();
         $friday = CarbonImmutable::parse(now()->startOfWeek()->addDays(4)->toDateString());
 
         CalendarScheduleBlock::create([
@@ -198,7 +198,7 @@ class CalendarScheduleBlocksTest extends TestCase
     {
         $this->seedCalendar();
 
-        $user = User::where('email', 'calendar-member@gwtrack.com')->firstOrFail();
+        $user = User::where('email', 'calendar-member@gwtracks.com')->firstOrFail();
         $start = now()->addWeek()->toDateString();
         $end = now()->addWeeks(2)->toDateString();
 
@@ -228,7 +228,7 @@ class CalendarScheduleBlocksTest extends TestCase
     {
         $this->seedCalendar();
 
-        $user = User::where('email', 'calendar-member@gwtrack.com')->firstOrFail();
+        $user = User::where('email', 'calendar-member@gwtracks.com')->firstOrFail();
         $friday = now()->next('Friday');
 
         $this->actingAs($user)
@@ -254,7 +254,7 @@ class CalendarScheduleBlocksTest extends TestCase
     {
         $this->seedCalendar();
 
-        $user = User::where('email', 'calendar-member@gwtrack.com')->firstOrFail();
+        $user = User::where('email', 'calendar-member@gwtracks.com')->firstOrFail();
 
         $this->actingAs($user)
             ->get(route('calendar.settings'))
@@ -268,7 +268,7 @@ class CalendarScheduleBlocksTest extends TestCase
     {
         $this->seedCalendar();
 
-        $user = User::where('email', 'calendar-member@gwtrack.com')->firstOrFail();
+        $user = User::where('email', 'calendar-member@gwtracks.com')->firstOrFail();
 
         $block = CalendarScheduleBlock::create([
             'user_id' => $user->id,
@@ -307,7 +307,7 @@ class CalendarScheduleBlocksTest extends TestCase
     {
         $this->seedCalendar();
 
-        $user = User::where('email', 'calendar-member@gwtrack.com')->firstOrFail();
+        $user = User::where('email', 'calendar-member@gwtracks.com')->firstOrFail();
 
         $override = CalendarScheduleBlockOverride::create([
             'user_id' => $user->id,
@@ -347,7 +347,7 @@ class CalendarScheduleBlocksTest extends TestCase
     {
         $this->seedCalendar();
 
-        $user = User::where('email', 'calendar-member@gwtrack.com')->firstOrFail();
+        $user = User::where('email', 'calendar-member@gwtracks.com')->firstOrFail();
 
         CalendarScheduleBlock::create([
             'user_id' => $user->id,

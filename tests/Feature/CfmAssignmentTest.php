@@ -33,8 +33,8 @@ class CfmAssignmentTest extends TestCase
             CfmManagementSeeder::class,
         ]);
 
-        $agencyOwner = User::where('email', 'agency-owner@gwtrack.com')->firstOrFail();
-        $cfm = User::where('email', 'maria.cfm@gwtrack.com')->firstOrFail();
+        $agencyOwner = User::where('email', 'agency-owner@gwtracks.com')->firstOrFail();
+        $cfm = User::where('email', 'maria.cfm@gwtracks.com')->firstOrFail();
         $associate = User::where('email', 'fap.queue1@example.com')->firstOrFail();
 
         $this->actingAs($agencyOwner)
@@ -84,8 +84,8 @@ class CfmAssignmentTest extends TestCase
             CfmManagementSeeder::class,
         ]);
 
-        $agencyOwner = User::where('email', 'agency-owner@gwtrack.com')->firstOrFail();
-        $cfm = User::where('email', 'maria.cfm@gwtrack.com')->firstOrFail();
+        $agencyOwner = User::where('email', 'agency-owner@gwtracks.com')->firstOrFail();
+        $cfm = User::where('email', 'maria.cfm@gwtracks.com')->firstOrFail();
         $associate = User::where('email', 'fap.queue2@example.com')->firstOrFail();
 
         $this->actingAs($agencyOwner)
@@ -120,8 +120,8 @@ class CfmAssignmentTest extends TestCase
             CfmManagementSeeder::class,
         ]);
 
-        $agencyOwner = User::where('email', 'agency-owner@gwtrack.com')->firstOrFail();
-        $cfm = User::where('email', 'maria.cfm@gwtrack.com')->firstOrFail();
+        $agencyOwner = User::where('email', 'agency-owner@gwtracks.com')->firstOrFail();
+        $cfm = User::where('email', 'maria.cfm@gwtracks.com')->firstOrFail();
         $associate = User::where('email', 'fap.queue2@example.com')->firstOrFail();
 
         $this->actingAs($agencyOwner)
@@ -261,8 +261,8 @@ class CfmAssignmentTest extends TestCase
             CfmManagementSeeder::class,
         ]);
 
-        $agencyOwner = User::where('email', 'agency-owner@gwtrack.com')->firstOrFail();
-        $cfm = User::where('email', 'maria.cfm@gwtrack.com')->firstOrFail();
+        $agencyOwner = User::where('email', 'agency-owner@gwtracks.com')->firstOrFail();
+        $cfm = User::where('email', 'maria.cfm@gwtracks.com')->firstOrFail();
         $associate = User::where('email', 'fap.queue1@example.com')->firstOrFail();
 
         $this->actingAs($agencyOwner)
@@ -293,8 +293,8 @@ class CfmAssignmentTest extends TestCase
             CfmManagementSeeder::class,
         ]);
 
-        $agencyOwner = User::where('email', 'agency-owner@gwtrack.com')->firstOrFail();
-        $celeste = User::where('email', 'cfm@gwtrack.com')->firstOrFail();
+        $agencyOwner = User::where('email', 'agency-owner@gwtracks.com')->firstOrFail();
+        $celeste = User::where('email', 'cfm@gwtracks.com')->firstOrFail();
         $associate = User::where('email', 'fap.queue4@example.com')->firstOrFail();
 
         $this->actingAs($agencyOwner)
@@ -323,8 +323,8 @@ class CfmAssignmentTest extends TestCase
             CfmManagementSeeder::class,
         ]);
 
-        $agencyOwner = User::where('email', 'agency-owner@gwtrack.com')->firstOrFail();
-        $maria = User::where('email', 'maria.cfm@gwtrack.com')->firstOrFail();
+        $agencyOwner = User::where('email', 'agency-owner@gwtracks.com')->firstOrFail();
+        $maria = User::where('email', 'maria.cfm@gwtracks.com')->firstOrFail();
         $associate = User::where('email', 'fap.queue2@example.com')->firstOrFail();
 
         $this->actingAs($agencyOwner)
@@ -353,8 +353,8 @@ class CfmAssignmentTest extends TestCase
             CfmManagementSeeder::class,
         ]);
 
-        $agencyOwner = User::where('email', 'agency-owner@gwtrack.com')->firstOrFail();
-        $james = User::where('email', 'james.cfm@gwtrack.com')->firstOrFail();
+        $agencyOwner = User::where('email', 'agency-owner@gwtracks.com')->firstOrFail();
+        $james = User::where('email', 'james.cfm@gwtracks.com')->firstOrFail();
         $associate = User::where('email', 'fap.queue.us-tx@example.com')->firstOrFail();
 
         $this->actingAs($agencyOwner)
@@ -383,8 +383,8 @@ class CfmAssignmentTest extends TestCase
             CfmManagementSeeder::class,
         ]);
 
-        $agencyOwner = User::where('email', 'agency-owner@gwtrack.com')->firstOrFail();
-        $lisa = User::where('email', 'lisa.cfm@gwtrack.com')->firstOrFail();
+        $agencyOwner = User::where('email', 'agency-owner@gwtracks.com')->firstOrFail();
+        $lisa = User::where('email', 'lisa.cfm@gwtracks.com')->firstOrFail();
         $associate = User::where('email', 'fap.queue.us-tx@example.com')->firstOrFail();
 
         $this->actingAs($agencyOwner)

@@ -11,13 +11,13 @@ class ResourceDocumentContents
 <h1>📘 Associate Welcome Packet</h1>
 <h2>🎉 Welcome to the Team</h2>
 <p><strong>Congratulations and welcome!</strong> You are now part of a community committed to your growth, leadership, and long-term success.</p>
-<p>As a new associate, you have access to <strong>training, mentorship</strong>, and the <strong>GWTrack</strong> portal to build a strong foundation.</p>
+<p>As a new associate, you have access to <strong>training, mentorship</strong>, and the <strong>GWTracks</strong> portal to build a strong foundation.</p>
 <h2>🌟 Our Mission</h2>
 <p>Help families make informed financial decisions while providing associates with <strong>growth, leadership, and business success</strong> through learning, consistency, and mentorship.</p>
 <h2>📅 Your First 30 Days</h2>
 <h3>✅ Week 1: Getting Started</h3>
 <ul>
-<li><strong>Objectives:</strong> Account setup, meet sponsor &amp; CFM, learn GWTrack</li>
+<li><strong>Objectives:</strong> Account setup, meet sponsor &amp; CFM, learn GWTracks</li>
 <li><strong>Actions:</strong> Complete profile, upload docs, attend orientation, schedule mentoring</li>
 </ul>
 <div class="tip"><strong>💡 Tip:</strong> Focus on learning, not perfection.</div>
@@ -48,7 +48,7 @@ class ResourceDocumentContents
 <div class="support-card"><strong>Agency Owner</strong> Mentorship &amp; leadership oversight</div>
 <div class="support-card"><strong>Support Team</strong> Admin, compliance, licensing, training</div>
 </div>
-<h2>💻 GWTrack Portal &ndash; Quick Guide</h2>
+<h2>💻 GWTracks Portal &ndash; Quick Guide</h2>
 <table>
 <tbody>
 <tr><th>Section</th><th>Purpose</th></tr>
@@ -75,7 +75,7 @@ class ResourceDocumentContents
 </ul>
 <h2>📌 Daily Habits for Success</h2>
 <ul>
-<li>Log into <strong>GWTrack</strong> daily</li>
+<li>Log into <strong>GWTracks</strong> daily</li>
 <li>Complete assigned tasks</li>
 <li>Attend training &amp; communicate with mentors</li>
 <li>Review goals &amp; track progress</li>
@@ -94,7 +94,7 @@ class ResourceDocumentContents
 </div>
 <h2>💪 Welcome Again</h2>
 <p><strong>Your journey starts today.</strong> Stay committed, stay coachable.</p>
-<div class="footer"><strong>GWTrack.com</strong></div>
+<div class="footer"><strong>GWTracks.com</strong></div>
 <div class="footer">Training, Mentorship &amp; Performance Tracking</div>
 </div>
 HTML;
@@ -105,7 +105,7 @@ HTML;
         return <<<'HTML'
 <div class="packet">
 <h1>Field Apprenticeship Program Overview</h1>
-<p>The <strong>Field Apprenticeship Program (FAP)</strong> is your structured path from new associate to field-ready producer. You are paired with a <strong>Certified Field Mentor (CFM)</strong> who guides licensing progress, training, field activity, and milestone completion inside GWTrack.</p>
+<p>The <strong>Field Apprenticeship Program (FAP)</strong> is your structured path from new associate to field-ready producer. You are paired with a <strong>Certified Field Mentor (CFM)</strong> who guides licensing progress, training, field activity, and milestone completion inside GWTracks.</p>
 
 <h2>Who this program is for</h2>
 <ul>
@@ -179,7 +179,7 @@ HTML;
 </tbody>
 </table>
 
-<h2>How progress works in GWTrack</h2>
+<h2>How progress works in GWTracks</h2>
 <ol>
 <li>Open <strong>Field Apprenticeship</strong> under My Progress.</li>
 <li>Complete each milestone and mark it done when finished.</li>
@@ -204,7 +204,7 @@ HTML;
 <li>Ask for help early if you fall behind &mdash; your CFM is there to coach, not just evaluate</li>
 </ul>
 
-<h2>Helpful GWTrack links</h2>
+<h2>Helpful GWTracks links</h2>
 <ul>
 <li><strong>Field Apprenticeship tracker</strong> &mdash; <code>/field-apprenticeship</code></li>
 <li><strong>Training Center</strong> &mdash; <code>/training</code></li>
@@ -230,7 +230,7 @@ HTML;
         return <<<'HTML'
 <div class="packet">
 <h1>Code of Conduct Summary</h1>
-<p>This summary outlines the conduct, privacy, and regulatory expectations for GWTrack members and Greatway Financial Group associates. It supports a professional, ethical, and compliant culture across the team.</p>
+<p>This summary outlines the conduct, privacy, and regulatory expectations for GWTracks members and Greatway Financial Group associates. It supports a professional, ethical, and compliant culture across the team.</p>
 
 <h2>Purpose</h2>
 <p>Follow these standards when representing yourself, your team, and the agency in client work, recruiting, mentoring, training, and portal use.</p>
@@ -256,7 +256,7 @@ HTML;
 <h2>Licensing and compliance</h2>
 <ul>
 <li>Only discuss or sell products you are properly licensed and appointed to offer.</li>
-<li>Keep licenses, E&amp;O, AML, CE, and carrier appointments current in GWTrack and with regulators.</li>
+<li>Keep licenses, E&amp;O, AML, CE, and carrier appointments current in GWTracks and with regulators.</li>
 <li>Follow all applicable insurance, privacy, anti-spam, and advertising rules in your jurisdiction.</li>
 <li>Use approved materials, scripts, and disclosures whenever required.</li>
 <li>Report compliance questions or potential violations promptly to leadership.</li>
@@ -267,13 +267,13 @@ HTML;
 <li>Collect only the personal information needed to serve a prospect, client, or trainee.</li>
 <li>Store client and prospect data in approved systems &mdash; never in unsecured personal files or public channels.</li>
 <li>Do not share private contact details, FNA data, or account information without authorization.</li>
-<li>Use GWTrack access only for legitimate business purposes within your permission scope.</li>
+<li>Use GWTracks access only for legitimate business purposes within your permission scope.</li>
 <li>Report suspected data breaches or unauthorized access immediately.</li>
 </ul>
 
 <h2>Portal and team systems</h2>
 <ul>
-<li>Keep your GWTrack profile accurate, including contact details, licenses, and photo.</li>
+<li>Keep your GWTracks profile accurate, including contact details, licenses, and photo.</li>
 <li>Use tasks, checklists, CRM, and mentoring tools honestly and on time.</li>
 <li>Do not attempt to access records outside your sponsorship hierarchy or assigned permissions.</li>
 <li>Protect your login credentials and never share your account.</li>
@@ -319,7 +319,7 @@ HTML;
 <ol>
 <li>Talk with your CFM or sponsor first when appropriate.</li>
 <li>Escalate to your team leader or agency owner for unresolved or sensitive issues.</li>
-<li>Use <strong>Help &amp; Support</strong> in GWTrack for system or process problems.</li>
+<li>Use <strong>Help &amp; Support</strong> in GWTracks for system or process problems.</li>
 <li>For serious compliance or ethics concerns, contact agency leadership immediately.</li>
 </ol>
 
@@ -339,7 +339,7 @@ HTML;
 <li>Complete pre-licensing coursework on schedule.</li>
 <li>Schedule and pass the licensing exam.</li>
 <li>Submit appointment paperwork and background materials.</li>
-<li>Track approval status in GWTrack.</li>
+<li>Track approval status in GWTracks.</li>
 </ol>
 <h2>Helpful Sessions</h2>
 <ul>

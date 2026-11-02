@@ -15,7 +15,7 @@ return [
         'tasks' => [
             'associate_initiated' => [
                 'title' => 'Follow up on registration: {prospect}',
-                'description' => 'Confirm your recruit received the invitation and completes GWTrack registration.',
+                'description' => 'Confirm your recruit received the invitation and completes GWTracks registration.',
                 'priority' => 'high',
                 'offset_days' => 2,
             ],

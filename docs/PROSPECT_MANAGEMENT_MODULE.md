@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Prospect Management is the private CRM layer for GWTrack. It lets associates manage personal prospects, follow-ups, appointments, communication history, notes, tags, files, referrals, sharing, and conversions while preserving strict data privacy.
+Prospect Management is the private CRM layer for GWTracks. It lets associates manage personal prospects, follow-ups, appointments, communication history, notes, tags, files, referrals, sharing, and conversions while preserving strict data privacy.
 
 ## Privacy Rule
 

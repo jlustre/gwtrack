@@ -124,7 +124,7 @@ class ProfileTest extends TestCase
             TaskScenarioSeeder::class,
         ]);
 
-        $cfm = User::where('email', 'cfm@gwtrack.com')->firstOrFail();
+        $cfm = User::where('email', 'cfm@gwtracks.com')->firstOrFail();
         $this->startChecklistType($cfm, 'onboarding');
 
         $this->actingAs($cfm)
@@ -869,7 +869,7 @@ class ProfileTest extends TestCase
             ->actingAs($user)
             ->post(route('profile.invitations.send', $invitation), [
                 'recipient_email' => 'invitee@example.com',
-                'subject' => 'Join GWTrack',
+                'subject' => 'Join GWTracks',
                 'message' => "Please register here:\n".$invitation->invitationUrl(),
             ]);
 
@@ -901,7 +901,7 @@ class ProfileTest extends TestCase
             ->actingAs($user)
             ->post(route('profile.invitations.send', $invitation), [
                 'recipient_email' => 'invitee@example.com',
-                'subject' => 'Join GWTrack',
+                'subject' => 'Join GWTracks',
                 'message' => $htmlMessage,
             ]);
 
@@ -928,7 +928,7 @@ class ProfileTest extends TestCase
             ->actingAs($user)
             ->post(route('profile.invitations.send', $invitation), [
                 'recipient_email' => 'invitee@example.com',
-                'subject' => 'Join GWTrack',
+                'subject' => 'Join GWTracks',
                 'message' => "Please register here:\n".$invitation->invitationUrl(),
             ]);
 
@@ -948,7 +948,7 @@ class ProfileTest extends TestCase
             ->actingAs($user)
             ->post(route('profile.invitations.send', $invitation), [
                 'recipient_email' => 'invitee@example.com',
-                'subject' => 'Join GWTrack',
+                'subject' => 'Join GWTracks',
                 'message' => 'Please register soon.',
             ]);
 

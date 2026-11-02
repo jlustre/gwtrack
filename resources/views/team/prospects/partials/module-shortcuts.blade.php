@@ -38,7 +38,7 @@
             <p class="text-xs font-semibold uppercase tracking-wide text-gw-accent">Test data</p>
             <p class="mt-2 text-sm leading-6 text-slate-200">Seed the dashboard with curated QA prospects:</p>
             <code class="mt-3 block rounded bg-black/20 px-2 py-1 text-xs text-gw-accent-soft">php artisan db:seed --class=ProspectDashboardTestSeeder</code>
-            <p class="mt-2 text-xs text-slate-300">Login: prospects@gwtrack.com / Password123</p>
+            <p class="mt-2 text-xs text-slate-300">Login: prospects@gwtracks.com / Password123</p>
         </div>
     </aside>
 </div>

@@ -51,7 +51,7 @@ class PublicHolidayCalendarTest extends TestCase
     {
         $this->seedPublicHolidays();
 
-        $user = User::where('email', 'super-admin@gwtrack.com')->firstOrFail();
+        $user = User::where('email', 'super-admin@gwtracks.com')->firstOrFail();
         $year = now()->year;
 
         CalendarEvent::where('title', 'Independence Day')
@@ -155,7 +155,7 @@ class PublicHolidayCalendarTest extends TestCase
             UsersSeeder::class,
         ]);
 
-        $user = User::where('email', 'super-admin@gwtrack.com')->firstOrFail();
+        $user = User::where('email', 'super-admin@gwtracks.com')->firstOrFail();
         $viewYear = now()->year + 2;
 
         $this->assertFalse(

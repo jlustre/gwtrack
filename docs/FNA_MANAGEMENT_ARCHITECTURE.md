@@ -1,4 +1,4 @@
-# GWTrack — FNA Management Module
+# GWTracks — FNA Management Module
 **Architecture & Design Document v1.0**
 
 **Stack:** Laravel 12+, Livewire 3, Alpine.js, Tailwind CSS, Breeze, Spatie Permission, MySQL  

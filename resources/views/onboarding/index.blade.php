@@ -43,24 +43,28 @@
 
         <div class="overflow-hidden rounded-lg border border-slate-200 bg-gradient-to-br from-white via-slate-50 to-[#F8F3E7] shadow-sm">
             <div class="flex flex-col gap-2 border-b border-slate-200 bg-white/70 px-6 py-5 lg:flex-row lg:items-center lg:justify-between">
-                <div>
+                <div class="min-w-0 flex-1">
                     <h2 class="text-lg font-semibold text-gw-primary">Onboarding Checklist</h2>
                     <p class="mt-1 text-sm text-slate-600">Check items off as you complete them. Country-specific items appear only when they apply to your profile.</p>
-                    @if (! empty($typeStartDate))
-                        <p class="mt-1 text-xs font-medium text-slate-500">Schedule starts {{ $typeStartDate->format('M j, Y') }} (Day 1).</p>
-                    @endif
-                    @if (! empty($typeMaxCompleteDays) && ! empty($typeCompletionDueDate))
-                        @php
-                            $targetDueOverdue = $stats['completed'] < $stats['total']
-                                && \App\Support\ChecklistDueDisplay::isOverdue($typeCompletionDueDate);
-                        @endphp
-                        <p class="mt-1 text-xs font-medium text-slate-500">
-                            Target completion by Day {{ $typeMaxCompleteDays }}
-                            (<span @class([
-                                'tabular-nums',
-                                \App\Support\ChecklistDueDisplay::textClass($targetDueOverdue),
-                            ])>{{ $typeCompletionDueDate->format('m/d/Y') }}</span>).
-                        </p>
+                    @if (! empty($typeStartDate) || (! empty($typeMaxCompleteDays) && ! empty($typeCompletionDueDate)))
+                        <div class="mt-1 flex w-full flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+                            @if (! empty($typeStartDate))
+                                <p class="text-base font-bold text-teal-600">Schedule Starts: {{ $typeStartDate->format('M j, Y') }} (Day 1).</p>
+                            @endif
+                            @if (! empty($typeMaxCompleteDays) && ! empty($typeCompletionDueDate))
+                                @php
+                                    $targetDueOverdue = $stats['completed'] < $stats['total']
+                                        && \App\Support\ChecklistDueDisplay::isOverdue($typeCompletionDueDate);
+                                @endphp
+                                <p class="text-base font-bold text-teal-600">
+                                    Target Completion By: Day {{ $typeMaxCompleteDays }}
+                                    (<span @class([
+                                        'tabular-nums',
+                                        \App\Support\ChecklistDueDisplay::textClass($targetDueOverdue),
+                                    ])>{{ $typeCompletionDueDate->format('m/d/Y') }}</span>).
+                                </p>
+                            @endif
+                        </div>
                     @endif
                 </div>
                 <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-700">{{ $steps->count() }} applicable items</span>

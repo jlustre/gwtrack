@@ -12,6 +12,15 @@
 
 <header class="sticky top-0 z-30 border-b border-slate-200 bg-white px-4 py-3 shadow-sm lg:px-8" x-data>
     <div class="flex flex-wrap items-center gap-3">
+        <a
+            href="{{ url('/') }}"
+            x-show="! $store.shell.isDesktop || $store.shell.sidebarCollapsed"
+            x-cloak
+            class="shrink-0"
+        >
+            <img src="{{ asset('images/gwtrackslogo_small.png') }}" alt="GWTracks" class="h-8 w-auto">
+        </a>
+
         <button
             type="button"
             class="rounded-md p-2 text-gw-primary hover:bg-slate-100"
@@ -33,7 +42,7 @@
                 x-on:keydown.escape.window="open = false"
                 data-no-page-loader
             >
-                <label for="topbar-search" class="sr-only">Search GWTrack</label>
+                <label for="topbar-search" class="sr-only">Search GWTracks</label>
                 <div class="relative">
                     <span class="pointer-events-none absolute inset-y-0 left-3 flex items-center text-slate-400">
                         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
@@ -95,7 +104,7 @@
             </form>
         @else
             <form method="GET" action="{{ route('search.index') }}" class="order-3 w-full sm:order-none sm:min-w-72 sm:max-w-md sm:flex-1 lg:max-w-xl" data-no-page-loader>
-                <label for="topbar-search" class="sr-only">Search GWTrack</label>
+                <label for="topbar-search" class="sr-only">Search GWTracks</label>
                 <div class="relative">
                     <span class="pointer-events-none absolute inset-y-0 left-3 flex items-center text-slate-400">
                         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">

@@ -9,7 +9,7 @@
         <div class="overflow-hidden rounded-xl border border-slate-200 bg-gradient-to-br from-white via-slate-50 to-[#F8F3E7] shadow-sm">
             <div class="border-b border-slate-100 bg-gw-primary px-6 py-6 text-white">
                 <p class="text-sm font-semibold uppercase tracking-wide text-gw-accent">Portal Search</p>
-                <h1 class="mt-2 text-2xl font-semibold">Search GWTrack</h1>
+                <h1 class="mt-2 text-2xl font-semibold">Search GWTracks</h1>
                 <p class="mt-2 max-w-3xl text-sm leading-6 text-slate-200">
                     Find team members, prospects, resources, videos, training, tasks, events, and announcements from one place.
                 </p>

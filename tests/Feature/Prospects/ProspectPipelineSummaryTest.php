@@ -17,7 +17,7 @@ class ProspectPipelineSummaryTest extends TestCase
     {
         $this->seed(ProspectDashboardTestSeeder::class);
 
-        $user = User::where('email', 'prospects@gwtrack.com')->firstOrFail();
+        $user = User::where('email', 'prospects@gwtracks.com')->firstOrFail();
         $service = app(ProspectFunnelService::class);
         $funnelId = $service->primaryFunnelIdFor($user);
         $summary = $service->pipelineSummaryFor($user, $funnelId);
@@ -44,7 +44,7 @@ class ProspectPipelineSummaryTest extends TestCase
     {
         $this->seed(ProspectDashboardTestSeeder::class);
 
-        $user = User::where('email', 'prospects@gwtrack.com')->firstOrFail();
+        $user = User::where('email', 'prospects@gwtracks.com')->firstOrFail();
         $service = app(ProspectFunnelService::class);
         $funnelId = $service->primaryFunnelIdFor($user);
         $stageId = $service->numberedStagesForFunnel($funnelId)[0]['id'];
@@ -64,7 +64,7 @@ class ProspectPipelineSummaryTest extends TestCase
     {
         $this->seed(ProspectDashboardTestSeeder::class);
 
-        $user = User::where('email', 'prospects@gwtrack.com')->firstOrFail();
+        $user = User::where('email', 'prospects@gwtracks.com')->firstOrFail();
         $prospect = Prospect::query()->where('owner_id', $user->id)->firstOrFail();
 
         $this->actingAs($user)

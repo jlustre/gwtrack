@@ -8,7 +8,7 @@ class SystemTaskAssignor
 
     public const NAME = 'System';
 
-    public const EMAIL = 'system@gwtrack.com';
+    public const EMAIL = 'system@gwtracks.com';
 
     public static function id(): int
     {

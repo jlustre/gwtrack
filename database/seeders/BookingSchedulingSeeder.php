@@ -30,8 +30,8 @@ class BookingSchedulingSeeder extends Seeder
         $rank = Rank::query()->where('code', 'ASC')->first() ?? Rank::query()->first();
         $team = Team::query()->first();
 
-        $cfm = $this->member('booking-cfm@gwtrack.com', 'Booking Certified Field Mentor', 'certified-field-mentor', $team?->id, $rank?->id);
-        $trainee = $this->member('booking-trainee@gwtrack.com', 'Booking Apprentice Trainee', 'member', $team?->id, $rank?->id, $cfm->id);
+        $cfm = $this->member('booking-cfm@gwtracks.com', 'Booking Certified Field Mentor', 'certified-field-mentor', $team?->id, $rank?->id);
+        $trainee = $this->member('booking-trainee@gwtracks.com', 'Booking Apprentice Trainee', 'member', $team?->id, $rank?->id, $cfm->id);
 
         MentorAssignment::updateOrCreate(
             ['mentor_id' => $cfm->id, 'apprentice_id' => $trainee->id, 'status' => 'active'],
@@ -103,7 +103,7 @@ class BookingSchedulingSeeder extends Seeder
                     'duration_minutes' => $duration,
                     'event_category' => $eventCategory,
                     'location_type' => 'zoom',
-                    'meeting_link' => 'https://zoom.us/j/gwtrack-cfm',
+                    'meeting_link' => 'https://zoom.us/j/gwtracks-cfm',
                     'approval_required' => $approvalRequired,
                     'is_active' => true,
                     'visibility' => 'assigned_apprentices',

@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ $title ?? config('app.name', 'GWTrack') }}</title>
+        <title>{{ $title ?? config('app.name', 'GWTracks') }}</title>
 
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
@@ -39,11 +39,22 @@
                     x-bind:style="$store.shell.sidebarCollapsed && $store.shell.isDesktop ? 'width: 0px;' : 'width: 18rem;'"
                     x-bind:class="{ 'translate-x-0': $store.shell.sidebarOpen }"
                 >
-                    <div class="flex h-16 shrink-0 items-center border-b border-white/10 px-6">
-                        <a href="{{ Route::has('dashboard') ? route('dashboard') : url('/') }}" wire:navigate>
-                            <div class="text-lg font-semibold tracking-wide">GWTrack</div>
-                            <div class="text-xs uppercase text-gw-accent">Greatway Team Portal</div>
+                    <div class="flex h-16 shrink-0 items-center justify-between gap-2 border-b border-white/10 bg-white px-6">
+                        <a href="{{ url('/') }}" class="inline-flex flex-col items-start gap-1.5">
+                            <img src="{{ asset('images/gwtrackslogo_small.png') }}" alt="GWTracks" class="h-6 w-auto">
+                            <span class="text-xs uppercase text-gw-accent-dark">Greatway Team Portal</span>
                         </a>
+
+                        <button
+                            type="button"
+                            class="rounded-md p-2 text-gw-primary/70 hover:bg-slate-100 hover:text-gw-primary lg:hidden"
+                            x-on:click="$store.shell.closeMobileSidebar()"
+                        >
+                            <span class="sr-only">Close navigation</span>
+                            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                            </svg>
+                        </button>
                     </div>
 
                     <div class="min-h-0 flex-1 overflow-y-auto overscroll-contain" wire:scroll>

@@ -44,7 +44,7 @@ class CfmPortalPhaseFiveTest extends TestCase
     {
         $this->seedPortal();
 
-        $cfm = User::where('email', 'cfm@gwtrack.com')->firstOrFail();
+        $cfm = User::where('email', 'cfm@gwtracks.com')->firstOrFail();
         $assignment = $this->activeAssignmentForCfm($cfm);
 
         Livewire::actingAs($cfm)
@@ -64,7 +64,7 @@ class CfmPortalPhaseFiveTest extends TestCase
     {
         $this->seedPortal();
 
-        $cfm = User::where('email', 'cfm@gwtrack.com')->firstOrFail();
+        $cfm = User::where('email', 'cfm@gwtracks.com')->firstOrFail();
         $assignment = $this->activeAssignmentForCfm($cfm);
 
         Livewire::actingAs($cfm)
@@ -90,7 +90,7 @@ class CfmPortalPhaseFiveTest extends TestCase
     {
         $this->seedPortal();
 
-        $cfm = User::where('email', 'cfm@gwtrack.com')->firstOrFail();
+        $cfm = User::where('email', 'cfm@gwtracks.com')->firstOrFail();
         $assignment = $this->activeAssignmentForCfm($cfm);
 
         Livewire::actingAs($cfm)
@@ -110,7 +110,7 @@ class CfmPortalPhaseFiveTest extends TestCase
     {
         $this->seedPortal();
 
-        $cfm = User::where('email', 'cfm@gwtrack.com')->firstOrFail();
+        $cfm = User::where('email', 'cfm@gwtracks.com')->firstOrFail();
         $assignment = $this->activeAssignmentForCfm($cfm);
 
         Livewire::actingAs($cfm)
@@ -132,7 +132,7 @@ class CfmPortalPhaseFiveTest extends TestCase
     {
         $this->seedPortal();
 
-        $cfm = User::where('email', 'cfm@gwtrack.com')->firstOrFail();
+        $cfm = User::where('email', 'cfm@gwtracks.com')->firstOrFail();
 
         $response = $this->actingAs($cfm)
             ->get(route('cfm.portal.roster.export'));
@@ -150,7 +150,7 @@ class CfmPortalPhaseFiveTest extends TestCase
     {
         $this->seedPortal();
 
-        $cfm = User::where('email', 'cfm@gwtrack.com')->firstOrFail();
+        $cfm = User::where('email', 'cfm@gwtracks.com')->firstOrFail();
         $assignment = $this->activeAssignmentForCfm($cfm);
 
         $plan = CfmActionPlan::query()->create([

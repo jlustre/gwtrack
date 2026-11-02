@@ -25,7 +25,7 @@ class DashboardNotificationsPanelTest extends TestCase
             TaskScenarioSeeder::class,
         ]);
 
-        $owner = User::where('email', 'agency-owner@gwtrack.com')->firstOrFail();
+        $owner = User::where('email', 'agency-owner@gwtracks.com')->firstOrFail();
 
         for ($i = 1; $i <= 12; $i++) {
             DB::table('notifications')->insert([

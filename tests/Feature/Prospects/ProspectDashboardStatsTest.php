@@ -16,7 +16,7 @@ class ProspectDashboardStatsTest extends TestCase
     {
         $this->seed(ProspectDashboardTestSeeder::class);
 
-        $user = User::where('email', 'prospects@gwtrack.com')->firstOrFail();
+        $user = User::where('email', 'prospects@gwtracks.com')->firstOrFail();
         $expected = app(ProspectAnalyticsService::class)->dashboardStatsFor($user);
 
         $this->assertGreaterThan(0, $expected['total']);

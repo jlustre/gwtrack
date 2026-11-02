@@ -69,7 +69,7 @@ class TaskManagementSeederTest extends TestCase
 
 
 
-        $agencyOwner = User::where('email', 'agency-owner@gwtrack.com')->firstOrFail();
+        $agencyOwner = User::where('email', 'agency-owner@gwtracks.com')->firstOrFail();
 
 
 

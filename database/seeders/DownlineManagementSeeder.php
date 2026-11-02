@@ -14,15 +14,15 @@ use Illuminate\Support\Facades\Hash;
 /**
  * Seeds a sponsorship genealogy for tree / hierarchy testing (realistic names, stable emails).
  *
- * Login: downline-owner@gwtrack.com / Password123
+ * Login: downline-owner@gwtracks.com / Password123
  *
  * Minimum depth from root: 4 levels (root → leader → … → member).
  * Branches: wide (Avery), deep chain (Bianca), mixed legs (Caleb), captains + leaves (Dana).
  *
  * Stable test emails:
- * - genealogy.leaf.dana.01@gwtrack.com (leaf, no downline)
- * - genealogy.deep.bianca.l8@gwtrack.com (deepest chain node)
- * - genealogy.wide.avery.01@gwtrack.com (wide branch entry)
+ * - genealogy.leaf.dana.01@gwtracks.com (leaf, no downline)
+ * - genealogy.deep.bianca.l8@gwtracks.com (deepest chain node)
+ * - genealogy.wide.avery.01@gwtracks.com (wide branch entry)
  */
 class DownlineManagementSeeder extends Seeder
 {
@@ -71,13 +71,13 @@ class DownlineManagementSeeder extends Seeder
 
         $this->team = Team::firstOrCreate(
             ['name' => 'Wealth Legacy Alliance'],
-            ['description' => 'Default downline team for GWTrack demo hierarchy.', 'is_active' => true]
+            ['description' => 'Default downline team for GWTracks demo hierarchy.', 'is_active' => true]
         );
 
         $this->rankIds = Rank::query()->pluck('id', 'code')->all();
 
         $this->root = $this->seedUser(
-            email: 'downline-owner@gwtrack.com',
+            email: 'downline-owner@gwtracks.com',
             name: 'Morgan Executive',
             rankCode: 'SVP',
             role: 'agency-owner',
@@ -86,10 +86,10 @@ class DownlineManagementSeeder extends Seeder
         );
 
         $leaders = [
-            $this->seedUser('avery.stone@gwtrack.com', 'Avery Stone', 'SA', 'team-leader', $this->root, 28),
-            $this->seedUser('bianca.reyes@gwtrack.com', 'Bianca Reyes', 'ASC', 'certified-field-mentor', $this->root, 26),
-            $this->seedUser('caleb.morgan@gwtrack.com', 'Caleb Morgan', 'SA', 'team-leader', $this->root, 24),
-            $this->seedUser('dana.chen@gwtrack.com', 'Dana Chen', 'ASC', 'trainer', $this->root, 22),
+            $this->seedUser('avery.stone@gwtracks.com', 'Avery Stone', 'SA', 'team-leader', $this->root, 28),
+            $this->seedUser('bianca.reyes@gwtracks.com', 'Bianca Reyes', 'ASC', 'certified-field-mentor', $this->root, 26),
+            $this->seedUser('caleb.morgan@gwtracks.com', 'Caleb Morgan', 'SA', 'team-leader', $this->root, 24),
+            $this->seedUser('dana.chen@gwtracks.com', 'Dana Chen', 'ASC', 'trainer', $this->root, 22),
         ];
 
         $this->defaultMentor = $leaders[1];
@@ -108,7 +108,7 @@ class DownlineManagementSeeder extends Seeder
     {
         for ($i = 1; $i <= 14; $i++) {
             $email = $i === 1
-                ? "genealogy.wide.{$prefix}.01@gwtrack.com"
+                ? "genealogy.wide.{$prefix}.01@gwtracks.com"
                 : $this->nextEmail("wide.{$prefix}");
 
             $direct = $this->seedUser(
@@ -139,8 +139,8 @@ class DownlineManagementSeeder extends Seeder
 
         for ($level = 1; $level <= $levels; $level++) {
             $email = match (true) {
-                $level === 1 => "genealogy.deep.{$prefix}.l1@gwtrack.com",
-                $level === $levels => "genealogy.deep.{$prefix}.l{$level}@gwtrack.com",
+                $level === 1 => "genealogy.deep.{$prefix}.l1@gwtracks.com",
+                $level === $levels => "genealogy.deep.{$prefix}.l{$level}@gwtracks.com",
                 default => $this->nextEmail("deep.{$prefix}.mid"),
             };
 
@@ -174,7 +174,7 @@ class DownlineManagementSeeder extends Seeder
         for ($leg = 1; $leg <= 3; $leg++) {
             $legRoot = $this->seedUser(
                 email: $leg === 1
-                    ? "genealogy.mixed.{$prefix}.leg-root@gwtrack.com"
+                    ? "genealogy.mixed.{$prefix}.leg-root@gwtracks.com"
                     : $this->nextEmail("mixed.{$prefix}.leg"),
                 name: $this->randomName(),
                 rankCode: 'TA',
@@ -209,7 +209,7 @@ class DownlineManagementSeeder extends Seeder
 
             for ($leaf = 1; $leaf <= 6; $leaf++) {
                 $email = ($captain === 1 && $leaf === 1)
-                    ? "genealogy.leaf.{$prefix}.01@gwtrack.com"
+                    ? "genealogy.leaf.{$prefix}.01@gwtracks.com"
                     : $this->nextEmail("leaf.{$prefix}");
 
                 $this->seedUser(
@@ -293,7 +293,7 @@ class DownlineManagementSeeder extends Seeder
     {
         $this->memberSequence++;
 
-        return sprintf('genealogy.%s.%05d@gwtrack.com', $branch, $this->memberSequence);
+        return sprintf('genealogy.%s.%05d@gwtracks.com', $branch, $this->memberSequence);
     }
 
     private function seedUser(

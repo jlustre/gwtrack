@@ -232,7 +232,7 @@
 </head>
 <body>
     <div class="cover">
-        <p class="eyebrow">GWTrack User Guide</p>
+        <p class="eyebrow">GWTracks User Guide</p>
         <h1>{{ $title }}</h1>
         @if (filled($summary))
             <p class="summary">{{ $summary }}</p>
@@ -257,7 +257,7 @@
     </div>
 
     <div class="footer-note">
-        Generated for GWTrack &mdash; {{ now()->format('F j, Y') }}
+        Generated for GWTracks &mdash; {{ now()->format('F j, Y') }}
     </div>
 </body>
 </html>

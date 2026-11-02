@@ -151,7 +151,7 @@ class NewMemberRegistrationService
         return EmailTemplateTokens::merge(array_merge(
             EmailTemplateTokens::forMember($member),
             [
-            'app_name' => config('app.name', 'GWTrack'),
+            'app_name' => config('app.name', 'GWTracks'),
             'sponsor_name' => $sponsor?->name ?? 'your sponsor',
             'agency_owner_name' => $agencyOwner?->name ?? $this->memberUpline->agencyOwnerName($member),
             'dashboard_url' => route('dashboard'),

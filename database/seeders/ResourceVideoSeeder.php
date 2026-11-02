@@ -14,7 +14,7 @@ class ResourceVideoSeeder extends Seeder
 
         $videos = [
             [
-                'title' => 'Welcome to GWTrack',
+                'title' => 'Welcome to GWTracks',
                 'description' => 'A quick portal orientation covering navigation, profile setup, and your first-week priorities.',
                 'category' => 'onboarding',
                 'sort_order' => 10,

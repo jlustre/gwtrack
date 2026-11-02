@@ -17,7 +17,7 @@ class CrmModuleTestSeederTest extends TestCase
     {
         $this->seed(CrmModuleTestSeeder::class);
 
-        $owner = User::query()->where('email', 'crm-test@gwtrack.com')->first();
+        $owner = User::query()->where('email', 'crm-test@gwtracks.com')->first();
 
         $this->assertNotNull($owner);
         $this->assertTrue($owner->hasRole('member'));

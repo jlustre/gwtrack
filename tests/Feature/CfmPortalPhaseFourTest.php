@@ -45,7 +45,7 @@ class CfmPortalPhaseFourTest extends TestCase
     {
         $this->seedPortal();
 
-        $cfm = User::where('email', 'cfm@gwtrack.com')->firstOrFail();
+        $cfm = User::where('email', 'cfm@gwtracks.com')->firstOrFail();
         $assignment = $this->activeAssignmentForCfm($cfm);
 
         Livewire::actingAs($cfm)
@@ -60,7 +60,7 @@ class CfmPortalPhaseFourTest extends TestCase
     {
         $this->seedPortal();
 
-        $cfm = User::where('email', 'cfm@gwtrack.com')->firstOrFail();
+        $cfm = User::where('email', 'cfm@gwtracks.com')->firstOrFail();
         $assignment = $this->activeAssignmentForCfm($cfm);
 
         Livewire::actingAs($cfm)
@@ -106,7 +106,7 @@ class CfmPortalPhaseFourTest extends TestCase
     {
         $this->seedPortal();
 
-        $cfm = User::where('email', 'cfm@gwtrack.com')->firstOrFail();
+        $cfm = User::where('email', 'cfm@gwtracks.com')->firstOrFail();
         $assignment = $this->activeAssignmentForCfm($cfm);
 
         Livewire::actingAs($cfm)
@@ -122,7 +122,7 @@ class CfmPortalPhaseFourTest extends TestCase
     {
         $this->seedPortal();
 
-        $cfm = User::where('email', 'cfm@gwtrack.com')->firstOrFail();
+        $cfm = User::where('email', 'cfm@gwtracks.com')->firstOrFail();
         $assignment = $this->activeAssignmentForCfm($cfm);
 
         Livewire::actingAs($cfm)
@@ -158,7 +158,7 @@ class CfmPortalPhaseFourTest extends TestCase
     {
         $this->seedPortal();
 
-        $cfm = User::where('email', 'cfm@gwtrack.com')->firstOrFail();
+        $cfm = User::where('email', 'cfm@gwtracks.com')->firstOrFail();
         $assignment = $this->activeAssignmentForCfm($cfm);
 
         $meeting = CfmMeeting::query()->create([

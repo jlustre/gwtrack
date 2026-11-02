@@ -258,7 +258,7 @@ class TrainingAcademySeeder extends Seeder
         if (! $instructor) {
             $instructor = \App\Models\User::factory()->create([
                 'name' => 'Academy CFM',
-                'email' => 'academy-cfm@gwtrack.test',
+                'email' => 'academy-cfm@gwtracks.test',
             ]);
             $instructor->assignRole('certified-field-mentor');
         }

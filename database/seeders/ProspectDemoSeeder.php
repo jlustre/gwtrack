@@ -17,9 +17,9 @@ class ProspectDemoSeeder extends Seeder
         $teamId = $this->teamId();
         $rankId = Rank::where('code', 'TA')->value('id');
 
-        $owner = $this->user('prospects@gwtrack.com', 'Prospect Demo Owner', 'member', $rankId, $teamId);
-        $cfm = $this->user('prospect-cfm@gwtrack.com', 'Prospect CFM Coach', 'certified-field-mentor', Rank::where('code', 'ASC')->value('id'), $teamId);
-        $trainer = $this->user('prospect-trainer@gwtrack.com', 'Prospect Trainer', 'trainer', Rank::where('code', 'ASC')->value('id'), $teamId);
+        $owner = $this->user('prospects@gwtracks.com', 'Prospect Demo Owner', 'member', $rankId, $teamId);
+        $cfm = $this->user('prospect-cfm@gwtracks.com', 'Prospect CFM Coach', 'certified-field-mentor', Rank::where('code', 'ASC')->value('id'), $teamId);
+        $trainer = $this->user('prospect-trainer@gwtracks.com', 'Prospect Trainer', 'trainer', Rank::where('code', 'ASC')->value('id'), $teamId);
 
         $sourceIds = DB::table('prospect_sources')->pluck('id')->all();
         $stageIds = DB::table('pipeline_stages')->whereNull('user_id')->pluck('id')->all();

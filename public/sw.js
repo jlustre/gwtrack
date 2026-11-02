@@ -1,6 +1,6 @@
 self.addEventListener('push', (event) => {
     let payload = {
-        title: 'GWTrack',
+        title: 'GWTracks',
         body: 'You have a new notification.',
         data: {},
     };
@@ -13,7 +13,7 @@ self.addEventListener('push', (event) => {
         }
     }
 
-    const title = payload.title || 'GWTrack';
+    const title = payload.title || 'GWTracks';
     const options = {
         body: payload.body || '',
         icon: '/favicon.ico',

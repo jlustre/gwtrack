@@ -21,7 +21,7 @@ class UsersSeeder extends Seeder
         $saRankId = Rank::where('code', 'SA')->value('id');
 
         $superAdmin = User::updateOrCreate(
-            ['email' => 'super-admin@gwtrack.com'],
+            ['email' => 'super-admin@gwtracks.com'],
             [
                 'name' => 'Super Admin',
                 'password' => Hash::make('Password123'),
@@ -56,7 +56,7 @@ class UsersSeeder extends Seeder
             ])->save();
 
             $agencyOwner = User::updateOrCreate(
-                ['email' => 'agency-owner@gwtrack.com'],
+                ['email' => 'agency-owner@gwtracks.com'],
                 [
                     'name' => 'Mae Tsvetkoff',
                     'password' => Hash::make('Password123'),
@@ -79,7 +79,7 @@ class UsersSeeder extends Seeder
             ]);
 
             $cfmUser = User::updateOrCreate(
-                ['email' => 'cfm@gwtrack.com'],
+                ['email' => 'cfm@gwtracks.com'],
                 [
                     'name' => 'CFM User',
                     'password' => Hash::make('Password123'),

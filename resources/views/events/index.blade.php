@@ -70,7 +70,7 @@
             <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                 <div>
                     <p class="text-xs font-bold uppercase tracking-wide text-gw-accent">Calendar & Events</p>
-                    <h1 class="mt-1 text-2xl font-semibold">GWTrack Calendar</h1>
+                    <h1 class="mt-1 text-2xl font-semibold">GWTracks Calendar</h1>
                     <p class="mt-1 max-w-3xl text-sm text-slate-200">
                         Coordinate team trainings, mentor sessions, prospect appointments, rank reviews, licensing deadlines, and organization-wide events.
                     </p>

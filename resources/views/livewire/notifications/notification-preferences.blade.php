@@ -2,7 +2,7 @@
     <div>
         <p class="text-sm font-semibold uppercase tracking-wide text-gw-accent">Settings</p>
         <h1 class="text-2xl font-semibold text-gw-primary">Notification preferences</h1>
-        <p class="mt-2 text-sm text-slate-600">Choose how GWTrack alerts you by category and channel.</p>
+        <p class="mt-2 text-sm text-slate-600">Choose how GWTracks alerts you by category and channel.</p>
     </div>
 
     @if (session('preferences_saved'))

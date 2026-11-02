@@ -166,7 +166,7 @@ class NotificationModuleCoverageTest extends TestCase
     {
         $this->seed([TaskScenarioSeeder::class, CfmManagementSeeder::class]);
 
-        $cfm = User::where('email', 'cfm@gwtrack.com')->firstOrFail();
+        $cfm = User::where('email', 'cfm@gwtracks.com')->firstOrFail();
         $assignment = \App\Models\MentorAssignment::query()
             ->where('mentor_id', $cfm->id)
             ->where('status', 'active')

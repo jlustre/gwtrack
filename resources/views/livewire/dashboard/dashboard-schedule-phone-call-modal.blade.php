@@ -36,7 +36,7 @@
                             <h3 id="dashboard-schedule-phone-call-modal-title" class="mt-0.5 text-base font-semibold">Schedule a phone call</h3>
                             <p class="mt-0.5 text-xs text-blue-100/90">Search prospects, clients, team members, or add someone outside the system.</p>
                         @elseif ($step === 'external')
-                            <h3 id="dashboard-schedule-phone-call-modal-title" class="mt-0.5 text-base font-semibold">Call someone not in GWTrack</h3>
+                            <h3 id="dashboard-schedule-phone-call-modal-title" class="mt-0.5 text-base font-semibold">Call someone not in GWTracks</h3>
                             <p class="mt-0.5 text-xs text-blue-100/90">Enter their details and when you plan to call.</p>
                         @elseif ($step === 'view' && $activeCall)
                             <h3 id="dashboard-schedule-phone-call-modal-title" class="mt-0.5 text-base font-semibold">{{ $activeCall->contact_name }}</h3>

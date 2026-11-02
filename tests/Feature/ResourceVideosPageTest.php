@@ -34,7 +34,7 @@ class ResourceVideosPageTest extends TestCase
             ->get(route('resources.videos'))
             ->assertOk()
             ->assertSee('Video library', false)
-            ->assertSee('Welcome to GWTrack', false)
+            ->assertSee('Welcome to GWTracks', false)
             ->assertSee('Prospecting Fundamentals', false)
             ->assertDontSee('Video library coming soon', false);
     }
@@ -44,12 +44,12 @@ class ResourceVideosPageTest extends TestCase
         $user = User::factory()->create();
         $user->assignRole('member');
 
-        $video = PortalResource::query()->where('type', 'video')->where('title', 'Welcome to GWTrack')->firstOrFail();
+        $video = PortalResource::query()->where('type', 'video')->where('title', 'Welcome to GWTracks')->firstOrFail();
 
         $this->actingAs($user)
             ->getJson(route('resources.videos.preview', $video))
             ->assertOk()
-            ->assertJsonPath('title', 'Welcome to GWTrack')
+            ->assertJsonPath('title', 'Welcome to GWTracks')
             ->assertJsonPath('provider', 'youtube')
             ->assertJsonStructure(['embed_url', 'thumbnail_url']);
     }

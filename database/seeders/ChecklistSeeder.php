@@ -41,7 +41,7 @@ class ChecklistSeeder extends Seeder
           0 => 
           [
             'title' => 'Email Verified',
-            'description' => 'Check your email to find your GWTrack verification link and click it.',
+            'description' => 'Check your email to find your GWTracks verification link and click it.',
             'sort_order' => 10,
             'nth_day' => 1,
             'is_required' => true,
@@ -50,8 +50,8 @@ class ChecklistSeeder extends Seeder
           ],
           1 => 
           [
-            'title' => 'First GWTrack Login Successful',
-            'description' => 'After email verification, try to login using your GWTrack credentials (email and password) and check this item upon successful login.',
+            'title' => 'First GWTracks Login Successful',
+            'description' => 'After email verification, try to login using your GWTracks credentials (email and password) and check this item upon successful login.',
             'sort_order' => 20,
             'nth_day' => 1,
             'is_required' => true,
@@ -100,7 +100,7 @@ class ChecklistSeeder extends Seeder
           ],
           6 => 
           [
-            'title' => 'Watch GWTrack Welcome Orientation',
+            'title' => 'Watch GWTracks Welcome Orientation',
             'description' => 'Review the portal purpose, dashboard, trackers, resources, communications, and team visibility areas.',
             'sort_order' => 70,
             'nth_day' => 3,
@@ -152,12 +152,12 @@ class ChecklistSeeder extends Seeder
 
         $responsibleParties =         [
           'Email Verified' => 'Self',
-          'First GWTrack Login Successful' => 'Self',
+          'First GWTracks Login Successful' => 'Self',
           'Complete Member Profile' => 'Self',
           'Receive Certified Field Mentor Assignment' => 'SP, AO',
           'Confirm Sponsor And Team Placement' => 'SP, AO',
           'Schedule Sponsor Welcome Call' => 'Self, SP',
-          'Watch GWTrack Welcome Orientation' => 'Self, SP',
+          'Watch GWTracks Welcome Orientation' => 'Self, SP',
           'Complete Business Standards Review' => 'Self, SP, TL',
           'Join Primary Team Communication Channels' => 'Self, SP',
           'Review Resource Library' => 'Self, SP',
@@ -166,12 +166,12 @@ class ChecklistSeeder extends Seeder
 
         $notifiedParties =         [
           'Email Verified' => 'SP, TR',
-          'First GWTrack Login Successful' => 'SP, TR',
+          'First GWTracks Login Successful' => 'SP, TR',
           'Complete Member Profile' => 'SP',
           'Receive Certified Field Mentor Assignment' => 'SP, CFM, AO',
           'Confirm Sponsor And Team Placement' => 'SP, AO, TL',
           'Schedule Sponsor Welcome Call' => 'SP',
-          'Watch GWTrack Welcome Orientation' => 'SP',
+          'Watch GWTracks Welcome Orientation' => 'SP',
           'Complete Business Standards Review' => 'SP, TL',
           'Join Primary Team Communication Channels' => 'SP, TL',
           'Review Resource Library' => 'SP',

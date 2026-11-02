@@ -9,7 +9,7 @@ use Illuminate\Database\Seeder;
  *
  *   php artisan db:seed --class=ProspectDashboardTestSeeder
  *
- * Primary login: prospects@gwtrack.com / Password123
+ * Primary login: prospects@gwtracks.com / Password123
  * Start at: /team/prospects
  */
 class ProspectDashboardTestSeeder extends Seeder
@@ -26,7 +26,7 @@ class ProspectDashboardTestSeeder extends Seeder
         ]);
 
         $this->command?->info('Prospect dashboard test data ready.');
-        $this->command?->info('Login: prospects@gwtrack.com / Password123');
+        $this->command?->info('Login: prospects@gwtracks.com / Password123');
         $this->command?->info('URL: '.url('/team/prospects'));
     }
 }

@@ -36,7 +36,7 @@
                                     <span class="text-xs font-semibold uppercase tracking-wide text-slate-500">Day 1 start date</span>
                                     <input
                                         type="date"
-                                        wire:model="startedAt"
+                                        wire:model.live="startedAt"
                                         required
                                         class="mt-1 w-full rounded-md border-slate-300 text-sm shadow-sm focus:border-gw-accent focus:ring-gw-accent"
                                     >
@@ -50,6 +50,13 @@
                                     <span wire:loading wire:target="startChecklist">Starting…</span>
                                 </button>
                             </div>
+
+                            @if (! empty($plannedMaxCompleteDays) && $plannedCompletionDueDate)
+                                <div class="mt-3 flex flex-col gap-1 rounded-md border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-600 sm:flex-row sm:items-center sm:justify-between">
+                                    <span>Days to complete: {{ $plannedMaxCompleteDays }} day{{ $plannedMaxCompleteDays === 1 ? '' : 's' }}</span>
+                                    <span>Expected completion date: <span class="tabular-nums">{{ $plannedCompletionDueDate->format('M j, Y') }}</span></span>
+                                </div>
+                            @endif
                         </form>
                     @else
                         @if (! empty($ns['unmetPrerequisites']))
@@ -70,6 +77,22 @@
                         <div class="rounded-md border border-slate-200 bg-slate-50 px-4 py-3">
                             <p class="font-semibold text-gw-primary">Need help?</p>
                             <p class="mt-1">Contact your sponsor, Agency Owner, or CFM if you believe this checklist should already be active.</p>
+                        </div>
+                    @endif
+
+                    @if (($tracker['key'] ?? null) === 'licensing')
+                        <div class="rounded-md border border-slate-200 bg-white p-4">
+                            <label class="flex cursor-pointer items-start gap-3">
+                                <input
+                                    type="checkbox"
+                                    class="mt-0.5 h-4 w-4 shrink-0 rounded border-2 border-slate-400 text-gw-accent focus:ring-gw-accent"
+                                    onchange="if (this.checked) { window.location.href = '{{ route('profile.edit', ['tab' => 'licenses', 'already_licensed' => 1]) }}'; }"
+                                >
+                                <div>
+                                    <p class="font-semibold text-gw-primary">I'm already licensed</p>
+                                    <p class="mt-1 text-slate-600">Check this box to skip the licensing schedule and go straight to your profile, where you can add your license jurisdiction, number, and expiration date.</p>
+                                </div>
+                            </label>
                         </div>
                     @endif
                 </div>

@@ -21,8 +21,8 @@
                 <div class="grid bg-[#0b0b0c] lg:grid-cols-[0.95fr_1.1fr]">
                     <aside class="border-b border-gw-accent/25 bg-gradient-to-br from-black to-[#101012] p-6 sm:p-8 lg:border-b-0 lg:border-r">
                         <div>
-                            <a href="/" class="inline-block bg-gradient-to-br from-gw-accent-hover via-gw-accent to-gw-accent-dark bg-clip-text text-3xl font-extrabold tracking-normal text-transparent">
-                                GW<span class="font-black">Track</span>.com
+                            <a href="/" class="inline-flex items-center rounded-xl bg-white px-3 py-2">
+                                <img src="{{ asset('images/gwtrackslogo_small.png') }}" alt="GWTracks" class="h-8 w-auto sm:h-9">
                             </a>
                             <div class="mt-2 border-l-2 border-gw-accent pl-3 text-xs font-semibold uppercase tracking-[0.16em] text-gw-accent">
                                 Financial Intelligence &middot; Insurance Team Portal
@@ -32,7 +32,7 @@
                         <div class="mt-8 overflow-hidden rounded-3xl border border-gw-accent/20 bg-[#070707] shadow-[0_18px_34px_-24px_rgba(132, 187, 65,0.55)]">
                             <img
                                 src="{{ asset('images/authimage.jpg') }}"
-                                alt="GWTrack registration"
+                                alt="GWTracks registration"
                                 class="h-64 w-full object-cover object-top sm:h-80 lg:h-[22rem]"
                                 style="-webkit-mask-image: linear-gradient(to bottom, black 0%, black 62%, rgba(0,0,0,0.3) 100%); mask-image: linear-gradient(to bottom, black 0%, black 62%, rgba(0,0,0,0.3) 100%);"
                             >
@@ -40,7 +40,7 @@
 
                         <div class="mt-8">
                             <h1 class="max-w-lg bg-gradient-to-r from-white to-gw-accent-hover bg-clip-text text-3xl font-bold leading-tight text-transparent sm:text-4xl">
-                                Create Your GWTrack Account
+                                Create Your GWTracks Account
                             </h1>
                             <div class="mt-4 h-0.5 w-16 bg-gradient-to-r from-gw-accent to-transparent"></div>
                             <p class="mt-5 max-w-md border-l-2 border-gw-accent/50 pl-4 text-base leading-7 text-slate-300">
@@ -65,7 +65,7 @@
                             <div class="mt-8 rounded-2xl border border-gw-accent/25 bg-[#070707] p-5 shadow-[0_12px_28px_-20px_rgba(132, 187, 65,0.45)]" role="note">
                                 <div class="text-xs font-semibold uppercase tracking-[0.14em] text-gw-accent">Important Before Registering</div>
                                 <p class="mt-3 text-sm leading-6 text-slate-300">
-                                    You must already be registered with Greatway Financial Group before completing GWTrack registration. If you have not finished your Greatway enrollment, ask your sponsor how to proceed. Your Greatway sponsor must be the same person as your GWTrack sponsor&mdash;<span class="font-semibold text-white">{{ $invitation->sponsor->name }}</span>. If this is not the person who invited you, stop here and ask the correct sponsor to send their invitation link.
+                                    You must already be registered with Greatway Financial Group before completing GWTracks registration. If you have not finished your Greatway enrollment, ask your sponsor how to proceed. Your Greatway sponsor must be the same person as your GWTracks sponsor&mdash;<span class="font-semibold text-white">{{ $invitation->sponsor->name }}</span>. If this is not the person who invited you, stop here and ask the correct sponsor to send their invitation link.
                                 </p>
                             </div>
 
@@ -249,7 +249,7 @@
                             <div class="space-y-3 rounded-2xl border border-gw-accent/20 bg-[#131316] p-5">
                                 <label class="flex gap-3 text-sm leading-6 text-slate-300">
                                     <input type="checkbox" name="sponsor_confirmed" value="1" class="mt-1 rounded border-gw-accent/40 bg-[#0a0a0c] text-gw-accent focus:ring-gw-accent" required @checked(old('sponsor_confirmed'))>
-                                    <span>I confirm that {{ $invitation->sponsor->name }} is the person sponsoring my GWTrack registration. <span class="text-red-400">*</span></span>
+                                    <span>I confirm that {{ $invitation->sponsor->name }} is the person sponsoring my GWTracks registration. <span class="text-red-400">*</span></span>
                                 </label>
                                 <x-input-error :messages="$errors->get('sponsor_confirmed')" class="mt-2" />
 
@@ -264,7 +264,7 @@
                                     <div class="rounded-xl border border-gw-accent/30 bg-black/40 px-4 py-3">
                                         <p class="text-sm font-semibold text-white">Monthly subscription terms</p>
                                         <p class="mt-1 text-sm leading-6 text-slate-300">
-                                            GWTrack billing is on. Review the rank prices and agree before creating your account.
+                                            GWTracks billing is on. Review the rank prices and agree before creating your account.
                                         </p>
                                         <button
                                             type="button"
@@ -308,9 +308,9 @@
                                     <div class="relative z-10 flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-3xl border border-gw-accent/30 bg-[#0b0b0c] text-slate-100 shadow-[0_25px_45px_-12px_rgba(0,0,0,0.8)]">
                                         <div class="border-b border-gw-accent/20 bg-gradient-to-r from-black to-[#141416] px-6 py-5">
                                             <p class="text-xs font-semibold uppercase tracking-[0.14em] text-gw-accent">Before you continue</p>
-                                            <h3 id="subscription-terms-title" class="mt-1 text-2xl font-semibold text-white">GWTrack subscription charges</h3>
+                                            <h3 id="subscription-terms-title" class="mt-1 text-2xl font-semibold text-white">GWTracks subscription charges</h3>
                                             <p class="mt-2 text-sm leading-6 text-slate-300">
-                                                Review the upcoming monthly costs if you want to keep using GWTrack after you become licensed and advance in rank.
+                                                Review the upcoming monthly costs if you want to keep using GWTracks after you become licensed and advance in rank.
                                             </p>
                                         </div>
                                         <div class="space-y-4 overflow-y-auto px-6 py-5 text-sm leading-6 text-slate-300">

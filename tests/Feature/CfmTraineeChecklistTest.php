@@ -32,7 +32,7 @@ class CfmTraineeChecklistTest extends TestCase
     {
         $this->seedPortal();
 
-        $cfm = User::where('email', 'cfm@gwtrack.com')->firstOrFail();
+        $cfm = User::where('email', 'cfm@gwtracks.com')->firstOrFail();
         $assignment = MentorAssignment::query()
             ->where('mentor_id', $cfm->id)
             ->where('status', 'active')
@@ -51,7 +51,7 @@ class CfmTraineeChecklistTest extends TestCase
     {
         $this->seedPortal();
 
-        $cfm = User::where('email', 'cfm@gwtrack.com')->firstOrFail();
+        $cfm = User::where('email', 'cfm@gwtracks.com')->firstOrFail();
         $assignment = MentorAssignment::query()
             ->where('mentor_id', $cfm->id)
             ->where('status', 'active')
@@ -94,7 +94,7 @@ class CfmTraineeChecklistTest extends TestCase
     {
         $this->seedPortal();
 
-        $cfm = User::where('email', 'cfm@gwtrack.com')->firstOrFail();
+        $cfm = User::where('email', 'cfm@gwtracks.com')->firstOrFail();
 
         $this->actingAs($cfm)
             ->get(route('cfm.portal'))
@@ -107,7 +107,7 @@ class CfmTraineeChecklistTest extends TestCase
     {
         $this->seedPortal();
 
-        $cfm = User::where('email', 'cfm@gwtrack.com')->firstOrFail();
+        $cfm = User::where('email', 'cfm@gwtracks.com')->firstOrFail();
         $assignment = MentorAssignment::query()
             ->where('mentor_id', $cfm->id)
             ->where('status', 'active')

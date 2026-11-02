@@ -22,7 +22,7 @@ class TrainingReportMail extends Mailable
         $label = $this->reportData['period_label'] ?? 'Training';
 
         return new Envelope(
-            subject: "{$label} Training Report — GWTrack Academy",
+            subject: "{$label} Training Report — GWTracks Academy",
         );
     }
 

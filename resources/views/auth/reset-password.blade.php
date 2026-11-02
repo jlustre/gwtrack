@@ -1,7 +1,7 @@
 <x-guest-layout>
     <x-auth-premium-shell
         headline="Create A New Password"
-        intro="Set a fresh secure password and continue your GWTrack journey with confidence."
+        intro="Set a fresh secure password and continue your GWTracks journey with confidence."
         title="Reset Password"
         subtitle="Secure account recovery · member access"
     >

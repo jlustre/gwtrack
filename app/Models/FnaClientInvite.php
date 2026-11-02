@@ -45,7 +45,7 @@ class FnaClientInvite extends Model
     public function recipientTypeLabel(): string
     {
         if ($this->recipient_user_id) {
-            return 'GWTrack member';
+            return 'GWTracks member';
         }
 
         if ($this->prospect_id) {

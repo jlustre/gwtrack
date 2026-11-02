@@ -47,8 +47,8 @@ class CfmManagementPageTest extends TestCase
             CfmManagementSeeder::class,
         ]);
 
-        $owner = User::where('email', 'agency-owner@gwtrack.com')->firstOrFail();
-        $cfm = User::where('email', 'cfm@gwtrack.com')->firstOrFail();
+        $owner = User::where('email', 'agency-owner@gwtracks.com')->firstOrFail();
+        $cfm = User::where('email', 'cfm@gwtracks.com')->firstOrFail();
 
         $this->actingAs($owner)
             ->patch(route('team.cfms.licensed-jurisdictions.update', $cfm), [
@@ -81,7 +81,7 @@ class CfmManagementPageTest extends TestCase
             CfmManagementSeeder::class,
         ]);
 
-        $owner = User::where('email', 'agency-owner@gwtrack.com')->firstOrFail();
+        $owner = User::where('email', 'agency-owner@gwtracks.com')->firstOrFail();
         $ontarioAssociate = User::where('email', 'fap.queue1@example.com')->firstOrFail();
 
         $payload = app(CfmManagementService::class)->payloadFor($owner);

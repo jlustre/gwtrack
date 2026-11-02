@@ -55,8 +55,8 @@ class DashboardHomeService
         $teamLabel = $user->team?->name;
 
         $message = filled($teamLabel)
-            ? "Welcome back to GWTrack. You're on {$teamLabel} as {$rankLabel} — here's your command center for today."
-            : "Welcome back to GWTrack. You're currently ranked {$rankLabel} — here's your command center for today.";
+            ? "Welcome back to GWTracks. You're on {$teamLabel} as {$rankLabel} — here's your command center for today."
+            : "Welcome back to GWTracks. You're currently ranked {$rankLabel} — here's your command center for today.";
 
         return [
             'greeting' => $greeting,

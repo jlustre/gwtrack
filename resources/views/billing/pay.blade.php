@@ -21,7 +21,7 @@
                         <p class="text-sm font-semibold uppercase tracking-wide text-gw-accent">Secure checkout</p>
                         <h1 class="mt-2 text-2xl font-semibold">Pay invoice {{ $invoice->number }}</h1>
                         <p class="mt-2 text-sm leading-6 text-slate-200">
-                            Card details are used only to complete this charge. GWTrack stores the card brand and last four digits — never the full number or security code.
+                            Card details are used only to complete this charge. GWTracks stores the card brand and last four digits — never the full number or security code.
                         </p>
                     </div>
 

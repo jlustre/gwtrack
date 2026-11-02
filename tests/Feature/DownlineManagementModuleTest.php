@@ -26,7 +26,7 @@ class DownlineManagementModuleTest extends TestCase
             DownlineManagementSeeder::class,
         ]);
 
-        $owner = User::where('email', 'downline-owner@gwtrack.com')->firstOrFail();
+        $owner = User::where('email', 'downline-owner@gwtracks.com')->firstOrFail();
         $member = User::where('sponsor_id', $owner->id)->firstOrFail();
 
         $this->actingAs($owner)
@@ -50,7 +50,7 @@ class DownlineManagementModuleTest extends TestCase
             DownlineManagementSeeder::class,
         ]);
 
-        $owner = User::where('email', 'downline-owner@gwtrack.com')->firstOrFail();
+        $owner = User::where('email', 'downline-owner@gwtracks.com')->firstOrFail();
         $member = User::where('sponsor_id', $owner->id)->firstOrFail();
 
         $this->actingAs($owner)
@@ -166,7 +166,7 @@ class DownlineManagementModuleTest extends TestCase
             DownlineManagementSeeder::class,
         ]);
 
-        $owner = User::where('email', 'downline-owner@gwtrack.com')->firstOrFail();
+        $owner = User::where('email', 'downline-owner@gwtracks.com')->firstOrFail();
         $directLeader = User::where('sponsor_id', $owner->id)->firstOrFail();
         $deeperMember = User::where('sponsor_id', $directLeader->id)->firstOrFail();
 
@@ -210,7 +210,7 @@ class DownlineManagementModuleTest extends TestCase
 
         app(DownlineHierarchyService::class)->rebuild();
 
-        $arielle = User::where('email', 'agency-owner@gwtrack.com')->firstOrFail();
+        $arielle = User::where('email', 'agency-owner@gwtracks.com')->firstOrFail();
         $aaron = User::where('email', 'aaron.us@example.com')->firstOrFail();
 
         $this->assertSame($arielle->id, $aaron->sponsor_id);
@@ -240,7 +240,7 @@ class DownlineManagementModuleTest extends TestCase
             DownlineManagementSeeder::class,
         ]);
 
-        $owner = User::where('email', 'downline-owner@gwtrack.com')->firstOrFail();
+        $owner = User::where('email', 'downline-owner@gwtracks.com')->firstOrFail();
 
         $rows = collect($this->actingAs($owner)->get(route('team.hierarchy'))->assertOk()->viewData('rows'));
 
@@ -264,7 +264,7 @@ class DownlineManagementModuleTest extends TestCase
             DownlineManagementSeeder::class,
         ]);
 
-        $owner = User::where('email', 'downline-owner@gwtrack.com')->firstOrFail();
+        $owner = User::where('email', 'downline-owner@gwtracks.com')->firstOrFail();
         $directLeader = User::where('sponsor_id', $owner->id)->firstOrFail();
 
         $ownerSearchTerm = strtok($owner->name, ' ') ?: substr($owner->name, 0, 3);
@@ -306,7 +306,7 @@ class DownlineManagementModuleTest extends TestCase
             DownlineManagementSeeder::class,
         ]);
 
-        $target = User::where('email', 'avery.stone@gwtrack.com')->firstOrFail();
+        $target = User::where('email', 'avery.stone@gwtracks.com')->firstOrFail();
         $outsider = User::factory()->create(['name' => 'Outside Member']);
         $outsider->assignRole('member');
 
@@ -330,7 +330,7 @@ class DownlineManagementModuleTest extends TestCase
             DownlineManagementSeeder::class,
         ]);
 
-        $owner = User::where('email', 'downline-owner@gwtrack.com')->firstOrFail();
+        $owner = User::where('email', 'downline-owner@gwtracks.com')->firstOrFail();
         $directLeader = User::where('sponsor_id', $owner->id)->firstOrFail();
         $deeperMember = User::where('sponsor_id', $directLeader->id)->firstOrFail();
 
@@ -359,7 +359,7 @@ class DownlineManagementModuleTest extends TestCase
             DownlineManagementSeeder::class,
         ]);
 
-        $owner = User::where('email', 'downline-owner@gwtrack.com')->firstOrFail();
+        $owner = User::where('email', 'downline-owner@gwtracks.com')->firstOrFail();
         $owner->forceFill(['email_verified_at' => now()])->save();
         $direct = User::where('sponsor_id', $owner->id)->firstOrFail();
         $indirect = User::where('sponsor_id', $direct->id)->firstOrFail();
@@ -399,7 +399,7 @@ class DownlineManagementModuleTest extends TestCase
             DownlineManagementSeeder::class,
         ]);
 
-        $owner = User::where('email', 'downline-owner@gwtrack.com')->firstOrFail();
+        $owner = User::where('email', 'downline-owner@gwtracks.com')->firstOrFail();
         $owner->forceFill(['email_verified_at' => now()])->save();
         $direct = User::where('sponsor_id', $owner->id)->firstOrFail();
 
@@ -425,14 +425,14 @@ class DownlineManagementModuleTest extends TestCase
             DownlineManagementSeeder::class,
         ]);
 
-        $owner = User::where('email', 'downline-owner@gwtrack.com')->firstOrFail();
+        $owner = User::where('email', 'downline-owner@gwtracks.com')->firstOrFail();
 
         $this->actingAs($owner)
             ->get(route('team.export'))
             ->assertOk()
             ->assertHeader('content-type', 'text/csv; charset=UTF-8');
 
-        $member = User::where('email', 'genealogy.leaf.dana.01@gwtrack.com')->firstOrFail();
+        $member = User::where('email', 'genealogy.leaf.dana.01@gwtracks.com')->firstOrFail();
 
         $this->actingAs($member)
             ->get(route('team.export'))

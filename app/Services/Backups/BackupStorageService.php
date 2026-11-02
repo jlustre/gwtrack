@@ -18,7 +18,7 @@ final class BackupStorageService
 
     public function makeFilename(string $type): string
     {
-        return sprintf('gwtrack-%s-%s.zip', Str::slug($type), now()->format('Ymd-His'));
+        return sprintf('gwtracks-%s-%s.zip', Str::slug($type), now()->format('Ymd-His'));
     }
 
     public function storeWorkingDirectory(Backup $backup, string $workingPath): Backup

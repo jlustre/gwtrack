@@ -105,6 +105,12 @@ class TrackerChecklistPage extends Component
         $config = TrackerChecklistConfig::for($this->trackerKey);
 
         if (! $checklists->hasTypeStarted($user, $config['typeCode'])) {
+            $maxCompleteDays = $checklists->maxCompleteDaysForType($config['typeCode']);
+            $plannedStartDate = filled($this->startedAt) ? \Carbon\Carbon::parse($this->startedAt) : null;
+            $plannedCompletionDueDate = $plannedStartDate
+                ? $checklists->typeCompletionDueDate($plannedStartDate, $config['typeCode'])
+                : null;
+
             return view('livewire.trackers.tracker-checklist-page', [
                 'tracker' => $config,
                 'started' => false,
@@ -120,6 +126,8 @@ class TrackerChecklistPage extends Component
                 'typeStartDate' => null,
                 'typeCompletionDueDate' => null,
                 'typeMaxCompleteDays' => null,
+                'plannedMaxCompleteDays' => $maxCompleteDays,
+                'plannedCompletionDueDate' => $plannedCompletionDueDate,
             ])->layout('layouts.app');
         }
 

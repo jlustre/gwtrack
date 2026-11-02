@@ -224,13 +224,13 @@
                             </span>
                             <div>
                                 <h3 class="text-sm font-semibold text-gw-primary">Attendees</h3>
-                                <p class="text-xs text-slate-500">Invite GWTrack users or add one outside guest/prospect.</p>
+                                <p class="text-xs text-slate-500">Invite GWTracks users or add one outside guest/prospect.</p>
                             </div>
                         </div>
 
                         <div class="mt-5 grid gap-4 md:grid-cols-2">
                             <div class="md:col-span-2">
-                                <label for="event-attendees" class="block text-sm font-semibold text-gw-primary">GWTrack Attendees</label>
+                                <label for="event-attendees" class="block text-sm font-semibold text-gw-primary">GWTracks Attendees</label>
                                 <select id="event-attendees" wire:model="eventForm.attendee_user_ids" multiple size="6" class="mt-2 block w-full rounded-lg border-[#516070]/40 bg-white text-sm shadow-sm focus:border-gw-accent focus:ring-gw-accent">
                                     @foreach ($attendeeUsers as $attendee)
                                         <option value="{{ $attendee->id }}">{{ $attendee->name }} - {{ $attendee->email }}</option>

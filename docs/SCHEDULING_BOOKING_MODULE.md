@@ -2,7 +2,7 @@
 
 ## Purpose
 
-The CFM Mentor Scheduling module adds Calendly/Cal.com-style booking to GWTrack. Certified Field Mentors can publish availability, create booking event types, share booking links, accept or auto-confirm trainee sessions, and connect confirmed sessions to the existing Calendar & Events module.
+The CFM Mentor Scheduling module adds Calendly/Cal.com-style booking to GWTracks. Certified Field Mentors can publish availability, create booking event types, share booking links, accept or auto-confirm trainee sessions, and connect confirmed sessions to the existing Calendar & Events module.
 
 ## Architecture
 

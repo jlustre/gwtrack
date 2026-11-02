@@ -21,8 +21,8 @@ class MyAppointmentsSeeder extends Seeder
      * Seed a rich set of mentor appointments for My Appointments testing.
      *
      * Login:
-     *   booking-trainee@gwtrack.com / password  (trainee view)
-     *   booking-cfm@gwtrack.com / password      (CFM view)
+     *   booking-trainee@gwtracks.com / password  (trainee view)
+     *   booking-cfm@gwtracks.com / password      (CFM view)
      *
      * Run:
      *   php artisan db:seed --class=MyAppointmentsSeeder
@@ -37,9 +37,9 @@ class MyAppointmentsSeeder extends Seeder
             BookingSchedulingSeeder::class,
         ]);
 
-        $cfm = User::query()->where('email', 'booking-cfm@gwtrack.com')->firstOrFail();
-        $trainee = User::query()->where('email', 'booking-trainee@gwtrack.com')->firstOrFail();
-        $guest = User::query()->where('email', 'calendar-member@gwtrack.com')->first()
+        $cfm = User::query()->where('email', 'booking-cfm@gwtracks.com')->firstOrFail();
+        $trainee = User::query()->where('email', 'booking-trainee@gwtracks.com')->firstOrFail();
+        $guest = User::query()->where('email', 'calendar-member@gwtracks.com')->first()
             ?? User::query()->whereKeyNot([$cfm->id, $trainee->id])->first();
 
         $schedule = AvailabilitySchedule::query()
@@ -114,7 +114,7 @@ class MyAppointmentsSeeder extends Seeder
         }
 
         $this->command?->info("My Appointments seeder ready ({$created} scenario appointments).");
-        $this->command?->info('Login as booking-trainee@gwtrack.com or booking-cfm@gwtrack.com (password: password)');
+        $this->command?->info('Login as booking-trainee@gwtracks.com or booking-cfm@gwtracks.com (password: password)');
         $this->command?->info('Open: '.url('/bookings/my-appointments'));
     }
 
@@ -182,7 +182,7 @@ class MyAppointmentsSeeder extends Seeder
                 'timezone' => 'America/Vancouver',
                 'location_type' => $type->location_type ?: 'zoom',
                 'location_details' => $type->location_type === 'zoom' ? 'Zoom mentor room' : 'Office meeting room',
-                'meeting_link' => $type->meeting_link ?: 'https://zoom.us/j/gwtrack-cfm',
+                'meeting_link' => $type->meeting_link ?: 'https://zoom.us/j/gwtracks-cfm',
                 'reason' => $reason,
                 'topics' => $topics,
                 'confirmed_at' => in_array($status, ['confirmed', 'completed'], true) ? $startsAt->copy()->subDay() : null,

@@ -10,14 +10,14 @@ return [
     'sms' => [
         'enabled' => env('CFM_SMS_ENABLED', false),
         'driver' => env('CFM_SMS_DRIVER', 'log'),
-        'from' => env('CFM_SMS_FROM', 'GWTrack'),
+        'from' => env('CFM_SMS_FROM', 'GWTracks'),
     ],
 
     'sms_templates' => [
         'check_in' => [
             'label' => 'Coaching check-in',
             'subject' => 'Coaching check-in from your CFM',
-            'body' => 'Hi {trainee}, this is {cfm}. I wanted to check in on your progress this week. Please log into GWTrack and review your next steps.',
+            'body' => 'Hi {trainee}, this is {cfm}. I wanted to check in on your progress this week. Please log into GWTracks and review your next steps.',
         ],
         'meeting_reminder' => [
             'label' => 'Meeting reminder',

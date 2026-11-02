@@ -67,7 +67,7 @@ class ProspectManagementModuleTest extends TestCase
             ProspectDemoSeeder::class,
         ]);
 
-        $owner = User::where('email', 'prospects@gwtrack.com')->firstOrFail();
+        $owner = User::where('email', 'prospects@gwtracks.com')->firstOrFail();
 
         $this->assertGreaterThanOrEqual(50, Prospect::where('owner_id', $owner->id)->count());
         $this->assertDatabaseHas('prospect_followups', ['assigned_user_id' => $owner->id]);
@@ -98,7 +98,7 @@ class ProspectManagementModuleTest extends TestCase
             ProspectDemoSeeder::class,
         ]);
 
-        $owner = User::where('email', 'prospects@gwtrack.com')->firstOrFail();
+        $owner = User::where('email', 'prospects@gwtracks.com')->firstOrFail();
 
         $this->actingAs($owner)
             ->get(route('team.prospects', ['prospect_search' => 'Jordan']))
@@ -127,7 +127,7 @@ class ProspectManagementModuleTest extends TestCase
             ProspectDemoSeeder::class,
         ]);
 
-        $owner = User::where('email', 'prospects@gwtrack.com')->firstOrFail();
+        $owner = User::where('email', 'prospects@gwtracks.com')->firstOrFail();
         $prospect = Prospect::where('owner_id', $owner->id)->firstOrFail();
 
         $this->actingAs($owner)
@@ -229,7 +229,7 @@ class ProspectManagementModuleTest extends TestCase
             ProspectDemoSeeder::class,
         ]);
 
-        $owner = User::where('email', 'prospects@gwtrack.com')->firstOrFail();
+        $owner = User::where('email', 'prospects@gwtracks.com')->firstOrFail();
 
         $this->actingAs($owner)
             ->get(route('team.prospects.follow-ups'))
@@ -440,7 +440,7 @@ class ProspectManagementModuleTest extends TestCase
             ProspectDemoSeeder::class,
         ]);
 
-        $owner = User::where('email', 'prospects@gwtrack.com')->firstOrFail();
+        $owner = User::where('email', 'prospects@gwtracks.com')->firstOrFail();
 
         $this->actingAs($owner)
             ->get(route('team.prospects.pipeline'))

@@ -1,17 +1,17 @@
-# GWTrack Business Rules And Workflows
+# GWTracks Business Rules And Workflows
 
-This document defines the operating rules and primary workflows for GWTrack.com. It should be treated as the source of truth for how users, teams, onboarding, licensing, mentorship, apprenticeship, training, assessments, resources, recognition, events, and rank advancement behave inside the portal.
+This document defines the operating rules and primary workflows for GWTracks.com. It should be treated as the source of truth for how users, teams, onboarding, licensing, mentorship, apprenticeship, training, assessments, resources, recognition, events, and rank advancement behave inside the portal.
 
 ## Portal Rules
 
-- GWTrack is a private portal for a Greatway Financial Group team.
+- GWTracks is a private portal for a Greatway Financial Group team.
 - Users must be authenticated before accessing the portal.
 - Users must have an active account status to access protected areas.
 - Access is controlled by role and permission using Spatie Laravel Permission.
 - A user may have multiple roles when needed.
 - A user may belong to one primary team.
 - A user may have one sponsor.
-- A visitor may only register as a GWTrack member through an invitation link from a current GWTrack member.
+- A visitor may only register as a GWTracks member through an invitation link from a current GWTracks member.
 - Every invitation link must include a tracked registration code.
 - Registration codes are stored and audited so the portal can identify who sponsored each new member.
 - A newly registered member must receive `sponsor_id` from the sponsoring member tied to the invitation code.
@@ -53,8 +53,8 @@ This document defines the operating rules and primary workflows for GWTrack.com.
 ## Rank And Role Distinction
 
 - Ranks are Greatway Financial Group advancement levels and represent business progression.
-- Roles are GWTrack application access groups and determine portal permissions.
-- Rank changes do not automatically equal role changes unless a GWTrack workflow explicitly grants the corresponding role.
+- Roles are GWTracks application access groups and determine portal permissions.
+- Rank changes do not automatically equal role changes unless a GWTracks workflow explicitly grants the corresponding role.
 - Senior Vice President (SVP) and above usually qualify for the `agency-owner` role. SVP is the first Field Leader rank.
 - Senior Associate rank members usually qualify for the `team-leader` role.
 - The `certified-field-mentor` role may be granted to members at Associate rank and above after successfully completing CFM training and approval.
@@ -163,7 +163,7 @@ Canonical figures: `docs/greatway-promotion-compensation-guidelines.md` and `con
 
 ## User Lifecycle Workflow
 
-1. A current GWTrack member creates or provides an invitation link with a tracked registration code.
+1. A current GWTracks member creates or provides an invitation link with a tracked registration code.
 2. The invited person opens the invitation link and completes registration.
 3. The system validates that the invitation code is active, not revoked, not expired, and has available uses.
 4. The new user's `sponsor_id` is set to the sponsoring member tied to the invitation code.
@@ -179,10 +179,10 @@ Canonical figures: `docs/greatway-promotion-compensation-guidelines.md` and `con
 
 ## Invitation Registration Workflow
 
-1. A current active GWTrack member sponsors a prospective member.
+1. A current active GWTracks member sponsors a prospective member.
 2. The system creates a registration invitation with a unique registration code.
 3. The system must not create a new active invitation for an email address that already has an active invitation.
-4. The system must not create or send an invitation to an email address that already belongs to a registered GWTrack user.
+4. The system must not create or send an invitation to an email address that already belongs to a registered GWTracks user.
 5. The sponsor may preview and edit the invitation email before sending it.
 6. The invitation email message must keep the registration link in the body.
 7. The invitation email popup must remind the sender to add the recipient name before sending.
@@ -444,7 +444,7 @@ Canonical figures: `docs/greatway-promotion-compensation-guidelines.md` and `con
 
 ## Open Workflow Decisions
 
-- Which remaining rank-advancement evidence and approval steps still need a GWTrack workflow beyond the published Greatway income, NBA, and Field Leader leg qualifications.
+- Which remaining rank-advancement evidence and approval steps still need a GWTracks workflow beyond the published Greatway income, NBA, and Field Leader leg qualifications.
 - Exact licensing workflow by province or state.
 - Mandatory apprenticeship step list.
 - CFM certification approval criteria.

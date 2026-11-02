@@ -14,10 +14,10 @@ class TaskManagementSeeder extends Seeder
     {
         $this->seedSuggestions();
 
-        $agencyOwner = User::where('email', 'agency-owner@gwtrack.com')->first();
-        $cfm = User::where('email', 'cfm@gwtrack.com')->first();
-        $sponsor = User::where('email', 'sponsor@gwtrack.com')->first();
-        $trainer = User::where('email', 'trainer@gwtrack.com')->first();
+        $agencyOwner = User::where('email', 'agency-owner@gwtracks.com')->first();
+        $cfm = User::where('email', 'cfm@gwtracks.com')->first();
+        $sponsor = User::where('email', 'sponsor@gwtracks.com')->first();
+        $trainer = User::where('email', 'trainer@gwtracks.com')->first();
 
         if (! $agencyOwner) {
             return;

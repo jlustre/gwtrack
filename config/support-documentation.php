@@ -5,20 +5,20 @@ declare(strict_types=1);
 return [
     'modules' => [
         [
-            'module' => 'GWTrack Welcome Orientation',
-            'title' => 'GWTrack Welcome Orientation',
+            'module' => 'GWTracks Welcome Orientation',
+            'title' => 'GWTracks Welcome Orientation',
             'summary' => 'Portal purpose, dashboard, trackers, resources, communications, team visibility, and your first-week path.',
             'slug' => 'welcome-orientation',
-            'file' => 'GWTRACK_WELCOME_ORIENTATION.md',
+            'file' => 'GWTRACKS_WELCOME_ORIENTATION.md',
             'app_route' => 'dashboard',
             'app_label' => 'Open Dashboard',
         ],
         [
-            'module' => 'GWTrack Application',
-            'title' => 'GWTrack Application User Guide',
+            'module' => 'GWTracks Application',
+            'title' => 'GWTracks Application User Guide',
             'summary' => 'Complete application overview — navigation, menus, workflows, and links to module guides.',
             'slug' => 'application',
-            'file' => 'GWTRACK_APPLICATION_USER_GUIDE.md',
+            'file' => 'GWTRACKS_APPLICATION_USER_GUIDE.md',
             'app_route' => 'dashboard',
             'app_label' => 'Open Dashboard',
         ],

@@ -2,7 +2,7 @@
     <x-admin.page-hero
         eyebrow="Admin · Academy Builder"
         title="Training Content Studio"
-        description="Build courses, lessons, and learning paths for the GWTrack Academy. Publish content to the member Training Center."
+        description="Build courses, lessons, and learning paths for the GWTracks Academy. Publish content to the member Training Center."
         class="rounded-xl"
     />
 

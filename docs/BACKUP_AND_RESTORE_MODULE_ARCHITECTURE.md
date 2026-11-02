@@ -263,7 +263,7 @@ The classification service should intersect configured tables with actual databa
 Recommended archive format:
 
 ```text
-gwtrack-backup-20260702-153000.zip
+gwtracks-backup-20260702-153000.zip
   metadata.json
   tables/
     users.json
@@ -1121,7 +1121,7 @@ BACKUP_ENCRYPTION_ENABLED=false
 BACKUP_REQUIRE_MAINTENANCE_MODE=true
 ```
 
-## Implementation Notes for GWTrack
+## Implementation Notes for GWTracks
 
 - Use the existing `/admin` route group and Spatie role middleware.
 - Prefer Livewire pages over traditional form controllers because this app already uses Livewire heavily for admin-style workflows.

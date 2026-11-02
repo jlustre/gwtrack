@@ -51,8 +51,8 @@ class CfmAssignmentConfirmationTaskTest extends TestCase
         Mail::fake();
         $this->seedWorld();
 
-        $agencyOwner = User::where('email', 'agency-owner@gwtrack.com')->firstOrFail();
-        $cfm = User::where('email', 'maria.cfm@gwtrack.com')->firstOrFail();
+        $agencyOwner = User::where('email', 'agency-owner@gwtracks.com')->firstOrFail();
+        $cfm = User::where('email', 'maria.cfm@gwtracks.com')->firstOrFail();
         $cfm->forceFill(['email_verified_at' => now()])->save();
         $associate = User::where('email', 'fap.queue1@example.com')->firstOrFail();
 
@@ -90,8 +90,8 @@ class CfmAssignmentConfirmationTaskTest extends TestCase
         Mail::fake();
         $this->seedWorld();
 
-        $agencyOwner = User::where('email', 'agency-owner@gwtrack.com')->firstOrFail();
-        $cfm = User::where('email', 'maria.cfm@gwtrack.com')->firstOrFail();
+        $agencyOwner = User::where('email', 'agency-owner@gwtracks.com')->firstOrFail();
+        $cfm = User::where('email', 'maria.cfm@gwtracks.com')->firstOrFail();
         $cfm->forceFill(['email_verified_at' => now()])->save();
         $associate = User::where('email', 'fap.queue1@example.com')->firstOrFail();
 

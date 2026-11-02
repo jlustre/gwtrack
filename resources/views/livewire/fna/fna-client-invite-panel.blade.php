@@ -72,9 +72,9 @@
         <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
             <h3 class="text-base font-semibold text-gw-primary">Send FNA client portal invite</h3>
             @if ($recipientContext === 'member')
-                <p class="mt-1 text-sm text-slate-600">This GWTrack member can complete the FNA through the secure client portal. The portal is separate from their member login.</p>
+                <p class="mt-1 text-sm text-slate-600">This GWTracks member can complete the FNA through the secure client portal. The portal is separate from their member login.</p>
             @else
-                <p class="mt-1 text-sm text-slate-600">Your prospect or member can complete the FNA online. Non-members do not need a GWTrack account.</p>
+                <p class="mt-1 text-sm text-slate-600">Your prospect or member can complete the FNA online. Non-members do not need a GWTracks account.</p>
             @endif
 
             @if ($prospectMissingEmail)

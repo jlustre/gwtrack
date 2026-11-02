@@ -1,8 +1,8 @@
-# GWTrack.com Laravel Scaffolding
+# GWTracks.com Laravel Scaffolding
 
 Private TALL stack portal for a Greatway Financial Group team.
 
-Target path requested: `C:\laragon2\www\GWTrack`
+Target path requested: `C:\laragon2\www\GWTracks`
 
 Note: the scaffold was prepared here because write access to `C:\laragon2\www` was not granted in this session.
 
@@ -12,8 +12,8 @@ Laravel 13 is the current target major version for this scaffold and requires PH
 
 ```bash
 cd C:\laragon2\www
-composer create-project laravel/laravel:^13.0 GWTrack
-cd GWTrack
+composer create-project laravel/laravel:^13.0 GWTracks
+cd GWTracks
 
 cp .env.example .env
 php artisan key:generate
@@ -22,8 +22,8 @@ php artisan key:generate
 Configure MySQL in `.env`:
 
 ```env
-APP_NAME=GWTrack
-APP_URL=http://gwtrack.test
+APP_NAME=GWTracks
+APP_URL=http://gwtracks.test
 
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
@@ -188,7 +188,7 @@ Primary relationships:
 
 Invitation and registration rules:
 
-- GWTrack is invitation-only; public registration without a valid invitation code is blocked.
+- GWTracks is invitation-only; public registration without a valid invitation code is blocked.
 - Each invitation link includes a tracked registration code and sponsor.
 - New members inherit `sponsor_id` from the member tied to the invitation code.
 - Registration requires GW Associate ID, active Greatway Financial Group associate confirmation, and sponsor confirmation.
@@ -215,7 +215,7 @@ Roles:
 Rank and role distinction:
 
 - Ranks are Greatway Financial Group advancement levels.
-- Roles are GWTrack access and permission groups.
+- Roles are GWTracks access and permission groups.
 - Senior Vice President (SVP) and above usually carry the `agency-owner` role.
 - Senior Associate usually carries the `team-leader` role.
 - CFM can be granted to Associate and above after successful CFM Training completion and approval.

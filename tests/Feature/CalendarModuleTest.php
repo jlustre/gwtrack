@@ -25,13 +25,13 @@ class CalendarModuleTest extends TestCase
     {
         $this->seedCalendar();
 
-        $user = User::where('email', 'calendar-member@gwtrack.com')->firstOrFail();
+        $user = User::where('email', 'calendar-member@gwtracks.com')->firstOrFail();
 
         foreach (['calendar.index', 'calendar.month', 'calendar.week', 'calendar.day', 'calendar.agenda', 'events.index'] as $route) {
             $this->actingAs($user)
                 ->get(route($route))
                 ->assertOk()
-                ->assertSee('GWTrack Calendar')
+                ->assertSee('GWTracks Calendar')
                 ->assertSeeText('Calendar & Events');
         }
     }
@@ -40,7 +40,7 @@ class CalendarModuleTest extends TestCase
     {
         $this->seedCalendar();
 
-        $user = User::where('email', 'calendar-member@gwtrack.com')->firstOrFail();
+        $user = User::where('email', 'calendar-member@gwtracks.com')->firstOrFail();
 
         $response = $this->actingAs($user)
             ->get(route('calendar.month'))
@@ -62,7 +62,7 @@ class CalendarModuleTest extends TestCase
     {
         $this->seedCalendar();
 
-        $user = User::where('email', 'calendar-member@gwtrack.com')->firstOrFail();
+        $user = User::where('email', 'calendar-member@gwtracks.com')->firstOrFail();
         $event = CalendarEvent::where('title', 'Monday Agency Leadership Huddle')->firstOrFail();
 
         $this->actingAs($user)
@@ -90,7 +90,7 @@ class CalendarModuleTest extends TestCase
     {
         $this->seedCalendar();
 
-        $user = User::where('email', 'calendar-member@gwtrack.com')->firstOrFail();
+        $user = User::where('email', 'calendar-member@gwtracks.com')->firstOrFail();
 
         $this->actingAs($user)
             ->get(route('calendar.export'))
@@ -103,8 +103,8 @@ class CalendarModuleTest extends TestCase
     {
         $this->seedCalendar();
 
-        $user = User::where('email', 'calendar-member@gwtrack.com')->firstOrFail();
-        $attendee = User::where('email', 'calendar-leader@gwtrack.com')->firstOrFail();
+        $user = User::where('email', 'calendar-member@gwtracks.com')->firstOrFail();
+        $attendee = User::where('email', 'calendar-leader@gwtracks.com')->firstOrFail();
 
         $this->actingAs($user)
             ->get(route('calendar.index'))
@@ -166,7 +166,7 @@ class CalendarModuleTest extends TestCase
     {
         $this->seedCalendar();
 
-        $user = User::where('email', 'calendar-member@gwtrack.com')->firstOrFail();
+        $user = User::where('email', 'calendar-member@gwtracks.com')->firstOrFail();
         $training = CalendarCategory::where('slug', 'training')->firstOrFail();
         $personal = CalendarCategory::where('slug', 'personal')->whereNull('user_id')->firstOrFail();
 
@@ -214,7 +214,7 @@ class CalendarModuleTest extends TestCase
     {
         $this->seedCalendar();
 
-        $admin = User::where('email', 'calendar-owner@gwtrack.com')->firstOrFail();
+        $admin = User::where('email', 'calendar-owner@gwtracks.com')->firstOrFail();
         $category = CalendarCategory::where('slug', 'team')->firstOrFail();
 
         $this->actingAs($admin)
@@ -249,7 +249,7 @@ class CalendarModuleTest extends TestCase
     {
         $this->seedCalendar();
 
-        $user = User::where('email', 'calendar-member@gwtrack.com')->firstOrFail();
+        $user = User::where('email', 'calendar-member@gwtracks.com')->firstOrFail();
 
         $this->actingAs($user)
             ->post(route('calendar.categories.store'), [
@@ -275,8 +275,8 @@ class CalendarModuleTest extends TestCase
     {
         $this->seedCalendar();
 
-        $owner = User::where('email', 'calendar-member@gwtrack.com')->firstOrFail();
-        $other = User::where('email', 'calendar-leader@gwtrack.com')->firstOrFail();
+        $owner = User::where('email', 'calendar-member@gwtracks.com')->firstOrFail();
+        $other = User::where('email', 'calendar-leader@gwtracks.com')->firstOrFail();
 
         $category = CalendarCategory::create([
             'user_id' => $owner->id,
@@ -303,8 +303,8 @@ class CalendarModuleTest extends TestCase
     {
         $this->seedCalendar();
 
-        $owner = User::where('email', 'calendar-member@gwtrack.com')->firstOrFail();
-        $other = User::where('email', 'calendar-leader@gwtrack.com')->firstOrFail();
+        $owner = User::where('email', 'calendar-member@gwtracks.com')->firstOrFail();
+        $other = User::where('email', 'calendar-leader@gwtracks.com')->firstOrFail();
 
         CalendarCategory::create([
             'user_id' => $owner->id,
@@ -328,7 +328,7 @@ class CalendarModuleTest extends TestCase
     {
         $this->seedCalendar();
 
-        $user = User::where('email', 'calendar-member@gwtrack.com')->firstOrFail();
+        $user = User::where('email', 'calendar-member@gwtracks.com')->firstOrFail();
 
         $category = CalendarCategory::create([
             'user_id' => $user->id,
@@ -367,8 +367,8 @@ class CalendarModuleTest extends TestCase
     {
         $this->seedCalendar();
 
-        $owner = User::where('email', 'calendar-member@gwtrack.com')->firstOrFail();
-        $other = User::where('email', 'calendar-leader@gwtrack.com')->firstOrFail();
+        $owner = User::where('email', 'calendar-member@gwtracks.com')->firstOrFail();
+        $other = User::where('email', 'calendar-leader@gwtracks.com')->firstOrFail();
 
         $category = CalendarCategory::create([
             'user_id' => $owner->id,
@@ -400,7 +400,7 @@ class CalendarModuleTest extends TestCase
     {
         $this->seedCalendar();
 
-        $user = User::where('email', 'calendar-member@gwtrack.com')->firstOrFail();
+        $user = User::where('email', 'calendar-member@gwtracks.com')->firstOrFail();
         $friday = CarbonImmutable::parse(now()->next('Friday')->toDateString());
         $category = CalendarCategory::where('slug', 'personal')->whereNull('user_id')->firstOrFail();
 
@@ -443,7 +443,7 @@ class CalendarModuleTest extends TestCase
     {
         $this->seedCalendar();
 
-        $user = User::where('email', 'calendar-member@gwtrack.com')->firstOrFail();
+        $user = User::where('email', 'calendar-member@gwtracks.com')->firstOrFail();
         $friday = CarbonImmutable::parse(now()->next('Friday')->toDateString());
         $category = CalendarCategory::where('slug', 'training')->firstOrFail();
 
@@ -497,7 +497,7 @@ class CalendarModuleTest extends TestCase
     {
         $this->seedCalendar();
 
-        $user = User::where('email', 'calendar-member@gwtrack.com')->firstOrFail();
+        $user = User::where('email', 'calendar-member@gwtracks.com')->firstOrFail();
         $today = now()->toDateString();
 
         Livewire::actingAs($user)
@@ -511,14 +511,14 @@ class CalendarModuleTest extends TestCase
             ->assertNotSet('date', $today)
             ->call('setView', 'day')
             ->assertSet('viewMode', 'day')
-            ->assertSee('GWTrack Calendar');
+            ->assertSee('GWTracks Calendar');
     }
 
     public function test_calendar_page_toggles_selected_calendars_inline(): void
     {
         $this->seedCalendar();
 
-        $user = User::where('email', 'calendar-member@gwtrack.com')->firstOrFail();
+        $user = User::where('email', 'calendar-member@gwtracks.com')->firstOrFail();
         $training = CalendarCategory::where('slug', 'training')->firstOrFail();
 
         $component = Livewire::actingAs($user)
@@ -554,8 +554,8 @@ class CalendarModuleTest extends TestCase
     {
         $this->seedCalendar();
 
-        $user = User::where('email', 'calendar-member@gwtrack.com')->firstOrFail();
-        $attendee = User::where('email', 'calendar-leader@gwtrack.com')->firstOrFail();
+        $user = User::where('email', 'calendar-member@gwtracks.com')->firstOrFail();
+        $attendee = User::where('email', 'calendar-leader@gwtracks.com')->firstOrFail();
         $starts = now()->addDays(3)->setTime(14, 0)->format('Y-m-d\TH:i');
         $ends = now()->addDays(3)->setTime(15, 0)->format('Y-m-d\TH:i');
 
@@ -594,7 +594,7 @@ class CalendarModuleTest extends TestCase
     {
         $this->seedCalendar();
 
-        $user = User::where('email', 'calendar-member@gwtrack.com')->firstOrFail();
+        $user = User::where('email', 'calendar-member@gwtracks.com')->firstOrFail();
         $event = CalendarEvent::where('title', 'Monday Agency Leadership Huddle')->firstOrFail();
 
         Livewire::actingAs($user)
@@ -613,7 +613,7 @@ class CalendarModuleTest extends TestCase
     {
         $this->seedCalendar();
 
-        $user = User::where('email', 'calendar-member@gwtrack.com')->firstOrFail();
+        $user = User::where('email', 'calendar-member@gwtracks.com')->firstOrFail();
 
         $component = Livewire::actingAs($user)
             ->test(CalendarPage::class, ['viewMode' => 'month', 'date' => now()->toDateString()])

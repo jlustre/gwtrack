@@ -30,7 +30,7 @@ class TaskScenarioSeederTest extends TestCase
             TaskManagementSeeder::class,
         ]);
 
-        $agencyOwner = User::where('email', 'agency-owner@gwtrack.com')->firstOrFail();
+        $agencyOwner = User::where('email', 'agency-owner@gwtracks.com')->firstOrFail();
 
         $this->assertDatabaseHas('users', [
             'email' => 'sofia.needsmentor@example.com',

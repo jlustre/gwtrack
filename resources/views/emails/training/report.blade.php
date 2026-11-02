@@ -16,7 +16,7 @@
 | Avg course progress | {{ $report['summary']['avg_course_progress'] }}% |
 | Overdue assignments | {{ $report['summary']['assignments_overdue'] }} |
 
-Open the full interactive report in GWTrack Academy for charts and learner breakdowns.
+Open the full interactive report in GWTracks Academy for charts and learner breakdowns.
 
 <x-mail::button :url="route('training.reports.index')">
 View Training Reports

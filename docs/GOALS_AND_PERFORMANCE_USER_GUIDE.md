@@ -1,9 +1,9 @@
-# GWTrack — Goals & Performance Module
+# GWTracks — Goals & Performance Module
 **User Guide**
 
 **Version:** 1.2  
 **Last updated:** August 2026  
-**Audience:** Associates, CFMs, team leaders, and agency owners using GWTrack  
+**Audience:** Associates, CFMs, team leaders, and agency owners using GWTracks  
 **Hub URL:** `/goals` (sidebar: **Goals & Performance**)
 
 ---
@@ -502,7 +502,7 @@ Quick Goal Step 8: email, in-app, and weekly reminders. Accountability partners 
 ### PDF download does not start
 
 **Cause:** Pop-up blocker or wrong method.  
-**Fix:** Use **Download PDF** on `/goals/reports`; allow downloads from your GWTrack domain.
+**Fix:** Use **Download PDF** on `/goals/reports`; allow downloads from your GWTracks domain.
 
 ### Sync KPIs shows no change
 

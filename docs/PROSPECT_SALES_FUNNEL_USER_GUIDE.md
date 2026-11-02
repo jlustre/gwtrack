@@ -1,9 +1,9 @@
-# GWTrack — Prospect Sales Funnel
+# GWTracks — Prospect Sales Funnel
 **User Guide**
 
 **Version:** 1.2  
 **Last updated:** August 2026  
-**Audience:** Associates, team leaders, CFMs, and agency owners managing personal prospects in GWTrack  
+**Audience:** Associates, team leaders, CFMs, and agency owners managing personal prospects in GWTracks  
 **Hub URL:** `/team/prospects` (sidebar: **Prospect Management**)
 
 ---
@@ -74,7 +74,7 @@
 
 ## 1. What this module does
 
-The **Prospect Sales Funnel** (Prospect Management module) is your private CRM inside GWTrack. It helps you track people you are prospecting for **insurance sales** and **associate recruiting** — from first contact through presentation, application, and conversion.
+The **Prospect Sales Funnel** (Prospect Management module) is your private CRM inside GWTracks. It helps you track people you are prospecting for **insurance sales** and **associate recruiting** — from first contact through presentation, application, and conversion.
 
 At a high level, the module provides:
 
@@ -85,7 +85,7 @@ At a high level, the module provides:
 | **Pipeline Board** | Drag-and-drop Kanban view of where each prospect stands |
 | **Activity tracking** | Log calls, meetings, presentations, and communications |
 | **Follow-Up Center** | Never miss a scheduled follow-up or overdue task |
-| **Appointments** | Schedule prospect meetings synced to your GWTrack calendar |
+| **Appointments** | Schedule prospect meetings synced to your GWTracks calendar |
 | **Conversions** | Turn prospects into clients, associate recruits, or inactive records |
 | **Controlled sharing** | Let your CFM or sponsor collaborate without giving up ownership |
 | **Analytics & period goals** | Measure funnel conversion, sources, and activity trends |
@@ -195,7 +195,7 @@ flowchart LR
 2. Move through recruiting stages: invitation → presentation → registration link.
 3. Use **Convert → Associate** to generate an invitation registration link.
 4. Track **Registration Link Sent** and follow up until **Registered**.
-5. After they join GWTrack, their progress continues in onboarding and licensing trackers.
+5. After they join GWTracks, their progress continues in onboarding and licensing trackers.
 
 ### Bulk lead intake (event or spreadsheet)
 
@@ -285,7 +285,7 @@ From the prospect profile, click **Edit** to update any field, change stage, adj
 
 ## 8. The sales funnel explained
 
-A **funnel** is the structured path a prospect follows from first contact to conversion. GWTrack provides two default funnels:
+A **funnel** is the structured path a prospect follows from first contact to conversion. GWTracks provides two default funnels:
 
 | Funnel | Key | Used for |
 |---|---|---|
@@ -387,7 +387,7 @@ Default recruiting pipeline:
 | 5 | **Presentation Attended** | They attended the presentation |
 | 6 | **Opportunity Review** | Discussing fit and next steps |
 | 7 | **Decision Pending** | They are deciding whether to join |
-| 8 | **Registration Link Sent** | GWTrack invitation link sent |
+| 8 | **Registration Link Sent** | GWTracks invitation link sent |
 | 9 | **Registered** | They completed registration |
 | 10 | **Licensing Started** | Working on licensing requirements |
 | 11 | **Active Associate** | Terminal — fully onboarded associate |
@@ -521,7 +521,7 @@ Follow-ups come from:
 
 ## 15. Stage automations
 
-When you move a prospect to certain stages, GWTrack can **automatically create follow-up tasks** (and sometimes My Tasks items) so critical next steps are not forgotten.
+When you move a prospect to certain stages, GWTracks can **automatically create follow-up tasks** (and sometimes My Tasks items) so critical next steps are not forgotten.
 
 ### Examples (default configuration)
 
@@ -553,7 +553,7 @@ You still control completion — snooze or complete follow-ups in the Follow-Up 
 7. Add **Purpose** and **Notes**.
 8. Click **Save Appointment**.
 
-Appointments sync to your main **GWTrack Calendar** (`/calendar`).
+Appointments sync to your main **GWTracks Calendar** (`/calendar`).
 
 ### Managing appointments
 
@@ -578,7 +578,7 @@ Open **Convert** from the prospect profile header.
 1. Select the **Associate** tab.
 2. Add optional notes.
 3. Click **Create Invitation**.
-4. GWTrack generates a **registration invitation link** tied to your sponsor tree.
+4. GWTracks generates a **registration invitation link** tied to your sponsor tree.
 5. Copy and send the link to your prospect.
 
 If the prospect has no email on file, the link is not restricted to a specific address — add email first when possible.
@@ -790,7 +790,7 @@ The **FNA Status** dropdown on create/edit forms:
 | **Completed** | Presented, follow-up, converted, or closed |
 | **Declined** | Prospect declined FNA (set manually) |
 
-**Auto-sync:** When an FNA is linked, GWTrack updates this field from the FNA workflow. You can still set **Declined** manually. Before sending a link, set the field to match reality if needed.
+**Auto-sync:** When an FNA is linked, GWTracks updates this field from the FNA workflow. You can still set **Declined** manually. Before sending a link, set the field to match reality if needed.
 
 | Linked FNA status | Prospect FNA Status becomes |
 |---|---|
@@ -846,7 +846,7 @@ Use **Prospect Analytics** for operational weekly tracking and **[Goals & Perfor
 | Term | Definition |
 |---|---|
 | **Prospect** | A person you are cultivating for insurance sale or recruiting |
-| **Owner** | The GWTrack user who created/owns the private record |
+| **Owner** | The GWTracks user who created/owns the private record |
 | **Funnel** | Insurance or Recruiting pipeline template |
 | **Funnel type** | Classification on each prospect (insurance, recruiting, or both) |
 | **Pipeline stage** | Current step in the funnel |
@@ -1046,7 +1046,7 @@ Prospect Added → Invitation Sent → Follow-Up → Presentation Scheduled → 
 
 `first_name`, `last_name`, `email`, `phone`, `city`, `source`, `funnel_type`
 
-### N. Related GWTrack modules
+### N. Related GWTracks modules
 
 | Module | URL | User guide | Relationship |
 |---|---|---|---|
@@ -1070,6 +1070,6 @@ Prospect Added → Invitation Sent → Follow-Up → Presentation Scheduled → 
 
 ---
 
-*This guide reflects the GWTrack Prospect Sales Funnel module. Stage names, automations, and permissions may vary by agency configuration.*
+*This guide reflects the GWTracks Prospect Sales Funnel module. Stage names, automations, and permissions may vary by agency configuration.*
 
 *Questions? **Help & Support** → **Browse documentation** or `/support`.*

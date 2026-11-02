@@ -21,9 +21,9 @@ class FnaDemoSeeder extends Seeder
     public function run(): void
     {
         $maya = User::query()->where('email', 'maya.fap@example.com')->first();
-        $celeste = User::query()->where('email', 'cfm@gwtrack.com')->first();
+        $celeste = User::query()->where('email', 'cfm@gwtracks.com')->first();
         $mariaApprentice = User::query()->where('email', 'maria.apprentice1@example.com')->first();
-        $mariaCfm = User::query()->where('email', 'maria.cfm@gwtrack.com')->first();
+        $mariaCfm = User::query()->where('email', 'maria.cfm@gwtracks.com')->first();
 
         if (! $maya || ! $celeste) {
             $this->command?->warn('FnaDemoSeeder skipped: run TaskScenarioSeeder and CfmManagementSeeder first.');
@@ -304,7 +304,7 @@ class FnaDemoSeeder extends Seeder
 
         $this->command->info("FnaDemoSeeder: {$count} demo FNA records created.");
         $this->command->line('  Trainee login: maya.fap@example.com / Password123');
-        $this->command->line('  CFM login:     cfm@gwtrack.com / Password123');
+        $this->command->line('  CFM login:     cfm@gwtracks.com / Password123');
         $this->command->line('  Dashboard:     /team/fna');
         $this->command->line('  CFM queue:     /team/fna/cfm/review-queue');
         $this->command->line('  Demo records:  filter My FNAs for titles starting with [Demo]');
@@ -312,7 +312,7 @@ class FnaDemoSeeder extends Seeder
 
         if ($mariaApprentice && $mariaCfm) {
             $this->command->line('  Alt trainee:   maria.apprentice1@example.com / Password123');
-            $this->command->line('  Alt CFM:       maria.cfm@gwtrack.com / Password123');
+            $this->command->line('  Alt CFM:       maria.cfm@gwtracks.com / Password123');
         }
     }
 }

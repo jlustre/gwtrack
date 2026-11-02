@@ -23,11 +23,11 @@ class CfmEvaluationDemoSeeder extends Seeder
     {
         $this->call(CfmEffectivenessSeeder::class);
 
-        $agencyOwner = User::query()->where('email', 'agency-owner@gwtrack.com')->first()
-            ?? User::query()->where('email', 'super-admin@gwtrack.com')->first();
+        $agencyOwner = User::query()->where('email', 'agency-owner@gwtracks.com')->first()
+            ?? User::query()->where('email', 'super-admin@gwtracks.com')->first();
 
         if (! $agencyOwner) {
-            $this->command?->warn('CfmEvaluationDemoSeeder skipped: seed UsersSeeder first (agency-owner@gwtrack.com).');
+            $this->command?->warn('CfmEvaluationDemoSeeder skipped: seed UsersSeeder first (agency-owner@gwtracks.com).');
 
             return;
         }
@@ -37,7 +37,7 @@ class CfmEvaluationDemoSeeder extends Seeder
         $rankSfa = Rank::query()->where('code', 'ASC')->value('id') ?? $rankFa;
 
         $celeste = $this->user(
-            'cfm@gwtrack.com',
+            'cfm@gwtracks.com',
             'CFM User',
             ['certified-field-mentor'],
             $teamId,
@@ -46,7 +46,7 @@ class CfmEvaluationDemoSeeder extends Seeder
         );
 
         $maria = $this->user(
-            'maria.cfm@gwtrack.com',
+            'maria.cfm@gwtracks.com',
             'Maria Santos',
             ['certified-field-mentor'],
             $teamId,
@@ -55,7 +55,7 @@ class CfmEvaluationDemoSeeder extends Seeder
         );
 
         $john = $this->user(
-            'john.cfm@gwtrack.com',
+            'john.cfm@gwtracks.com',
             'John Reyes',
             ['certified-field-mentor'],
             $teamId,
@@ -65,7 +65,7 @@ class CfmEvaluationDemoSeeder extends Seeder
 
         // Dedicated evaluation trainees (clear login accounts for testing).
         $evalPending = $this->user(
-            'eval.trainee@gwtrack.com',
+            'eval.trainee@gwtracks.com',
             'Eva Trainee (Pending Eval)',
             ['member'],
             $teamId,
@@ -75,7 +75,7 @@ class CfmEvaluationDemoSeeder extends Seeder
         );
 
         $evalReady = $this->user(
-            'eval.ready@gwtrack.com',
+            'eval.ready@gwtracks.com',
             'Ryan Ready (Can Start Eval)',
             ['member'],
             $teamId,
@@ -85,7 +85,7 @@ class CfmEvaluationDemoSeeder extends Seeder
         );
 
         $evalDone = $this->user(
-            'eval.done@gwtrack.com',
+            'eval.done@gwtracks.com',
             'Dana Done (Submitted Eval)',
             ['member'],
             $teamId,
@@ -98,7 +98,7 @@ class CfmEvaluationDemoSeeder extends Seeder
         $mariaApprentices = [];
         foreach (range(1, 2) as $i) {
             $mariaApprentices[] = $this->user(
-                "eval.maria{$i}@gwtrack.com",
+                "eval.maria{$i}@gwtracks.com",
                 "Maria Eval Apprentice {$i}",
                 ['member'],
                 $teamId,
@@ -190,7 +190,7 @@ class CfmEvaluationDemoSeeder extends Seeder
                 'helped_most' => 'Clear weekly coaching and great FAP follow-up.',
                 'improvements' => 'Would like more role-play practice before client meetings.',
                 'comments' => 'Overall a strong mentor experience.',
-                'suggestions' => 'Share a simple weekly checklist in GWTrack.',
+                'suggestions' => 'Share a simple weekly checklist in GWTracks.',
             ],
         );
 
@@ -220,7 +220,7 @@ class CfmEvaluationDemoSeeder extends Seeder
 
         // One more submitted for Celeste so she appears on the scoreboard too.
         $celesteHistoryTrainee = $this->user(
-            'eval.history@gwtrack.com',
+            'eval.history@gwtracks.com',
             'Harper History (Submitted)',
             ['member'],
             $teamId,
@@ -237,7 +237,7 @@ class CfmEvaluationDemoSeeder extends Seeder
             questions: $questions,
             ratingPattern: fn (int $i) => [4, 5, 5, 3, 4, 5][$i % 6],
             open: [
-                'helped_most' => 'GWTrack walkthrough and licensing guidance.',
+                'helped_most' => 'GWTracks walkthrough and licensing guidance.',
                 'improvements' => null,
                 'comments' => 'Agency-owner-requested evaluation sample.',
                 'suggestions' => 'Keep the weekly check-ins.',
@@ -248,19 +248,19 @@ class CfmEvaluationDemoSeeder extends Seeder
         $this->command?->newLine();
         $this->command?->line('Admin CFM Performance Manager:');
         $this->command?->line('  URL:    /admin/cfm-performance');
-        $this->command?->line('  Login:  agency-owner@gwtrack.com / Password123');
-        $this->command?->line('          (or super-admin@gwtrack.com / Password123)');
+        $this->command?->line('  Login:  agency-owner@gwtracks.com / Password123');
+        $this->command?->line('          (or super-admin@gwtracks.com / Password123)');
         $this->command?->newLine();
         $this->command?->line('Trainee CFM Evaluation (pending stars form):');
         $this->command?->line('  URL:    /cfm/effectiveness/reviews');
-        $this->command?->line('  Login:  eval.trainee@gwtrack.com / Password123');
+        $this->command?->line('  Login:  eval.trainee@gwtracks.com / Password123');
         $this->command?->line('          → open pending review / Continue with stars');
         $this->command?->newLine();
         $this->command?->line('Trainee who can Start Evaluation (no invite yet):');
-        $this->command?->line('  Login:  eval.ready@gwtrack.com / Password123');
+        $this->command?->line('  Login:  eval.ready@gwtracks.com / Password123');
         $this->command?->newLine();
         $this->command?->line('Trainee with submitted history:');
-        $this->command?->line('  Login:  eval.done@gwtrack.com / Password123');
+        $this->command?->line('  Login:  eval.done@gwtracks.com / Password123');
     }
 
     /**

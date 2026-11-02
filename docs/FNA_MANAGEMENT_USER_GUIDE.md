@@ -1,9 +1,9 @@
-# GWTrack — FNA Management Module
+# GWTracks — FNA Management Module
 **User Guide**
 
 **Version:** 1.1  
 **Last updated:** June 2026  
-**Audience:** Associates, CFMs, team leaders, and agency owners using GWTrack  
+**Audience:** Associates, CFMs, team leaders, and agency owners using GWTracks  
 **Hub URL:** `/team/fna` (sidebar: **FNA Management**)
 
 ---
@@ -67,14 +67,14 @@
 
 ## 1. What this module does
 
-**FNA (Financial Needs Analysis)** helps you document a client’s or prospect’s financial picture, estimate protection needs, get CFM coaching, and prepare for client meetings — all inside GWTrack.
+**FNA (Financial Needs Analysis)** helps you document a client’s or prospect’s financial picture, estimate protection needs, get CFM coaching, and prepare for client meetings — all inside GWTracks.
 
 ### What you can do here
 
 - **Collect facts** — nine-step wizard (client info, household, income, debt, assets, insurance, goals, risk, summary)
 - **Quantify needs** — DIME analysis (Debt, Income, Mortgage, Education) with a protection gap estimate
 - **Get mentor sign-off** — submit to your CFM before presenting to clients
-- **Invite clients online** — secure links so prospects complete the FNA without a GWTrack account
+- **Invite clients online** — secure links so prospects complete the FNA without a GWTracks account
 - **Stay organized** — link FNAs to prospects, schedule meetings, export PDFs, track status
 
 > **Compliance reminder**  
@@ -114,7 +114,7 @@ Technical permission names (`manage fna records`, `submit fna for review`, etc.)
 
 ## 3. Module map — pages and URLs
 
-### Inside GWTrack (logged in)
+### Inside GWTracks (logged in)
 
 | Page | URL | When to use it |
 |---|---|---|
@@ -380,10 +380,10 @@ Open any FNA from My FNAs or the dashboard lists.
 
 ### Before you click Submit
 
-GWTrack checks three things:
+GWTracks checks three things:
 
 1. **Completeness ≥ 60%**
-2. **Assigned CFM** — active mentor in GWTrack
+2. **Assigned CFM** — active mentor in GWTracks
 3. **Eligible status** — Draft, Ready for Review, or Revision Requested
 
 ### Steps
@@ -407,7 +407,7 @@ GWTrack checks three things:
 
 ## 13. Client portal invites
 
-Send a **secure link** so a prospect or member completes the FNA online — no GWTrack login required.
+Send a **secure link** so a prospect or member completes the FNA online — no GWTracks login required.
 
 ### Requirements
 
@@ -625,7 +625,7 @@ Every change is logged under **Status History** on the record.
 
 ## 21. Tasks, checklists, and notifications
 
-### Tasks GWTrack may create
+### Tasks GWTracks may create
 
 | When… | Task example |
 |---|---|

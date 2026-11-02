@@ -24,14 +24,14 @@ use Illuminate\Support\Facades\Hash;
  *
  * ┌─────────────────────────────────────────────────────────────────────────┐
  * │ PRIMARY LOGIN (use this for most tests)                                 │
- * │   Email:    prospects@gwtrack.com                                      │
+ * │   Email:    prospects@gwtracks.com                                      │
  * │   Password: Password123                                                 │
  * │   Role:     member · owns curated prospects below                       │
  * ├─────────────────────────────────────────────────────────────────────────┤
  * │ COLLABORATOR LOGINS                                                     │
- * │   prospect-cfm@gwtrack.com      / Password123  (CFM · shared prospects)│
- * │   prospect-sponsor@gwtrack.com  / Password123  (team-leader · sponsor) │
- * │   prospect-recruit@gwtrack.com  / Password123  (direct recruit)        │
+ * │   prospect-cfm@gwtracks.com      / Password123  (CFM · shared prospects)│
+ * │   prospect-sponsor@gwtracks.com  / Password123  (team-leader · sponsor) │
+ * │   prospect-recruit@gwtracks.com  / Password123  (direct recruit)        │
  * └─────────────────────────────────────────────────────────────────────────┘
  *
  * Named prospects (search on dashboard):
@@ -64,10 +64,10 @@ class ProspectModuleTestSeeder extends Seeder
         $faRankId = Rank::where('code', 'TA')->value('id');
         $sfaRankId = Rank::where('code', 'ASC')->value('id');
 
-        $this->sponsor = $this->user('prospect-sponsor@gwtrack.com', 'Prospect QA Sponsor', 'team-leader', $sfaRankId, $teamId);
-        $this->owner = $this->user('prospects@gwtrack.com', 'Prospect Demo Owner', 'member', $faRankId, $teamId, $this->sponsor->id);
-        $this->cfm = $this->user('prospect-cfm@gwtrack.com', 'Prospect CFM Coach', 'certified-field-mentor', $sfaRankId, $teamId, $this->sponsor->id);
-        $this->recruit = $this->user('prospect-recruit@gwtrack.com', 'Prospect QA Recruit', 'member', $faRankId, $teamId, $this->owner->id);
+        $this->sponsor = $this->user('prospect-sponsor@gwtracks.com', 'Prospect QA Sponsor', 'team-leader', $sfaRankId, $teamId);
+        $this->owner = $this->user('prospects@gwtracks.com', 'Prospect Demo Owner', 'member', $faRankId, $teamId, $this->sponsor->id);
+        $this->cfm = $this->user('prospect-cfm@gwtracks.com', 'Prospect CFM Coach', 'certified-field-mentor', $sfaRankId, $teamId, $this->sponsor->id);
+        $this->recruit = $this->user('prospect-recruit@gwtracks.com', 'Prospect QA Recruit', 'member', $faRankId, $teamId, $this->owner->id);
 
         $this->owner->forceFill(['mentor_id' => $this->cfm->id])->save();
 
@@ -95,10 +95,10 @@ class ProspectModuleTestSeeder extends Seeder
         $this->command?->table(
             ['Account', 'Email', 'Password', 'Use for'],
             [
-                ['Primary owner', 'prospects@gwtrack.com', 'Password123', 'Dashboard, pipeline, convert, import/export, analytics'],
-                ['CFM collaborator', 'prospect-cfm@gwtrack.com', 'Password123', 'Shared With Me, shared profile access'],
-                ['Sponsor / manager', 'prospect-sponsor@gwtrack.com', 'Password123', 'Team analytics aggregate (downline)'],
-                ['Direct recruit', 'prospect-recruit@gwtrack.com', 'Password123', 'Team visibility preset target'],
+                ['Primary owner', 'prospects@gwtracks.com', 'Password123', 'Dashboard, pipeline, convert, import/export, analytics'],
+                ['CFM collaborator', 'prospect-cfm@gwtracks.com', 'Password123', 'Shared With Me, shared profile access'],
+                ['Sponsor / manager', 'prospect-sponsor@gwtracks.com', 'Password123', 'Team analytics aggregate (downline)'],
+                ['Direct recruit', 'prospect-recruit@gwtracks.com', 'Password123', 'Team visibility preset target'],
             ]
         );
         $this->command?->info('Start at: /team/prospects');

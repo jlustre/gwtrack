@@ -24,7 +24,7 @@ class TrainingAcademyDashboardTest extends TestCase
             ->get(route('training.index'))
             ->assertOk()
             ->assertSee('Training Center')
-            ->assertSee('GWTrack Academy')
+            ->assertSee('GWTracks Academy')
             ->assertSee('Learning Paths')
             ->assertSee('New Associate Path')
             ->assertSee('Prospecting Fundamentals');

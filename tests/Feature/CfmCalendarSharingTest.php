@@ -21,7 +21,7 @@ class CfmCalendarSharingTest extends TestCase
     {
         $this->seedCalendar();
 
-        $cfm = User::where('email', 'calendar-cfm@gwtrack.com')->firstOrFail();
+        $cfm = User::where('email', 'calendar-cfm@gwtracks.com')->firstOrFail();
         CfmMentorProfile::firstOrCreate(['user_id' => $cfm->id], [
             'certification_status' => 'certified',
             'max_apprentices' => 6,
@@ -43,8 +43,8 @@ class CfmCalendarSharingTest extends TestCase
     {
         $this->seedCalendar();
 
-        $cfm = User::where('email', 'calendar-cfm@gwtrack.com')->firstOrFail();
-        $trainee = User::where('email', 'calendar-member@gwtrack.com')->firstOrFail();
+        $cfm = User::where('email', 'calendar-cfm@gwtracks.com')->firstOrFail();
+        $trainee = User::where('email', 'calendar-member@gwtracks.com')->firstOrFail();
         $category = CalendarCategory::where('slug', 'field-apprenticeship')->firstOrFail();
 
         $trainee->update(['mentor_id' => $cfm->id]);
@@ -93,8 +93,8 @@ class CfmCalendarSharingTest extends TestCase
     {
         $this->seedCalendar();
 
-        $owner = User::where('email', 'calendar-owner@gwtrack.com')->firstOrFail();
-        $cfm = User::where('email', 'calendar-cfm@gwtrack.com')->firstOrFail();
+        $owner = User::where('email', 'calendar-owner@gwtracks.com')->firstOrFail();
+        $cfm = User::where('email', 'calendar-cfm@gwtracks.com')->firstOrFail();
         $category = CalendarCategory::where('slug', 'team')->firstOrFail();
 
         CfmMentorProfile::updateOrCreate(['user_id' => $cfm->id], [
@@ -126,8 +126,8 @@ class CfmCalendarSharingTest extends TestCase
     {
         $this->seedCalendar();
 
-        $cfm = User::where('email', 'calendar-cfm@gwtrack.com')->firstOrFail();
-        $trainee = User::where('email', 'calendar-member@gwtrack.com')->firstOrFail();
+        $cfm = User::where('email', 'calendar-cfm@gwtracks.com')->firstOrFail();
+        $trainee = User::where('email', 'calendar-member@gwtracks.com')->firstOrFail();
         $category = CalendarCategory::where('slug', 'team')->firstOrFail();
 
         $trainee->update(['mentor_id' => $cfm->id]);

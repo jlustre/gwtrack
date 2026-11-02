@@ -30,7 +30,7 @@ class CfmNominationTest extends TestCase
             CfmManagementSeeder::class,
         ]);
 
-        $agencyOwner = User::where('email', 'agency-owner@gwtrack.com')->firstOrFail();
+        $agencyOwner = User::where('email', 'agency-owner@gwtracks.com')->firstOrFail();
         $candidate = User::where('email', 'owen.cfm@example.com')->firstOrFail();
 
         $this->assertFalse($candidate->hasRole('certified-field-mentor'));
@@ -71,7 +71,7 @@ class CfmNominationTest extends TestCase
             CfmManagementSeeder::class,
         ]);
 
-        $agencyOwner = User::where('email', 'agency-owner@gwtrack.com')->firstOrFail();
+        $agencyOwner = User::where('email', 'agency-owner@gwtracks.com')->firstOrFail();
         $candidate = User::where('email', 'owen.cfm@example.com')->firstOrFail();
 
         $this->actingAs($agencyOwner)

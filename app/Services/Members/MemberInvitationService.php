@@ -20,7 +20,7 @@ class MemberInvitationService
 
     public function createInvitation(User $sponsor, ?string $email = null): RegistrationInvitation
     {
-        abort_unless($this->canCreateInvitation($sponsor), 403, 'Only active GWTrack members can send registration invitations.');
+        abort_unless($this->canCreateInvitation($sponsor), 403, 'Only active GWTracks members can send registration invitations.');
 
         $normalizedEmail = filled($email) ? strtolower(trim($email)) : null;
 
@@ -48,15 +48,15 @@ class MemberInvitationService
             ->first();
 
         $tokens = EmailTemplateTokens::merge([
-            'app_name' => config('app.name', 'GWTrack'),
-            'sponsor_name' => $invitation->sponsor?->name ?? 'A GWTrack member',
+            'app_name' => config('app.name', 'GWTracks'),
+            'sponsor_name' => $invitation->sponsor?->name ?? 'A GWTracks member',
             'registration_link' => $invitation->invitationUrl(),
             'registration_code' => $invitation->code,
             'expires_at' => $invitation->expires_at?->format('F j, Y') ?? 'the expiration date',
         ], EmailTemplateTokens::pathFromUrl($invitation->invitationUrl()));
 
         return [
-            'subject' => $template?->renderSubject($tokens) ?? 'You are invited to join '.config('app.name', 'GWTrack'),
+            'subject' => $template?->renderSubject($tokens) ?? 'You are invited to join '.config('app.name', 'GWTracks'),
             'body' => $template?->renderBody($tokens) ?? $invitation->invitationUrl(),
         ];
     }
@@ -108,7 +108,7 @@ class MemberInvitationService
 
         if (User::where('email', $email)->exists()) {
             throw ValidationException::withMessages([
-                $currentInvitation ? 'recipient_email' : 'email' => 'This email is already registered as a GWTrack member.',
+                $currentInvitation ? 'recipient_email' : 'email' => 'This email is already registered as a GWTracks member.',
             ]);
         }
 

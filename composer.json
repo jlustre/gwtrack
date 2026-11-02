@@ -1,12 +1,12 @@
 {
-    "name": "gwtrack/portal",
+    "name": "gwtracks/portal",
     "type": "project",
-    "description": "GWTrack private Greatway Financial Group team tracking portal.",
+    "description": "GWTracks private Greatway Financial Group team tracking portal.",
     "keywords": [
         "laravel",
         "livewire",
         "tall",
-        "gwtrack"
+        "gwtracks"
     ],
     "license": "proprietary",
     "require": {

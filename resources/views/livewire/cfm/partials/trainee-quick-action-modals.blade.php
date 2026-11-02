@@ -13,7 +13,7 @@
                     @switch($traineeQuickActionModal)
                         @case('message')
                             <h3 class="text-xl font-semibold text-gw-primary">Send Message</h3>
-                            <p class="mt-1 text-sm text-slate-500">Message {{ $p['name'] }} through GWTrack messaging</p>
+                            <p class="mt-1 text-sm text-slate-500">Message {{ $p['name'] }} through GWTracks messaging</p>
                             @break
                         @case('meeting')
                             <h3 class="text-xl font-semibold text-gw-primary">Schedule Meeting</h3>

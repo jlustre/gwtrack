@@ -87,11 +87,11 @@ class CalendarModuleSeeder extends Seeder
 
         $rank = Rank::query()->where('code', 'TA')->first();
         $team = Team::query()->first();
-        $organizer = $this->member('calendar-owner@gwtrack.com', 'Calendar Agency Owner', 'agency-owner', $team?->id, $rank?->id);
-        $leader = $this->member('calendar-leader@gwtrack.com', 'Calendar Team Leader', 'team-leader', $team?->id, $rank?->id, $organizer->id);
-        $mentor = $this->member('calendar-cfm@gwtrack.com', 'Calendar Certified Field Mentor', 'certified-field-mentor', $team?->id, $rank?->id, $leader->id);
-        $trainer = $this->member('calendar-trainer@gwtrack.com', 'Calendar Trainer', 'trainer', $team?->id, $rank?->id, $leader->id);
-        $member = $this->member('calendar-member@gwtrack.com', 'Calendar Member', 'member', $team?->id, $rank?->id, $leader->id);
+        $organizer = $this->member('calendar-owner@gwtracks.com', 'Calendar Agency Owner', 'agency-owner', $team?->id, $rank?->id);
+        $leader = $this->member('calendar-leader@gwtracks.com', 'Calendar Team Leader', 'team-leader', $team?->id, $rank?->id, $organizer->id);
+        $mentor = $this->member('calendar-cfm@gwtracks.com', 'Calendar Certified Field Mentor', 'certified-field-mentor', $team?->id, $rank?->id, $leader->id);
+        $trainer = $this->member('calendar-trainer@gwtracks.com', 'Calendar Trainer', 'trainer', $team?->id, $rank?->id, $leader->id);
+        $member = $this->member('calendar-member@gwtracks.com', 'Calendar Member', 'member', $team?->id, $rank?->id, $leader->id);
         $prospect = Prospect::query()->where('owner_id', $organizer->id)->first() ?? Prospect::query()->first();
 
         foreach ([$organizer, $leader, $mentor, $trainer, $member] as $user) {
@@ -126,7 +126,7 @@ class CalendarModuleSeeder extends Seeder
                 'start' => now()->startOfWeek()->addDays(1)->addHours(18),
                 'end' => now()->startOfWeek()->addDays(1)->addHours(19)->addMinutes(30),
                 'visibility' => 'public_organization',
-                'meeting_link' => 'https://zoom.us/j/gwtrack-fast-start',
+                'meeting_link' => 'https://zoom.us/j/gwtracks-fast-start',
                 'description' => 'Foundational training for brand standards, communication scripts, appointment flow, and the first-week execution rhythm.',
             ],
             [

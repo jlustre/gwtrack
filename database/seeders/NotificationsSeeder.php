@@ -16,7 +16,7 @@ use Illuminate\Support\Str;
  * Run after config seeders:
  *   php artisan db:seed --class=NotificationsSeeder
  *
- * Primary inbox: super-admin@gwtrack.com (or first available user)
+ * Primary inbox: super-admin@gwtracks.com (or first available user)
  */
 class NotificationsSeeder extends Seeder
 {
@@ -27,8 +27,8 @@ class NotificationsSeeder extends Seeder
             $this->call(NotificationConfigSeeder::class);
         }
 
-        $primary = $this->userByEmail('super-admin@gwtrack.com')
-            ?? $this->userByEmail('member@gwtrack.com')
+        $primary = $this->userByEmail('super-admin@gwtracks.com')
+            ?? $this->userByEmail('member@gwtracks.com')
             ?? User::query()->whereNull('deleted_at')->orderBy('id')->first();
 
         if (! $primary) {
@@ -37,8 +37,8 @@ class NotificationsSeeder extends Seeder
             return;
         }
 
-        $cfm = $this->userByEmail('cfm@gwtrack.com') ?? $primary;
-        $admin = $this->userByEmail('super-admin@gwtrack.com') ?? $primary;
+        $cfm = $this->userByEmail('cfm@gwtracks.com') ?? $primary;
+        $admin = $this->userByEmail('super-admin@gwtracks.com') ?? $primary;
 
         $this->command?->info("Seeding notifications for {$primary->email}…");
 

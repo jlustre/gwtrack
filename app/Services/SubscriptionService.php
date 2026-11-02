@@ -438,7 +438,7 @@ class SubscriptionService
     {
         $term = $interval === UserSubscription::INTERVAL_ANNUAL ? 'annual' : 'monthly';
 
-        return 'GWTrack '.$term.' subscription — '.$rankLabel;
+        return 'GWTracks '.$term.' subscription — '.$rankLabel;
     }
 
     private function statusLabel(bool $licensed, float $monthly, string $interval, bool $autoPay): string
@@ -472,7 +472,7 @@ class SubscriptionService
         bool $autoPayReady,
     ): string {
         if (! $this->enabled()) {
-            return 'Subscription billing is currently off. GWTrack is free for all associates.';
+            return 'Subscription billing is currently off. GWTracks is free for all associates.';
         }
 
         if (! $licensed) {

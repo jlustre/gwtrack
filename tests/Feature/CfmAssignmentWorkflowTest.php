@@ -41,8 +41,8 @@ class CfmAssignmentWorkflowTest extends TestCase
         Mail::fake();
         $this->seedAssignmentWorld();
 
-        $agencyOwner = User::where('email', 'agency-owner@gwtrack.com')->firstOrFail();
-        $cfm = User::where('email', 'maria.cfm@gwtrack.com')->firstOrFail();
+        $agencyOwner = User::where('email', 'agency-owner@gwtracks.com')->firstOrFail();
+        $cfm = User::where('email', 'maria.cfm@gwtracks.com')->firstOrFail();
         $associate = User::where('email', 'fap.queue1@example.com')->firstOrFail();
 
         $this->actingAs($agencyOwner)
@@ -67,8 +67,8 @@ class CfmAssignmentWorkflowTest extends TestCase
         Mail::fake();
         $this->seedAssignmentWorld();
 
-        $agencyOwner = User::where('email', 'agency-owner@gwtrack.com')->firstOrFail();
-        $cfm = User::where('email', 'maria.cfm@gwtrack.com')->firstOrFail();
+        $agencyOwner = User::where('email', 'agency-owner@gwtracks.com')->firstOrFail();
+        $cfm = User::where('email', 'maria.cfm@gwtracks.com')->firstOrFail();
         $associate = User::where('email', 'fap.queue1@example.com')->firstOrFail();
         $sponsor = $associate->sponsor;
 
@@ -111,8 +111,8 @@ class CfmAssignmentWorkflowTest extends TestCase
         Mail::fake();
         $this->seedAssignmentWorld();
 
-        $agencyOwner = User::where('email', 'agency-owner@gwtrack.com')->firstOrFail();
-        $cfm = User::where('email', 'maria.cfm@gwtrack.com')->firstOrFail();
+        $agencyOwner = User::where('email', 'agency-owner@gwtracks.com')->firstOrFail();
+        $cfm = User::where('email', 'maria.cfm@gwtracks.com')->firstOrFail();
         $associate = User::where('email', 'fap.queue1@example.com')->firstOrFail();
 
         $this->actingAs($agencyOwner)->postJson(route('team.cfms.assign'), [
@@ -145,8 +145,8 @@ class CfmAssignmentWorkflowTest extends TestCase
         Mail::fake();
         $this->seedAssignmentWorld();
 
-        $agencyOwner = User::where('email', 'agency-owner@gwtrack.com')->firstOrFail();
-        $cfm = User::where('email', 'maria.cfm@gwtrack.com')->firstOrFail();
+        $agencyOwner = User::where('email', 'agency-owner@gwtracks.com')->firstOrFail();
+        $cfm = User::where('email', 'maria.cfm@gwtracks.com')->firstOrFail();
         $associate = User::where('email', 'fap.queue2@example.com')->firstOrFail();
 
         $this->actingAs($agencyOwner)->postJson(route('team.cfms.assign'), [

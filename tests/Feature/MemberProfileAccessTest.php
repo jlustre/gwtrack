@@ -26,7 +26,7 @@ class MemberProfileAccessTest extends TestCase
             DownlineManagementSeeder::class,
         ]);
 
-        $owner = User::where('email', 'downline-owner@gwtrack.com')->firstOrFail();
+        $owner = User::where('email', 'downline-owner@gwtracks.com')->firstOrFail();
         $member = User::where('sponsor_id', $owner->id)->firstOrFail();
 
         $owner->forceFill(['email_verified_at' => now()])->save();

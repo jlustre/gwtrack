@@ -50,7 +50,7 @@ class TopbarNavigationTest extends TestCase
             TaskScenarioSeeder::class,
         ]);
 
-        $user = User::where('email', 'agency-owner@gwtrack.com')->firstOrFail();
+        $user = User::where('email', 'agency-owner@gwtracks.com')->firstOrFail();
         $expectedCount = app(TaskController::class)->openTaskCountFor($user);
 
         $this->assertGreaterThan(0, $expectedCount);

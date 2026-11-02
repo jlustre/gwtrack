@@ -40,10 +40,10 @@ class CrmDemoSeeder extends Seeder
         $rankId = Rank::query()->where('code', 'TA')->value('id');
         $seniorRankId = Rank::query()->where('code', 'ASC')->value('id') ?: $rankId;
 
-        $this->agencyOwner = $this->demoUser('crm-ao@gwtrack.com', 'CRM Demo Agency Owner', 'agency-owner', $seniorRankId);
-        $this->cfm = $this->demoUser('crm-cfm@gwtrack.com', 'CRM Demo CFM', 'certified-field-mentor', $seniorRankId, $this->agencyOwner->id);
-        $this->owner = $this->demoUser('crm-owner@gwtrack.com', 'CRM Demo Associate', 'member', $rankId, $this->agencyOwner->id, $this->cfm->id);
-        $this->viewer = $this->demoUser('crm-reviewer@gwtrack.com', 'CRM Demo Shared Reviewer', 'trainer', $seniorRankId, $this->agencyOwner->id);
+        $this->agencyOwner = $this->demoUser('crm-ao@gwtracks.com', 'CRM Demo Agency Owner', 'agency-owner', $seniorRankId);
+        $this->cfm = $this->demoUser('crm-cfm@gwtracks.com', 'CRM Demo CFM', 'certified-field-mentor', $seniorRankId, $this->agencyOwner->id);
+        $this->owner = $this->demoUser('crm-owner@gwtracks.com', 'CRM Demo Associate', 'member', $rankId, $this->agencyOwner->id, $this->cfm->id);
+        $this->viewer = $this->demoUser('crm-reviewer@gwtracks.com', 'CRM Demo Shared Reviewer', 'trainer', $seniorRankId, $this->agencyOwner->id);
 
         $prospects = [
             $this->seedProspect([

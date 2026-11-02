@@ -26,7 +26,7 @@ class TaskScenarioSeeder extends Seeder
         $ranks = Rank::query()->pluck('id', 'code');
 
         $agencyOwner = $this->user(
-            'agency-owner@gwtrack.com',
+            'agency-owner@gwtracks.com',
             'Arielle Morgan',
             'agency-owner',
             $ranks['SVP'] ?? $ranks['MB'] ?? null,
@@ -40,7 +40,7 @@ class TaskScenarioSeeder extends Seeder
         ]);
 
         $sponsor = $this->user(
-            'sponsor@gwtrack.com',
+            'sponsor@gwtracks.com',
             'Marcus Rivera',
             'team-leader',
             $ranks['SA'] ?? null,
@@ -49,7 +49,7 @@ class TaskScenarioSeeder extends Seeder
         );
 
         $cfm = $this->user(
-            'cfm@gwtrack.com',
+            'cfm@gwtracks.com',
             'Celeste Navarro',
             'certified-field-mentor',
             $ranks['ASC'] ?? null,
@@ -58,7 +58,7 @@ class TaskScenarioSeeder extends Seeder
         );
 
         $trainer = $this->user(
-            'trainer@gwtrack.com',
+            'trainer@gwtracks.com',
             'Tristan Blake',
             'trainer',
             $ranks['ASC'] ?? null,

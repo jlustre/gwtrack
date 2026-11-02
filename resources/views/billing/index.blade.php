@@ -16,7 +16,7 @@
                         <p class="text-sm font-semibold uppercase tracking-wide text-gw-accent">My Workspace</p>
                         <h1 class="mt-2 text-2xl font-semibold">My Billing</h1>
                         <p class="mt-2 max-w-2xl text-sm leading-6 text-slate-200">
-                            Review your GWTrack subscription, pay open invoices, and keep a record of every charge issued to this associate account.
+                            Review your GWTracks subscription, pay open invoices, and keep a record of every charge issued to this associate account.
                         </p>
                     </div>
                     <div class="flex flex-wrap items-end gap-3">
@@ -168,7 +168,7 @@
                     <p class="text-sm font-semibold text-gw-primary">No invoices yet</p>
                     <p class="mx-auto mt-2 max-w-lg text-sm leading-6 text-slate-600">
                         @if (! $snapshot['enabled'])
-                            Billing is off, so GWTrack will not issue invoices.
+                            Billing is off, so GWTracks will not issue invoices.
                         @elseif (! $snapshot['licensed'])
                             Invoices start after your life license is on file and you reach a billed rank.
                         @elseif ($snapshot['monthly_amount'] <= 0)

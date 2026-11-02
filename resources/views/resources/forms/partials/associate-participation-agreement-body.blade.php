@@ -26,7 +26,7 @@
     <p>The Associate understands that a Certified Field Mentor may be assigned during onboarding to provide guidance and support, and agrees to maintain regular communication with their assigned mentor.</p>
 
     <h2 class="mt-8 text-lg font-semibold text-gw-primary">Portal Usage Agreement</h2>
-    <p>The Associate agrees to use the GWTrack platform responsibly, maintain accurate profile information, protect login credentials, and use the portal only for authorized business purposes.</p>
+    <p>The Associate agrees to use the GWTracks platform responsibly, maintain accurate profile information, protect login credentials, and use the portal only for authorized business purposes.</p>
 
     <h2 class="mt-8 text-lg font-semibold text-gw-primary">Confidential Information</h2>
     <p>The Associate acknowledges access to confidential information and agrees not to share, reproduce, or use such information without authorization. This obligation survives termination.</p>

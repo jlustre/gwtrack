@@ -15,7 +15,7 @@ class ProspectDashboardRedesignTest extends TestCase
     {
         $this->seed(ProspectDashboardTestSeeder::class);
 
-        $user = User::where('email', 'prospects@gwtrack.com')->firstOrFail();
+        $user = User::where('email', 'prospects@gwtracks.com')->firstOrFail();
 
         $this->actingAs($user)
             ->get(route('team.prospects'))
@@ -35,7 +35,7 @@ class ProspectDashboardRedesignTest extends TestCase
     {
         $this->seed(ProspectDashboardTestSeeder::class);
 
-        $user = User::where('email', 'prospects@gwtrack.com')->firstOrFail();
+        $user = User::where('email', 'prospects@gwtracks.com')->firstOrFail();
 
         $this->actingAs($user)
             ->get(route('team.prospects', ['prospect_interest' => 'hot']))

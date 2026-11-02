@@ -39,7 +39,7 @@ return [
             'label' => 'New Recruit',
             'badge_slug' => 'new-recruit',
             'title' => 'Welcome {{honoree_name}} to the team!',
-            'summary' => 'Join us in welcoming a new recruit to GWTrack.',
+            'summary' => 'Join us in welcoming a new recruit to GWTracks.',
             'body' => "Please join us in welcoming {{honoree_name}} to the organization.\n\nTheir energy and commitment are already making an impact. Reach out, introduce yourself, and help them succeed in onboarding and licensing.\n\nCongratulations, {{honoree_name}} — we are glad you are here.",
         ],
         'new_license' => [

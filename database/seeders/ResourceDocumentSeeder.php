@@ -17,7 +17,7 @@ class ResourceDocumentSeeder extends Seeder
         $documents =         [
           0 => 
           [
-            'title' => 'GWTrack Welcome Orientation',
+            'title' => 'GWTracks Welcome Orientation',
             'description' => 'Portal purpose, dashboard, trackers, resources, communications, team visibility, and your first-week path.',
             'category' => 'guides',
             'sort_order' => 1,
@@ -29,7 +29,7 @@ class ResourceDocumentSeeder extends Seeder
           ],
           1 => 
           [
-            'title' => 'GWTrack Application User Guide',
+            'title' => 'GWTracks Application User Guide',
             'description' => 'Complete application overview — navigation, menus, workflows, and links to module guides.',
             'category' => 'guides',
             'sort_order' => 2,
@@ -123,13 +123,13 @@ class ResourceDocumentSeeder extends Seeder
             'content' => '<div class="packet">
                         <h2>🎉 Welcome to the Team</h2>
                         <p><strong>Congratulations and welcome!</strong> You are now part of a community committed to your growth, leadership, and long-term success.</p>
-                        <p>As a new associate, you have access to <strong>training, mentorship</strong>, and the <strong>GWTrack</strong> portal to build a strong foundation.</p>
+                        <p>As a new associate, you have access to <strong>training, mentorship</strong>, and the <strong>GWTracks</strong> portal to build a strong foundation.</p>
                         <h2>🌟 Our Mission</h2>
                         <p>Help families make informed financial decisions while providing associates with <strong>growth, leadership, and business success</strong> through learning, consistency, and mentorship.</p>
                         <h2>📅 Your First 30 Days</h2>
                         <h3>✅ Week 1: Getting Started</h3>
                         <ul>
-                        <li><strong>Objectives:</strong> Account setup, meet sponsor &amp; CFM, learn GWTrack</li>
+                        <li><strong>Objectives:</strong> Account setup, meet sponsor &amp; CFM, learn GWTracks</li>
                         <li><strong>Actions:</strong> Complete profile, upload docs, attend orientation, schedule mentoring</li>
                         </ul>
                         <div class="tip"><strong>💡 Tip:</strong> Focus on learning, not perfection.</div>
@@ -160,7 +160,7 @@ class ResourceDocumentSeeder extends Seeder
                         <div class="support-card"><strong>Agency Owner</strong> Mentorship &amp; leadership oversight</div>
                         <div class="support-card"><strong>Support Team</strong> Admin, compliance, licensing, training</div>
                         </div>
-                        <h2>💻 GWTrack Portal &ndash; Quick Guide</h2>
+                        <h2>💻 GWTracks Portal &ndash; Quick Guide</h2>
                         <table>
                         <tbody>
                         <tr>
@@ -211,7 +211,7 @@ class ResourceDocumentSeeder extends Seeder
                         </ul>
                         <h2>📌 Daily Habits for Success</h2>
                         <ul>
-                        <li>Log into <strong>GWTrack</strong> daily</li>
+                        <li>Log into <strong>GWTracks</strong> daily</li>
                         <li>Complete assigned tasks</li>
                         <li>Attend training &amp; communicate with mentors</li>
                         <li>Review goals &amp; track progress</li>
@@ -229,7 +229,7 @@ class ResourceDocumentSeeder extends Seeder
                         </div>
                         <h2>💪 Welcome Again</h2>
                         <p><strong>Your journey starts today.</strong> Stay committed, stay coachable.</p>
-                        <div class="footer"><strong>GWTrack.com</strong></div>
+                        <div class="footer"><strong>GWTracks.com</strong></div>
                         <div class="footer">Training, Mentorship &amp; Performance Tracking</div>
                         </div>',
             'url' => 'resources/welcome-packet.pdf',
@@ -356,7 +356,7 @@ class ResourceDocumentSeeder extends Seeder
                                 <li>Complete pre-licensing coursework on schedule.</li>
                                 <li>Schedule and pass the licensing exam.</li>
                                 <li>Submit appointment paperwork and background materials.</li>
-                                <li>Track approval status in GWTrack.</li>
+                                <li>Track approval status in GWTracks.</li>
                                 </ol>
                                 <h2>Helpful Sessions</h2>
                                 <ul>
@@ -488,12 +488,12 @@ class ResourceDocumentSeeder extends Seeder
         app(ResourcePdfService::class)->ensureCodeOfConductPdf();
         app(DocumentationPdfService::class)->ensurePortalResource(
             'welcome-orientation',
-            'GWTrack Welcome Orientation',
+            'GWTracks Welcome Orientation',
             'resources/welcome-orientation.pdf',
         );
         app(DocumentationPdfService::class)->ensurePortalResource(
             'application',
-            'GWTrack Application User Guide',
+            'GWTracks Application User Guide',
             'resources/application.pdf',
         );
         app(DocumentationPdfService::class)->ensurePortalResource(

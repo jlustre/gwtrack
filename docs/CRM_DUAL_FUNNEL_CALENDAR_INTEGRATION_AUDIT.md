@@ -11,7 +11,7 @@ The requested direction is to develop this phase by phase while making Calendar 
 
 ## Current App Fit
 
-GWTrack already has a strong foundation for this blueprint. The current app is not starting from zero; it already contains:
+GWTracks already has a strong foundation for this blueprint. The current app is not starting from zero; it already contains:
 
 - Prospect CRM routes under `/team/prospects`.
 - Recruiting Pipeline route under `/team/recruiting`.

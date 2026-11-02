@@ -147,7 +147,7 @@ return [
                 'Welcome Call Scheduled' => 'A sponsor/leader welcome call is scheduled.',
                 'Welcome Call Completed' => 'The welcome call happened and immediate next actions were agreed.',
                 'Account Creation Pending' => 'Required system accounts are waiting to be created.',
-                'Portal Account Created' => 'GWTrack (or portal) login access is available to the new associate.',
+                'Portal Account Created' => 'GWTracks (or portal) login access is available to the new associate.',
                 'CRM Account Created' => 'CRM access needed for day-to-day pipeline work is in place.',
                 'Email Account Created' => 'Business email access has been provisioned where required.',
                 'Orientation Scheduled' => 'Formal orientation is booked to cover culture, tools, and process.',

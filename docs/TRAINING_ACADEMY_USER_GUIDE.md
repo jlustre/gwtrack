@@ -1,10 +1,10 @@
-# GWTrack — Training Academy Module
+# GWTracks — Training Academy Module
 **User Guide**
 
 **Version:** 1.2  
 **Last updated:** August 2026  
 **Audience:** Associates, new recruits, CFMs, trainers, team leaders, and agency owners  
-**Hub URL:** `/training` (sidebar: **Training** / **GWTrack Academy**)
+**Hub URL:** `/training` (sidebar: **Training** / **GWTracks Academy**)
 
 ---
 
@@ -53,7 +53,7 @@
 
 17. [Training reports and analytics](#16-training-reports-and-analytics)
 18. [Training Content Studio](#17-training-content-studio-administrators)
-19. [Connections to other programs](#18-connections-to-other-gwtrack-programs)
+19. [Connections to other programs](#18-connections-to-other-gwtracks-programs)
 20. [Key concepts](#19-key-concepts)
 21. [Academy points and badges](#20-academy-points-and-badges)
 22. [Tips and best practices](#21-tips-and-best-practices)
@@ -66,7 +66,7 @@
 
 ## 1. What this module does
 
-**GWTrack Academy** is your central place to learn, practice, certify, and grow. It combines self-paced courses, learning paths, live coaching, certifications, and progress tracking tied to FAP, licensing, CFM training, and rank advancement.
+**GWTracks Academy** is your central place to learn, practice, certify, and grow. It combines self-paced courses, learning paths, live coaching, certifications, and progress tracking tied to FAP, licensing, CFM training, and rank advancement.
 
 | Capability | What it means for you |
 |---|---|

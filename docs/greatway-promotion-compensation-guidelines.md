@@ -11,9 +11,9 @@
 - Name: "Mae Tsvetkoff" 
 - Date: August 2, 2027
 
-### GWTrack implementation
+### GWTracks implementation
 
-GWTrack uses this catalog as the source of truth for ranks and compensation (`config/greatway-compensation.php`).
+GWTracks uses this catalog as the source of truth for ranks and compensation (`config/greatway-compensation.php`).
 
 - **SVP** is the first Field Leader rank and the **agency-owner** rank.
 - Rank advancement shows current and next-rank Total FYO, compensation rate, and Personal Production Bonus.

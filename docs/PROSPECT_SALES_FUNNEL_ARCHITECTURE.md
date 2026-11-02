@@ -1,4 +1,4 @@
-# GWTrack — Prospect Management & Sales Funnel Module
+# GWTracks — Prospect Management & Sales Funnel Module
 
 **Version:** 2.0 Architecture  
 **Stack:** Laravel 12+, Livewire 3, Alpine.js, Tailwind CSS, MySQL  
@@ -8,7 +8,7 @@
 
 ## 1. Executive Summary
 
-The Prospect Management & Sales Funnel Module is GWTrack’s primary **CRM**, **pipeline engine**, and **activity hub** for insurance associates, CFMs, Managing Brokers, Field Leaders (SVP and above), and Agency Owners.
+The Prospect Management & Sales Funnel Module is GWTracks’s primary **CRM**, **pipeline engine**, and **activity hub** for insurance associates, CFMs, Managing Brokers, Field Leaders (SVP and above), and Agency Owners.
 
 It must remain **privacy-first** (prospects belong to one owner by default) while supporting **controlled collaboration**, **mentorship visibility**, **team analytics**, and deep integration with Calendar, Tasks, Mentorship, Training, Notifications, Dashboard, Downline Hierarchy, Goals, and AI Recommendations.
 
@@ -593,7 +593,7 @@ Scoped via `DownlineHierarchyService::visibleMembersQuery()` — **counts only**
 
 ### Dashboard integration
 
-Publish stat cards to main GWTrack dashboard via `DashboardStatsService` extension:
+Publish stat cards to main GWTracks dashboard via `DashboardStatsService` extension:
 
 - `prospects_total`, `prospects_hot`, `followups_due`, `prospect_conversion_rate`
 
@@ -797,4 +797,4 @@ Existing: `ProspectManagementModuleTest.php` — extend for Livewire flows.
 
 ---
 
-*This document is the canonical blueprint for the GWTrack Prospect Management & Sales Funnel Module. Implement phase-by-phase; extend `PROSPECT_MANAGEMENT_MODULE.md` checklists as phases complete.*
+*This document is the canonical blueprint for the GWTracks Prospect Management & Sales Funnel Module. Implement phase-by-phase; extend `PROSPECT_MANAGEMENT_MODULE.md` checklists as phases complete.*

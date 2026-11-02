@@ -1,16 +1,16 @@
-# GWTrack Welcome Orientation
+# GWTracks Welcome Orientation
 
 **Audience:** New associates, returning members, Certified Field Mentors (CFMs), team leaders, and agency owners  
-**Purpose:** Introduce what GWTrack is for, how the portal is organized, and where to go for daily work  
-**Related guide:** For a full menu-by-menu reference, see [GWTrack Application User Guide](./GWTRACK_APPLICATION_USER_GUIDE.md)
+**Purpose:** Introduce what GWTracks is for, how the portal is organized, and where to go for daily work  
+**Related guide:** For a full menu-by-menu reference, see [GWTracks Application User Guide](./GWTRACKS_APPLICATION_USER_GUIDE.md)
 
 ---
 
 ## Welcome
 
-Welcome to **GWTrack** — the private operating portal for Greatway Financial Group teams.
+Welcome to **GWTracks** — the private operating portal for Greatway Financial Group teams.
 
-GWTrack is designed so you always know **what to do next**, your CFM and leaders can **see progress clearly**, and the tools you need for prospecting, licensing, training, mentoring, and production live in **one place**.
+GWTracks is designed so you always know **what to do next**, your CFM and leaders can **see progress clearly**, and the tools you need for prospecting, licensing, training, mentoring, and production live in **one place**.
 
 This orientation walks you through:
 
@@ -31,11 +31,11 @@ You will only see menu items your **role and permissions** allow. If something d
 
 ## 1. Portal purpose
 
-### What GWTrack is
+### What GWTracks is
 
-GWTrack is your **agency operating system**. It connects the work associates do every day into a shared, trackable journey:
+GWTracks is your **agency operating system**. It connects the work associates do every day into a shared, trackable journey:
 
-| Journey stage | What GWTrack helps with |
+| Journey stage | What GWTracks helps with |
 |---|---|
 | **Join & orient** | Invitation registration, profile setup, onboarding checklist |
 | **Get licensed** | Licensing milestones, compliance & renewals |
@@ -46,11 +46,11 @@ GWTrack is your **agency operating system**. It connects the work associates do 
 | **Advance** | Goals, rank advancement, recognition |
 | **Lead & mentor** | Team dashboards, CFM Portal, coaching tools |
 
-### What GWTrack is not
+### What GWTracks is not
 
 - It is **not** a public website. Access requires an invitation (or admin account creation) and an active login.
 - It is **not** a replacement for carrier portals or licensing boards — it **tracks** your progress and keeps your team aligned.
-- Ranks (TA → NEVC) are **Greatway advancement levels**. Roles (member, CFM, team-leader, agency-owner, admin, etc.) control **what you can see and do inside GWTrack**.
+- Ranks (TA → NEVC) are **Greatway advancement levels**. Roles (member, CFM, team-leader, agency-owner, admin, etc.) control **what you can see and do inside GWTracks**.
 
 ### Core principles
 
@@ -144,7 +144,7 @@ Trackers are checklist- and milestone-driven pages that answer: *Where am I, and
 
 1. Open the tracker for your program (for example **My Onboarding**).  
 2. Complete the work described for each item.  
-3. Mark the item done in GWTrack.  
+3. Mark the item done in GWTracks.  
 4. If the item **requires confirmation**, it moves to a pending state until a notified party (often your CFM, sponsor, or leader) confirms or sends it back.  
 5. If confirmation is **not** required, the item can complete automatically when you mark it done.  
 
@@ -194,7 +194,7 @@ Your dashboard progress widgets will reflect that same journey.
 
 **Path:** Sidebar → **Learning & Resources**
 
-### Training Center (GWTrack Academy)
+### Training Center (GWTracks Academy)
 
 **Path:** `/training`
 
@@ -326,7 +326,7 @@ Post production from **My Profile**. Review personal and (for leaders) team prod
 | **Agency owner** | Agency visibility, CFM assignment, admin setup areas as permitted |
 | **Trainer / admin** | Training setup, checklists, user management, support queue (as permitted) |
 
-Ranks (TA, ASC, SA, MB, SMB, AVP, SVP, EVP, EVC, SEVC, NEVC) describe Greatway advancement. They do not automatically unlock every GWTrack tool — **roles and permissions** do. **SVP and above** are Field Leaders and usually carry the agency-owner role. Rank advancement also shows your current and next Total FYO compensation.
+Ranks (TA, ASC, SA, MB, SMB, AVP, SVP, EVP, EVC, SEVC, NEVC) describe Greatway advancement. They do not automatically unlock every GWTracks tool — **roles and permissions** do. **SVP and above** are Field Leaders and usually carry the agency-owner role. Rank advancement also shows your current and next Total FYO compensation.
 
 ---
 
@@ -384,7 +384,7 @@ Understanding visibility builds trust and prevents surprises.
 
 | Need | Where to go |
 |---|---|
-| How do I use a feature? | This orientation + [Application User Guide](./GWTRACK_APPLICATION_USER_GUIDE.md) |
+| How do I use a feature? | This orientation + [Application User Guide](./GWTRACKS_APPLICATION_USER_GUIDE.md) |
 | Training Academy detail | [Training Academy User Guide](./TRAINING_ACADEMY_USER_GUIDE.md) |
 | Prospects / sales funnel | [Prospect Sales Funnel User Guide](./PROSPECT_SALES_FUNNEL_USER_GUIDE.md) |
 | Goals & performance | [Goals and Performance User Guide](./GOALS_AND_PERFORMANCE_USER_GUIDE.md) |
@@ -419,7 +419,7 @@ Understanding visibility builds trust and prevents surprises.
               (visibility & mentoring)     (produce & recruit)
 ```
 
-**Remember:** GWTrack exists so growth is visible, coaching is structured, and your next step is never a mystery.
+**Remember:** GWTracks exists so growth is visible, coaching is structured, and your next step is never a mystery.
 
 ---
 
@@ -427,9 +427,9 @@ Understanding visibility builds trust and prevents surprises.
 
 You do not need to master every module on day one. Start with **Dashboard**, **Profile**, **Onboarding**, **Training**, and **Resources**. Let your CFM and sponsor guide you into licensing, FAP, prospects, and team tools as your role expands.
 
-Welcome to the team — and welcome to GWTrack.
+Welcome to the team — and welcome to GWTracks.
 
 ---
 
-*Document title: GWTrack Welcome Orientation*  
+*Document title: GWTracks Welcome Orientation*  
 *Last updated: August 2026*

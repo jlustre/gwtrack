@@ -23,7 +23,7 @@ class MessagingCenterTest extends TestCase
     {
         $this->seedMessaging();
 
-        $member = User::where('email', 'calendar-member@gwtrack.com')->firstOrFail();
+        $member = User::where('email', 'calendar-member@gwtracks.com')->firstOrFail();
 
         $this->actingAs($member)
             ->get(route('messages.index'))
@@ -36,7 +36,7 @@ class MessagingCenterTest extends TestCase
     {
         $this->seedMessaging();
 
-        $member = User::where('email', 'calendar-member@gwtrack.com')->firstOrFail();
+        $member = User::where('email', 'calendar-member@gwtracks.com')->firstOrFail();
         $conversation = Conversation::query()->where('type', 'direct')->firstOrFail();
 
         Livewire::actingAs($member)
@@ -61,8 +61,8 @@ class MessagingCenterTest extends TestCase
             CalendarModuleSeeder::class,
         ]);
 
-        $cfm = User::where('email', 'calendar-cfm@gwtrack.com')->firstOrFail();
-        $member = User::where('email', 'calendar-member@gwtrack.com')->firstOrFail();
+        $cfm = User::where('email', 'calendar-cfm@gwtracks.com')->firstOrFail();
+        $member = User::where('email', 'calendar-member@gwtracks.com')->firstOrFail();
         $member->update(['mentor_id' => $cfm->id]);
 
         $conversation = app(MessagingService::class)->findOrCreateDirectConversation($cfm, $member);
@@ -75,7 +75,7 @@ class MessagingCenterTest extends TestCase
     {
         $this->seedMessaging();
 
-        $member = User::where('email', 'calendar-member@gwtrack.com')->firstOrFail();
+        $member = User::where('email', 'calendar-member@gwtracks.com')->firstOrFail();
         $member->syncRoles([]);
 
         $this->actingAs($member)

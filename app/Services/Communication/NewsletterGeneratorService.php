@@ -214,7 +214,7 @@ class NewsletterGeneratorService
         $sectionLabels = config('communication-hub.newsletter_sections', []);
         $html = '<div style="font-family:Georgia,serif;color:#2D3E50;max-width:640px;margin:0 auto;">';
         $html .= '<div style="background:#2D3E50;color:#84BB41;padding:24px;text-align:center;">';
-        $html .= '<p style="margin:0;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;">GWTrack Communication Hub</p>';
+        $html .= '<p style="margin:0;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;">GWTracks Communication Hub</p>';
         $html .= '<h1 style="margin:12px 0 0;font-size:24px;color:#F5FAF0;">'.e($title).'</h1>';
         $html .= '<p style="margin:8px 0 0;font-size:13px;color:#84BB41;">'.e($periodLabel).'</p>';
         $html .= '</div>';

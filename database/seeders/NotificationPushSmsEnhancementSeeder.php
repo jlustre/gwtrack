@@ -14,7 +14,7 @@ class NotificationPushSmsEnhancementSeeder extends Seeder
         $enhancements = [
             'mentor_assigned' => [
                 'channels' => ['in_app', 'email', 'push', 'sms'],
-                'sms_body' => '{{ member_name }}, {{ mentor_name }} is now your CFM. Log into GWTrack to connect.',
+                'sms_body' => '{{ member_name }}, {{ mentor_name }} is now your CFM. Log into GWTracks to connect.',
                 'push_title' => 'Mentor assigned',
                 'push_body' => '{{ mentor_name }} is now your Certified Field Mentor.',
             ],
@@ -30,7 +30,7 @@ class NotificationPushSmsEnhancementSeeder extends Seeder
             ],
             'task_overdue' => [
                 'channels' => ['in_app', 'email', 'push', 'sms'],
-                'sms_body' => 'GWTrack: Task overdue - {{ task_name }}. Due {{ deadline }}.',
+                'sms_body' => 'GWTracks: Task overdue - {{ task_name }}. Due {{ deadline }}.',
                 'push_title' => 'Task overdue',
                 'push_body' => '{{ task_name }} is past due.',
             ],
@@ -47,7 +47,7 @@ class NotificationPushSmsEnhancementSeeder extends Seeder
             ],
             'cfm_assignment_pending_confirm' => [
                 'channels' => ['in_app', 'email', 'push', 'sms'],
-                'sms_body' => 'GWTrack: Confirm trainee assignment for {{ member_name }}.',
+                'sms_body' => 'GWTracks: Confirm trainee assignment for {{ member_name }}.',
                 'push_title' => 'Confirm trainee assignment',
                 'push_body' => '{{ member_name }} was assigned to you. Please confirm.',
             ],

@@ -2,7 +2,7 @@
 
 ## Purpose
 
-The Calendar & Events module gives GWTrack a Google/Outlook-style scheduling center for team events, trainings, prospect appointments, licensing deadlines, mentor sessions, Field Apprenticeship Program sessions, CFM certification, rank reviews, recognition, and organization-wide events.
+The Calendar & Events module gives GWTracks a Google/Outlook-style scheduling center for team events, trainings, prospect appointments, licensing deadlines, mentor sessions, Field Apprenticeship Program sessions, CFM certification, rank reviews, recognition, and organization-wide events.
 
 ## Implemented Scaffold
 
@@ -11,7 +11,7 @@ The Calendar & Events module gives GWTrack a Google/Outlook-style scheduling cen
 - Calendar database schema with categories, event types, events, attendees, reminders, recurrences, attachments, visibility rules, notes, activity logs, and user preferences.
 - Calendar models and relationships.
 - Calendar policies for event visibility, attendees, reminders, visibility rules, and export.
-- Calendar seed data for realistic GWTrack scenarios.
+- Calendar seed data for realistic GWTracks scenarios.
 - Livewire component stubs for future modal and real-time interactions.
 
 ## Database Tables

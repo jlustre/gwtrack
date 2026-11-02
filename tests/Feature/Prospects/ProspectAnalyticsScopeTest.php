@@ -37,7 +37,7 @@ class ProspectAnalyticsScopeTest extends TestCase
 
     public function test_team_aggregates_exclude_pii_and_scope_to_hierarchy(): void
     {
-        $owner = User::where('email', 'downline-owner@gwtrack.com')->firstOrFail();
+        $owner = User::where('email', 'downline-owner@gwtracks.com')->firstOrFail();
         $owner->forceFill(['email_verified_at' => now()])->save();
         $member = User::where('sponsor_id', $owner->id)->firstOrFail();
         $outsider = User::factory()->create();

@@ -1,8 +1,8 @@
-# GWTrack — Application User Guide
+# GWTracks — Application User Guide
 
 **Version:** 1.1  
 **Last updated:** August 2026  
-**Audience:** All GWTrack users — associates, trainees, CFMs, team leaders, agency owners, and administrators
+**Audience:** All GWTracks users — associates, trainees, CFMs, team leaders, agency owners, and administrators
 
 ---
 
@@ -41,13 +41,13 @@
 
 # 1. Getting started
 
-## What is GWTrack?
+## What is GWTracks?
 
-GWTrack is your agency operating system. It connects the work you do every day — prospecting, FNAs, licensing, training, mentoring, and production — into one place so you, your CFM, and your leadership can see progress and take action.
+GWTracks is your agency operating system. It connects the work you do every day — prospecting, FNAs, licensing, training, mentoring, and production — into one place so you, your CFM, and your leadership can see progress and take action.
 
 ## Signing in
 
-1. Open your agency’s GWTrack URL (for example `https://your-agency.gwtrack.com`).
+1. Open your agency’s GWTracks URL (for example `https://your-agency.gwtracks.com`).
 2. Sign in with the email and password provided at registration.
 3. Complete email verification if prompted.
 4. On first login, you may see a **profile completion** prompt. Fill in required fields so your team can support you.
@@ -196,7 +196,7 @@ Everything below matches the **left sidebar**. Items you do not see are hidden b
 | **Compliance & Renewals** | `/compliance` | Ongoing licenses, E&O, AML, CE, carrier appointments |
 | **Field Apprenticeship** | `/field-apprenticeship` | FAP program checklist (trainees) |
 | **CFM Training** | `/cfm-training` | CFM certification checklist |
-| **Training Center** | `/training` | GWTrack Academy — courses, paths, certifications |
+| **Training Center** | `/training` | GWTracks Academy — courses, paths, certifications |
 | **Production Dashboard** | `/team/production` | Posted production, trends; agency rollups for leaders |
 | **Goals & Performance** | `/goals` | SMART goals, planner, scorecard, team visibility |
 | **Assessments** | `/assessments` | Knowledge checks linked to training |
@@ -343,7 +343,7 @@ Checklist for associates pursuing **Certified Field Mentor** certification. Sepa
 
 ## Training Center (`/training`)
 
-The **GWTrack Academy** — self-paced learning.
+The **GWTracks Academy** — self-paced learning.
 
 | Area | URL | Purpose |
 |---|---|---|

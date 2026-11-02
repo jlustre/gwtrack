@@ -1,10 +1,10 @@
-# GWTrack Business Rules & Project Requirements
+# GWTracks Business Rules & Project Requirements
 
-This is the living requirements file for GWTrack.com. Update it whenever business rules, access rules, workflows, or module decisions change.
+This is the living requirements file for GWTracks.com. Update it whenever business rules, access rules, workflows, or module decisions change.
 
 ## Project Purpose
 
-GWTrack.com is a private Greatway Financial Group team portal for tracking new recruits, associates, onboarding, licensing, mentorship, training, assessments, resources, motivation, recognition, and rank advancement.
+GWTracks.com is a private Greatway Financial Group team portal for tracking new recruits, associates, onboarding, licensing, mentorship, training, assessments, resources, motivation, recognition, and rank advancement.
 
 ## Core Product Goals
 
@@ -49,7 +49,7 @@ Builder track (Field Leaders, SVP and above):
 ## Rank And Role Distinction
 
 - Ranks are Greatway Financial Group advancement levels.
-- Roles are GWTrack access and permission groups.
+- Roles are GWTracks access and permission groups.
 - Senior Vice President (SVP) and above usually carry the `agency-owner` role. SVP is the first Field Leader rank.
 - Senior Associate usually carries the `team-leader` role.
 - CFM can be granted to Associate and above after successful CFM Training completion and approval.
@@ -85,7 +85,7 @@ Builder track (Field Leaders, SVP and above):
 
 ## Global Business Rules
 
-- GWTrack is a private portal. Users must be authenticated to access core features.
+- GWTracks is a private portal. Users must be authenticated to access core features.
 - Users must be active to access the portal.
 - Role-based access control is handled through Spatie Laravel Permission.
 - A user may have one or more roles.
@@ -93,7 +93,7 @@ Builder track (Field Leaders, SVP and above):
 - Rank-based monthly subscriptions can be enabled from Admin Settings. Unlicensed associates and TA/ASC ranks stay free. A new rank's price starts on the next subscription anniversary. Associates may choose monthly auto-pay or annual billing. Issued invoices are paid from My Billing; office collection is processed from Admin Management → Subscription Payments.
 - A user may belong to a team.
 - A user may have a sponsor.
-- A prospective member may only register through an invitation link from a current GWTrack member.
+- A prospective member may only register through an invitation link from a current GWTracks member.
 - Each invitation link must include a tracked registration code.
 - A newly registered member must receive `sponsor_id` from the sponsoring member tied to the registration code.
 - A newly registered member receives the default `member` role.
@@ -121,7 +121,7 @@ Builder track (Field Leaders, SVP and above):
 - Invitation links are tracked through `registration_invitations`.
 - Invitation links are single-use by default.
 - The system must prevent a new active invitation when the same email already has an active invitation.
-- The system must prevent invitations to emails that already belong to registered GWTrack users.
+- The system must prevent invitations to emails that already belong to registered GWTracks users.
 - A sponsor may preview and edit the invitation email before sending.
 - The invitation email body must include the registration link.
 - The invitation email popup must display this reminder below the message field: "The registration link must remain in the message. Add the recipient name before sending."
@@ -333,7 +333,7 @@ new-recruit:
 
 ## Open Business Decisions
 
-- Which remaining rank-advancement evidence and approval steps still need a GWTrack workflow beyond the published Greatway catalog.
+- Which remaining rank-advancement evidence and approval steps still need a GWTracks workflow beyond the published Greatway catalog.
 - Exact licensing workflow by province or state.
 - Which apprenticeship steps are mandatory.
 - CFM certification approval criteria.
@@ -360,7 +360,7 @@ new-recruit:
 - 2026-05-31: Added baseline seeders for Licensing checklist, Field Apprenticeship Program checklist, and CFM Training modules.
 - 2026-05-31: Built Licensing, Field Apprenticeship, and CFM Training tracker pages with progress cards, progress graphs, collapsible checklist rows, pending confirmation, reviewer comments, and confirm/reject workflow.
 - 2026-05-31: Added strict sponsorship hierarchy visibility rules, global information exception, agency-owner-only CFM assignment, and cross-agency CFM profile visibility exception.
-- 2026-05-31: Clarified that Greatway ranks and GWTrack roles are separate, with eligibility expectations for agency-owner, team-leader, certified-field-mentor, and trainer roles.
+- 2026-05-31: Clarified that Greatway ranks and GWTracks roles are separate, with eligibility expectations for agency-owner, team-leader, certified-field-mentor, and trainer roles.
 - 2026-05-31: Added global and country-specific onboarding checklist applicability rules.
 - 2026-05-31: Added invitation-only registration business rules for duplicate prevention, active GW associate confirmation, sponsor confirmation, email preview/editing, sponsor sender identity, accepted invitation hiding, and invitation deletion/recreation.
 - 2026-05-31: Added default registration assignment rules for `member` role, TA rank, sponsor team inheritance, and `super-admin`/`agency-owner`-only role/rank/team changes.

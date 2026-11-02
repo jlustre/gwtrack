@@ -41,7 +41,7 @@
             <div class="bg-gw-primary px-6 py-6 text-white print:bg-white print:text-slate-900 print:px-0">
                 <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                     <div>
-                        <p class="text-sm font-semibold uppercase tracking-wide text-gw-accent print:text-slate-500">GWTrack invoice</p>
+                        <p class="text-sm font-semibold uppercase tracking-wide text-gw-accent print:text-slate-500">GWTracks invoice</p>
                         <h1 class="mt-2 text-2xl font-semibold">{{ $invoice->number }}</h1>
                         <p class="mt-2 text-sm text-slate-200 print:text-slate-600">{{ $invoice->description }}</p>
                     </div>
@@ -84,7 +84,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td class="px-4 py-4 text-slate-700">Monthly GWTrack subscription</td>
+                            <td class="px-4 py-4 text-slate-700">Monthly GWTracks subscription</td>
                             <td class="px-4 py-4 text-slate-600">{{ $invoice->rank_code }}</td>
                             <td class="px-4 py-4 text-right font-semibold text-gw-primary">{{ $invoice->amountLabel() }}</td>
                         </tr>

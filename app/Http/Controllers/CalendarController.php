@@ -319,7 +319,7 @@ class CalendarController extends Controller
 
         return response($csv, 200, [
             'Content-Type' => 'text/csv',
-            'Content-Disposition' => 'attachment; filename="gwtrack-calendar-events.csv"',
+            'Content-Disposition' => 'attachment; filename="gwtracks-calendar-events.csv"',
         ]);
     }
 

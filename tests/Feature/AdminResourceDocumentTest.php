@@ -111,7 +111,7 @@ class AdminResourceDocumentTest extends TestCase
                 'type' => 'document',
                 'category' => 'onboarding',
                 'sort_order' => 10,
-                'content' => '<p>Welcome to <strong>GWTrack</strong>.</p>',
+                'content' => '<p>Welcome to <strong>GWTracks</strong>.</p>',
                 'url' => null,
                 'is_published' => 1,
                 'is_featured' => 0,
@@ -121,7 +121,7 @@ class AdminResourceDocumentTest extends TestCase
 
         $resource = PortalResource::query()->where('title', 'Associate Handbook')->firstOrFail();
 
-        $this->assertSame('<p>Welcome to <strong>GWTrack</strong>.</p>', $resource->content);
+        $this->assertSame('<p>Welcome to <strong>GWTracks</strong>.</p>', $resource->content);
         $this->assertNotNull($resource->file_path);
         $this->assertSame('PDF', $resource->file_format);
         $this->assertNotNull($resource->pdf_generated_at);

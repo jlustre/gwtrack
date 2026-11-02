@@ -41,7 +41,7 @@ return [
         'communication' => ['label' => 'Communication & Availability', 'description' => 'Responsiveness, clarity, and accessibility.'],
         'coaching' => ['label' => 'Coaching & Skill Building', 'description' => 'Practical teaching, role-play, and field readiness.'],
         'accountability' => ['label' => 'Accountability & Follow-Through', 'description' => 'Consistency of follow-up and professional standards.'],
-        'systems' => ['label' => 'Systems & GWTrack Guidance', 'description' => 'Help with portal tools, processes, and workflows.'],
+        'systems' => ['label' => 'Systems & GWTracks Guidance', 'description' => 'Help with portal tools, processes, and workflows.'],
         'development' => ['label' => 'Personal Development & Leadership', 'description' => 'Confidence, growth mindset, and leadership modeling.'],
         'support' => ['label' => 'Support & Care', 'description' => 'Encouragement, empathy, and problem-solving support.'],
     ],

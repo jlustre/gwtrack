@@ -33,7 +33,7 @@ class MyTraineesPageTest extends TestCase
             CfmManagementSeeder::class,
         ]);
 
-        $cfm = User::where('email', 'cfm@gwtrack.com')->firstOrFail();
+        $cfm = User::where('email', 'cfm@gwtracks.com')->firstOrFail();
 
         $this->actingAs($cfm)
             ->get(route('team.trainees'))

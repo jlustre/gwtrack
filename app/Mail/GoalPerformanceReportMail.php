@@ -22,7 +22,7 @@ class GoalPerformanceReportMail extends Mailable
         $label = $this->reportData['period_label'] ?? 'Performance';
 
         return new Envelope(
-            subject: "{$label} Goal Performance Report — GWTrack",
+            subject: "{$label} Goal Performance Report — GWTracks",
         );
     }
 

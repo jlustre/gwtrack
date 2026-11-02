@@ -65,5 +65,6 @@
         </div>
     </div>
 
+    <p x-show="clientError" x-cloak x-text="clientError" class="mt-2 text-sm text-red-600"></p>
     <x-input-error :messages="$errors->get('photo')" class="mt-2" />
 </div>

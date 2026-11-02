@@ -2,8 +2,8 @@
     <div class="mb-6 grid gap-3 sm:grid-cols-3">
         @foreach ([
             ['key' => 'standard', 'title' => 'Report an issue', 'desc' => 'Bug, access, data, or performance problem', 'accent' => 'border-red-200 bg-red-50/80'],
-            ['key' => 'enhancement', 'title' => 'Suggest an enhancement', 'desc' => 'Wishlist idea to improve GWTrack', 'accent' => 'border-sky-200 bg-sky-50/80'],
-            ['key' => 'documentation', 'title' => 'Browse documentation', 'desc' => 'User guides for each GWTrack module', 'accent' => 'border-emerald-200 bg-emerald-50/80'],
+            ['key' => 'enhancement', 'title' => 'Suggest an enhancement', 'desc' => 'Wishlist idea to improve GWTracks', 'accent' => 'border-sky-200 bg-sky-50/80'],
+            ['key' => 'documentation', 'title' => 'Browse documentation', 'desc' => 'User guides for each GWTracks module', 'accent' => 'border-emerald-200 bg-emerald-50/80'],
         ] as $option)
             <button
                 type="button"

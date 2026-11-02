@@ -34,7 +34,7 @@ Structured mentoring checklist for Certified Field Mentors guiding trainees thro
 ### Orientation Meeting
 
 - [ ] Conduct orientation session
-- [ ] Explain GWTrack portal
+- [ ] Explain GWTracks portal
 - [ ] Review onboarding process
 - [ ] Review FAP requirements
 - [ ] Review licensing process
@@ -49,7 +49,7 @@ Structured mentoring checklist for Certified Field Mentors guiding trainees thro
 - [ ] Discuss business goals
 - [ ] Set first 30-day goals
 - [ ] Set first 90-day goals
-- [ ] Document goals in GWTrack
+- [ ] Document goals in GWTracks
 
 ---
 

@@ -36,8 +36,8 @@ class CfmManagementSeeder extends Seeder
 
         $this->seedRankStructure();
 
-        $agencyOwner = User::where('email', 'agency-owner@gwtrack.com')->first();
-        $celeste = User::where('email', 'cfm@gwtrack.com')->first();
+        $agencyOwner = User::where('email', 'agency-owner@gwtracks.com')->first();
+        $celeste = User::where('email', 'cfm@gwtracks.com')->first();
 
         if (! $agencyOwner || ! $celeste) {
             $this->command?->warn('CfmManagementSeeder skipped: run TaskScenarioSeeder first.');
@@ -51,7 +51,7 @@ class CfmManagementSeeder extends Seeder
         $categoryId = $this->calendarCategoryId();
 
         $maria = $this->cfmUser(
-            'maria.cfm@gwtrack.com',
+            'maria.cfm@gwtracks.com',
             'Maria Santos',
             $teamId,
             $rankSfa,
@@ -66,7 +66,7 @@ class CfmManagementSeeder extends Seeder
         );
 
         $john = $this->cfmUser(
-            'john.cfm@gwtrack.com',
+            'john.cfm@gwtracks.com',
             'John Reyes',
             $teamId,
             $rankSfa,
@@ -81,7 +81,7 @@ class CfmManagementSeeder extends Seeder
         );
 
         $james = $this->cfmUser(
-            'james.cfm@gwtrack.com',
+            'james.cfm@gwtracks.com',
             'James Whitfield',
             $teamId,
             $rankSfa,
@@ -96,7 +96,7 @@ class CfmManagementSeeder extends Seeder
         );
 
         $lisa = $this->cfmUser(
-            'lisa.cfm@gwtrack.com',
+            'lisa.cfm@gwtracks.com',
             'Lisa Morgan',
             $teamId,
             $rankSfa,
@@ -402,7 +402,7 @@ class CfmManagementSeeder extends Seeder
         ]);
 
         $user = User::updateOrCreate(
-            ['email' => 'external.cfm@gwtrack.com'],
+            ['email' => 'external.cfm@gwtracks.com'],
             [
                 'name' => 'David Kim',
                 'password' => Hash::make('Password123'),
@@ -628,7 +628,7 @@ class CfmManagementSeeder extends Seeder
     private function cfmJurisdictionDefinitions(): array
     {
         return [
-            'cfm@gwtrack.com' => [
+            'cfm@gwtracks.com' => [
                 'location' => [
                     'country' => 'Canada',
                     'province' => 'Ontario',
@@ -651,7 +651,7 @@ class CfmManagementSeeder extends Seeder
                     'last_mentor_activity_at' => now()->subHours(6),
                 ],
             ],
-            'maria.cfm@gwtrack.com' => [
+            'maria.cfm@gwtracks.com' => [
                 'location' => [
                     'country' => 'Canada',
                     'province' => 'Ontario',
@@ -671,7 +671,7 @@ class CfmManagementSeeder extends Seeder
                     'last_mentor_activity_at' => now()->subHours(2),
                 ],
             ],
-            'john.cfm@gwtrack.com' => [
+            'john.cfm@gwtracks.com' => [
                 'location' => [
                     'country' => 'Canada',
                     'province' => 'Alberta',
@@ -691,7 +691,7 @@ class CfmManagementSeeder extends Seeder
                     'last_mentor_activity_at' => now()->subDay(),
                 ],
             ],
-            'external.cfm@gwtrack.com' => [
+            'external.cfm@gwtracks.com' => [
                 'location' => [
                     'country' => 'Canada',
                     'province' => 'British Columbia',
@@ -711,7 +711,7 @@ class CfmManagementSeeder extends Seeder
                     'last_mentor_activity_at' => now()->subDays(2),
                 ],
             ],
-            'james.cfm@gwtrack.com' => [
+            'james.cfm@gwtracks.com' => [
                 'location' => [
                     'country' => 'United States',
                     'province' => 'California',
@@ -731,7 +731,7 @@ class CfmManagementSeeder extends Seeder
                     'last_mentor_activity_at' => now()->subHours(4),
                 ],
             ],
-            'lisa.cfm@gwtrack.com' => [
+            'lisa.cfm@gwtracks.com' => [
                 'location' => [
                     'country' => 'United States',
                     'province' => 'New York',
@@ -908,7 +908,7 @@ class CfmManagementSeeder extends Seeder
         }
 
         $this->command->info('CFM jurisdiction demo data seeded.');
-        $this->command->line('  Login: agency-owner@gwtrack.com / Password123 → CFM Management → Assign');
+        $this->command->line('  Login: agency-owner@gwtracks.com / Password123 → CFM Management → Assign');
         $this->command->line('  Licensed jurisdictions:');
         foreach ($this->cfmJurisdictionDefinitions() as $email => $definition) {
             $licensed = implode(', ', $definition['mentor']['licensed_jurisdictions'] ?? []);
@@ -919,7 +919,7 @@ class CfmManagementSeeder extends Seeder
             $this->command->line("    {$row['email']} — {$row['licensed_cfms']}");
         }
         $this->command->line('  Also try: maya.fap@example.com (BC) with Celeste; sofia.needsmentor@example.com (QC) with Maria.');
-        $this->command->line('  US CFMs: james.cfm@gwtrack.com (CA, TX) · lisa.cfm@gwtrack.com (NY, FL) — Password123');
+        $this->command->line('  US CFMs: james.cfm@gwtracks.com (CA, TX) · lisa.cfm@gwtracks.com (NY, FL) — Password123');
         $this->command->line('  US apprentices: james.apprentice.* / lisa.apprentice.* · US queue: fap.queue.us-*@example.com');
     }
 

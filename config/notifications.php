@@ -65,7 +65,7 @@ return [
     'sms' => [
         'enabled' => env('NOTIFICATIONS_SMS_ENABLED', env('APP_ENV') === 'local'),
         'driver' => env('NOTIFICATIONS_SMS_DRIVER', 'log'),
-        'from' => env('NOTIFICATIONS_SMS_FROM', 'GWTrack'),
+        'from' => env('NOTIFICATIONS_SMS_FROM', 'GWTracks'),
         'max_length' => 160,
         'twilio' => [
             'sid' => env('TWILIO_ACCOUNT_SID'),
@@ -78,7 +78,7 @@ return [
         'enabled' => env('NOTIFICATIONS_PUSH_ENABLED', env('APP_ENV') === 'local'),
         'driver' => env('NOTIFICATIONS_PUSH_DRIVER', 'log'),
         'vapid' => [
-            'subject' => env('NOTIFICATIONS_PUSH_VAPID_SUBJECT', env('APP_URL', 'mailto:admin@gwtrack.com')),
+            'subject' => env('NOTIFICATIONS_PUSH_VAPID_SUBJECT', env('APP_URL', 'mailto:admin@gwtracks.com')),
             'public_key' => env('NOTIFICATIONS_PUSH_VAPID_PUBLIC_KEY'),
             'private_key' => env('NOTIFICATIONS_PUSH_VAPID_PRIVATE_KEY'),
         ],

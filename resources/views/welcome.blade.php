@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>GWTrack.com | Your Greatway to Growth Leadership Platform</title>
+        <title>GWTracks.com | Your Greatway to Growth Leadership Platform</title>
 
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700,800&display=swap" rel="stylesheet" />
@@ -31,7 +31,7 @@
                     'eyebrow' => 'Leadership Starts With Clarity',
                     'headline' => 'Develop Teams With Executive Precision.',
                     'body' => 'Bring sponsors, mentors, and new associates into one premium growth system built for Your Greatway to Growth.',
-                    'align' => 'items-center justify-start text-left',
+                    'align' => 'items-start justify-start text-left',
                     'panel' => 'max-w-2xl md:ml-0',
                     'object' => 'object-center',
                 ],
@@ -40,7 +40,7 @@
                     'eyebrow' => 'Mentorship With Standards',
                     'headline' => 'Coach Every Associate With Confidence.',
                     'body' => 'Track sponsor relationships, mentor conversations, apprenticeship progress, and next steps without losing momentum.',
-                    'align' => 'items-center justify-start text-left',
+                    'align' => 'items-start justify-start text-left',
                     'panel' => 'max-w-xl md:ml-0',
                     'object' => 'object-center',
                 ],
@@ -48,8 +48,8 @@
                     'image' => $heroSlideImage(3),
                     'eyebrow' => 'The Rank Path Is Visible',
                     'headline' => 'Turn Advancement Into A Guided Journey.',
-                    'body' => 'From Training Associate to National Executive Vice Chairman, GWTrack makes milestones, FYO compensation, training, and leadership readiness clear.',
-                    'align' => 'items-center justify-start text-left',
+                    'body' => 'From Training Associate to National Executive Vice Chairman, GWTracks makes milestones, FYO compensation, training, and leadership readiness clear.',
+                    'align' => 'items-start justify-start text-left',
                     'panel' => 'max-w-xl md:ml-0',
                     'object' => 'object-center',
                 ],
@@ -58,7 +58,7 @@
                     'eyebrow' => 'Command Center For Growth',
                     'headline' => 'See The Team. Know The Next Move.',
                     'body' => 'A private dashboard for onboarding, licensing, rank progress, events, announcements, and team visibility.',
-                    'align' => 'items-center justify-start text-left',
+                    'align' => 'items-start justify-start text-left',
                     'panel' => 'max-w-xl md:ml-0',
                     'object' => 'object-center',
                 ],
@@ -67,7 +67,7 @@
                     'eyebrow' => 'Recognition Builds Culture',
                     'headline' => 'Celebrate Progress And Build Legacy.',
                     'body' => 'Highlight achievements, mentor wins, certification movement, and leadership milestones across your organization.',
-                    'align' => 'items-center justify-start text-left',
+                    'align' => 'items-start justify-start text-left',
                     'panel' => 'max-w-xl md:ml-0',
                     'object' => 'object-center',
                 ],
@@ -76,10 +76,19 @@
                     'eyebrow' => 'Your Greatway to Growth',
                     'headline' => 'Developing Leaders. Building Legacies.',
                     'body' => 'Unify training, resources, coaching, and performance tracking in one executive portal for serious builders.',
-                    'align' => 'items-end justify-start text-left pb-24 md:pb-28',
+                    'align' => 'items-start justify-start text-left',
                     'panel' => 'max-w-lg md:ml-0',
                     'object' => 'object-center',
                 ],
+            ];
+
+            $growthSteps = [
+                ['1', 'Invite', 'Sponsors send a secure invitation link to new recruits, so every new addition to the team starts out sponsor-verified and accountable from day one.'],
+                ['2', 'Onboard', 'New associates complete their profile, review the welcome curriculum, and confirm their sponsor to activate full GWTracks access.'],
+                ['3', 'License', 'Track exam prep, licensing milestones, appointments, and compliance steps in one place until the associate is fully licensed and ready to sell.'],
+                ['4', 'Apprentice', 'Each associate is paired with a Certified Field Mentor for hands-on, real-world practice, with every session, note, and milestone tracked in one place.'],
+                ['5', 'Advance', 'Rank progress, FYO compensation, and promotion readiness are visible in real time as associates climb toward the next rank.'],
+                ['6', 'Lead', 'Graduate into a leadership role with full visibility into a growing team, mentorship pipeline, and recognition for every milestone reached.'],
             ];
         @endphp
 
@@ -113,20 +122,19 @@
             }
         </style>
 
-        <nav class="fixed left-0 top-0 z-50 w-full transition-all duration-300" :class="scrolled ? 'border-b border-gw-accent/30 bg-black/95 shadow-2xl' : 'bg-black/45 backdrop-blur-sm'">
+        <nav class="fixed left-0 top-0 z-50 w-full transition-all duration-300" :class="scrolled ? 'border-b border-gw-accent/30 bg-white shadow-2xl' : 'bg-white/95 backdrop-blur-sm'">
             <div class="mx-auto flex max-w-7xl items-center justify-between px-5 py-1.5 md:px-8 md:py-2">
-                <a href="#home" class="text-2xl font-extrabold leading-none tracking-normal md:text-3xl">
-                    <span class="gold-text-gradient">GWTrack</span><span class="text-white">.com</span>
-                    <span class="mt-0 block text-[0.6rem] font-bold uppercase leading-none tracking-[0.2em] text-gw-accent/80">Your Greatway to Growth</span>
+                <a href="#home" class="inline-flex items-center">
+                    <img src="{{ asset('images/gwtrackslogo_small.png') }}" alt="GWTracks" class="h-9 w-auto md:h-11">
                 </a>
 
-                <div class="hidden items-center gap-7 text-sm font-semibold md:flex">
-                    <a href="#home" class="transition hover:text-gw-accent">Home</a>
-                    <a href="#who-we-are" class="transition hover:text-gw-accent">Who We Are</a>
-                    <a href="#features" class="transition hover:text-gw-accent">Features</a>
-                    <a href="#leadership-path" class="transition hover:text-gw-accent">Leadership Path</a>
-                    <a href="#testimonials" class="transition hover:text-gw-accent">Testimonials</a>
-                    <a href="#contact" class="transition hover:text-gw-accent">Contact</a>
+                <div class="hidden items-center gap-7 text-sm font-semibold text-slate-700 md:flex">
+                    <a href="#home" class="transition hover:text-gw-accent-dark">Home</a>
+                    <a href="#who-we-are" class="transition hover:text-gw-accent-dark">Who We Are</a>
+                    <a href="#features" class="transition hover:text-gw-accent-dark">Features</a>
+                    <a href="#leadership-path" class="transition hover:text-gw-accent-dark">Leadership Path</a>
+                    <a href="#testimonials" class="transition hover:text-gw-accent-dark">Testimonials</a>
+                    <a href="#contact" class="transition hover:text-gw-accent-dark">Contact</a>
                     <a href="{{ $primaryUrl }}" class="rounded-full bg-gradient-to-r from-gw-accent-dark to-gw-accent px-5 py-1.5 font-bold text-black shadow-lg transition hover:scale-105">
                         {{ $primaryLabel }}
                     </a>
@@ -135,36 +143,36 @@
                 <button type="button" class="md:hidden" x-on:click="mobileMenuOpen = ! mobileMenuOpen">
                     <span class="sr-only">Toggle navigation</span>
                     <span x-show="! mobileMenuOpen" class="block space-y-1.5">
-                        <span class="block h-0.5 w-6 bg-white"></span>
-                        <span class="block h-0.5 w-6 bg-white"></span>
-                        <span class="block h-0.5 w-6 bg-white"></span>
+                        <span class="block h-0.5 w-6 bg-slate-800"></span>
+                        <span class="block h-0.5 w-6 bg-slate-800"></span>
+                        <span class="block h-0.5 w-6 bg-slate-800"></span>
                     </span>
-                    <span x-show="mobileMenuOpen" x-cloak class="text-2xl font-bold text-gw-accent">x</span>
+                    <span x-show="mobileMenuOpen" x-cloak class="text-2xl font-bold text-gw-accent-dark">x</span>
                 </button>
             </div>
 
-            <div x-show="mobileMenuOpen" x-transition x-cloak class="border-t border-gw-accent/30 bg-black/95 px-5 py-5 backdrop-blur-md md:hidden">
-                <div class="flex flex-col gap-4 text-base font-semibold">
-                    <a href="#home" x-on:click="mobileMenuOpen = false" class="hover:text-gw-accent">Home</a>
-                    <a href="#who-we-are" x-on:click="mobileMenuOpen = false" class="hover:text-gw-accent">Who We Are</a>
-                    <a href="#features" x-on:click="mobileMenuOpen = false" class="hover:text-gw-accent">Features</a>
-                    <a href="#leadership-path" x-on:click="mobileMenuOpen = false" class="hover:text-gw-accent">Leadership Path</a>
-                    <a href="#testimonials" x-on:click="mobileMenuOpen = false" class="hover:text-gw-accent">Testimonials</a>
-                    <a href="#contact" x-on:click="mobileMenuOpen = false" class="hover:text-gw-accent">Contact</a>
+            <div x-show="mobileMenuOpen" x-transition x-cloak class="border-t border-gw-accent/30 bg-white px-5 py-5 backdrop-blur-md md:hidden">
+                <div class="flex flex-col gap-4 text-base font-semibold text-slate-700">
+                    <a href="#home" x-on:click="mobileMenuOpen = false" class="hover:text-gw-accent-dark">Home</a>
+                    <a href="#who-we-are" x-on:click="mobileMenuOpen = false" class="hover:text-gw-accent-dark">Who We Are</a>
+                    <a href="#features" x-on:click="mobileMenuOpen = false" class="hover:text-gw-accent-dark">Features</a>
+                    <a href="#leadership-path" x-on:click="mobileMenuOpen = false" class="hover:text-gw-accent-dark">Leadership Path</a>
+                    <a href="#testimonials" x-on:click="mobileMenuOpen = false" class="hover:text-gw-accent-dark">Testimonials</a>
+                    <a href="#contact" x-on:click="mobileMenuOpen = false" class="hover:text-gw-accent-dark">Contact</a>
                     <a href="{{ $primaryUrl }}" class="rounded-full bg-gradient-to-r from-gw-accent-dark to-gw-accent px-5 py-3 text-center font-bold text-black">{{ $primaryLabel }}</a>
                 </div>
             </div>
         </nav>
 
         <main id="home">
-            <section class="relative flex min-h-screen items-center overflow-hidden pt-24">
+            <section class="relative flex min-h-screen items-center overflow-x-hidden pt-24">
                 @foreach ($heroSlides as $index => $slide)
                     <div class="absolute inset-0 transition-opacity duration-700" x-show="heroIndex === {{ $index }}" @if ($index > 0) x-cloak @endif>
                         <img src="{{ asset($slide['image']) }}" alt="{{ $slide['headline'] }}" class="h-full w-full object-cover {{ $slide['object'] }} opacity-95" loading="{{ $index === 0 ? 'eager' : 'lazy' }}">
                         <div class="absolute inset-0 z-10 bg-gradient-to-r from-black/90 via-black/58 to-black/18"></div>
                         <div class="absolute inset-0 z-10 bg-gradient-to-t from-black/80 via-transparent to-black/30"></div>
 
-                        <div class="absolute inset-0 z-20 flex {{ $slide['align'] }} px-6 pt-24 md:px-12">
+                        <div class="absolute inset-0 z-20 flex {{ $slide['align'] }} overflow-y-auto px-6 pb-10 pt-24 md:px-12">
                             <div class="mx-auto w-full max-w-7xl">
                                 <div class="{{ $slide['panel'] }} rounded-3xl border border-gw-accent/20 bg-black/22 p-6 backdrop-blur-[2px] md:p-8">
                                     <p class="text-xs font-bold uppercase tracking-[0.28em] text-gw-accent md:text-sm">{{ $slide['eyebrow'] }}</p>
@@ -227,7 +235,7 @@
                 <div class="mt-16 grid items-center gap-12 md:grid-cols-2">
                     <div>
                         <p class="text-lg leading-8 text-gray-300">
-                            GWTrack brings the Greatway standard into one private operating system: new recruits see what to complete next, mentors see who needs attention, and leaders can spot progress across the team without digging through scattered messages.
+                            GWTracks brings the Greatway standard into one private operating system: new recruits see what to complete next, mentors see who needs attention, and leaders can spot progress across the team without digging through scattered messages.
                         </p>
                         <div class="mt-8 space-y-4">
                             @foreach (['New recruits move from invitation to onboarding with sponsor accountability.', 'Training Associates track licensing, training, and apprenticeship milestones.', 'Leaders get visibility into rank progress, FYO compensation, and team momentum.'] as $point)
@@ -239,14 +247,48 @@
                         </div>
                     </div>
 
-                    <div class="relative rounded-2xl bg-[#111111] p-6 gold-border-glow">
+                    <div class="relative rounded-2xl bg-[#111111] p-6 gold-border-glow" x-data="{ openStep: null }">
                         <div class="grid gap-3 text-center text-sm font-semibold sm:grid-cols-3">
-                            @foreach ([['1', 'Invite'], ['2', 'Onboard'], ['3', 'License'], ['4', 'Apprentice'], ['5', 'Advance'], ['6', 'Lead']] as [$number, $label])
-                                <div class="rounded-xl border border-gw-accent/20 bg-black/45 p-4">
+                            @foreach ($growthSteps as $index => [$number, $label, $description])
+                                <button
+                                    type="button"
+                                    x-on:click="openStep = {{ $index }}"
+                                    class="rounded-xl border border-gw-accent/20 bg-black/45 p-4 text-center transition hover:-translate-y-0.5 hover:border-gw-accent/60 hover:bg-black/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-gw-accent"
+                                >
                                     <div class="text-2xl font-black text-gw-accent">{{ $number }}</div>
                                     <div>{{ $label }}</div>
-                                </div>
+                                </button>
                             @endforeach
+                        </div>
+
+                        <div
+                            x-show="openStep !== null"
+                            x-cloak
+                            x-transition.opacity
+                            class="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-4"
+                            x-on:keydown.escape.window="openStep = null"
+                        >
+                            <div
+                                x-show="openStep !== null"
+                                x-transition
+                                x-on:click.outside="openStep = null"
+                                class="relative w-full max-w-md rounded-2xl border border-gw-accent/30 bg-[#0e0e0e] p-7 text-left shadow-2xl"
+                            >
+                                <button type="button" x-on:click="openStep = null" class="absolute right-4 top-4 text-slate-400 transition hover:text-white">
+                                    <span class="sr-only">Close</span>
+                                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+
+                                @foreach ($growthSteps as $index => [$number, $label, $description])
+                                    <div x-show="openStep === {{ $index }}">
+                                        <div class="text-xs font-bold uppercase tracking-[0.2em] text-gw-accent">Step {{ $number }}</div>
+                                        <h3 class="mt-2 text-2xl font-extrabold text-white">{{ $label }}</h3>
+                                        <p class="mt-4 text-sm font-normal leading-6 text-slate-300">{{ $description }}</p>
+                                    </div>
+                                @endforeach
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -367,7 +409,7 @@
                     </div>
                     <div class="grid gap-6 md:grid-cols-3">
                         @foreach ([
-                            ['Managing Broker', 'GWTrack gives leaders one executive view of who needs support and who is ready for the next step.'],
+                            ['Managing Broker', 'GWTracks gives leaders one executive view of who needs support and who is ready for the next step.'],
                             ['Certified Field Mentor', 'The apprenticeship structure keeps coaching consistent without losing the human touch.'],
                             ['Agency Owner', 'Invitation tracking, roles, rank, and team placement make growth easier to manage.'],
                         ] as $quote)
@@ -390,7 +432,7 @@
                 <div class="absolute inset-0 bg-gradient-to-r from-gw-accent/10 via-transparent to-gw-accent/10"></div>
                 <div class="relative z-10 mx-auto max-w-3xl px-6">
                     <h2 class="text-4xl font-bold md:text-5xl">Ready To Build <span class="gold-text-gradient">Your Greatway to Growth?</span></h2>
-                    <p class="mt-4 text-lg text-gray-300">Developing Leaders. Building Legacies. GWTrack is a private portal, so ask your sponsor for an invitation link or sign in if you already have access.</p>
+                    <p class="mt-4 text-lg text-gray-300">Developing Leaders. Building Legacies. GWTracks is a private portal, so ask your sponsor for an invitation link or sign in if you already have access.</p>
                     <div class="mt-10 flex flex-wrap justify-center gap-5">
                         <a href="{{ $primaryUrl }}" class="gold-bg-gradient rounded-full px-8 py-3 text-lg font-bold text-black transition hover:scale-105">{{ $primaryLabel }}</a>
                         <a href="#contact" class="rounded-full border border-gw-accent px-8 py-3 font-semibold text-gw-accent hover:bg-white/5">Invitation Required</a>
@@ -402,7 +444,7 @@
         <footer id="contact" class="border-t border-gw-accent/20 bg-black/90 px-6 py-12">
             <div class="mx-auto grid max-w-7xl gap-8 md:grid-cols-4">
                 <div>
-                    <div class="gold-text-gradient text-2xl font-bold">GWTrack.com</div>
+                    <div class="gold-text-gradient text-2xl font-bold">GWTracks.com</div>
                     <p class="mt-2 text-sm font-semibold text-gw-accent">Your Greatway to Growth</p>
                     <p class="mt-2 text-sm leading-6 text-gray-500">Developing Leaders. Building Legacies.</p>
                 </div>
@@ -429,7 +471,7 @@
                     <a href="{{ $loginUrl }}" class="mt-4 inline-flex rounded-full border border-gw-accent px-5 py-2 text-sm font-bold text-gw-accent hover:bg-gw-accent/10">Sign In</a>
                 </div>
             </div>
-            <div class="mx-auto mt-10 max-w-7xl border-t border-gw-accent/20 pt-6 text-center text-sm text-gray-500">&copy; 2026 GWTrack.com. All rights reserved.</div>
+            <div class="mx-auto mt-10 max-w-7xl border-t border-gw-accent/20 pt-6 text-center text-sm text-gray-500">&copy; 2026 GWTracks.com. All rights reserved.</div>
         </footer>
 
         <div x-data="{ show: false }" x-init="window.addEventListener('scroll', () => { show = window.scrollY > 500 })" x-show="show" x-transition x-cloak class="fixed bottom-8 right-6 z-50">

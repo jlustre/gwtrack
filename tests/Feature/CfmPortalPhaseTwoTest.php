@@ -44,7 +44,7 @@ class CfmPortalPhaseTwoTest extends TestCase
     {
         $this->seedPortal();
 
-        $cfm = User::where('email', 'cfm@gwtrack.com')->firstOrFail();
+        $cfm = User::where('email', 'cfm@gwtracks.com')->firstOrFail();
         $assignment = $this->activeAssignmentForCfm($cfm);
 
         Livewire::actingAs($cfm)
@@ -59,7 +59,7 @@ class CfmPortalPhaseTwoTest extends TestCase
     {
         $this->seedPortal();
 
-        $cfm = User::where('email', 'cfm@gwtrack.com')->firstOrFail();
+        $cfm = User::where('email', 'cfm@gwtracks.com')->firstOrFail();
         $assignment = $this->activeAssignmentForCfm($cfm);
         $trainee = $assignment->apprentice;
 
@@ -77,7 +77,7 @@ class CfmPortalPhaseTwoTest extends TestCase
     {
         $this->seedPortal();
 
-        $cfm = User::where('email', 'cfm@gwtrack.com')->firstOrFail();
+        $cfm = User::where('email', 'cfm@gwtracks.com')->firstOrFail();
         $assignment = $this->activeAssignmentForCfm($cfm);
 
         Livewire::actingAs($cfm)
@@ -92,7 +92,7 @@ class CfmPortalPhaseTwoTest extends TestCase
     {
         $this->seedPortal();
 
-        $cfm = User::where('email', 'cfm@gwtrack.com')->firstOrFail();
+        $cfm = User::where('email', 'cfm@gwtracks.com')->firstOrFail();
         $assignment = $this->activeAssignmentForCfm($cfm);
 
         Livewire::actingAs($cfm)
@@ -107,7 +107,7 @@ class CfmPortalPhaseTwoTest extends TestCase
     {
         $this->seedPortal();
 
-        $cfm = User::where('email', 'cfm@gwtrack.com')->firstOrFail();
+        $cfm = User::where('email', 'cfm@gwtracks.com')->firstOrFail();
         $assignment = $this->activeAssignmentForCfm($cfm);
         $item = Checklist::query()->forTypeCode('cfm-mentoring')->orderBy('sort_order')->firstOrFail();
 
@@ -129,7 +129,7 @@ class CfmPortalPhaseTwoTest extends TestCase
     {
         $this->seedPortal();
 
-        $cfm = User::where('email', 'cfm@gwtrack.com')->firstOrFail();
+        $cfm = User::where('email', 'cfm@gwtracks.com')->firstOrFail();
         $assignment = $this->activeAssignmentForCfm($cfm);
         $trainee = $assignment->apprentice;
         $checklists = app(ChecklistService::class);

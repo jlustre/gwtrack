@@ -2,7 +2,7 @@
     <x-admin.page-hero
         eyebrow="Admin Management"
         title="Subscription Payments"
-        description="Collect monthly GWTrack subscription invoices, record office payments, and keep paid history next to each associate."
+        description="Collect monthly GWTracks subscription invoices, record office payments, and keep paid history next to each associate."
     >
         <x-slot:actions>
             <a

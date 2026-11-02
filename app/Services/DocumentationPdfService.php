@@ -66,7 +66,7 @@ class DocumentationPdfService
             'meta' => array_filter([
                 'Audience' => 'Associates, CFMs, leaders, and owners',
                 'Format' => 'Orientation guide',
-                'Portal' => 'GWTrack',
+                'Portal' => 'GWTracks',
             ]),
         ];
     }

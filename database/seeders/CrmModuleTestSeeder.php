@@ -25,14 +25,14 @@ use Illuminate\Support\Facades\Hash;
  *
  * ┌──────────────────────────────────────────────────────────────────────────┐
  * │ PRIMARY LOGIN                                                            │
- * │   Email:    crm-test@gwtrack.com                                        │
+ * │   Email:    crm-test@gwtracks.com                                        │
  * │   Password: Password123                                                  │
  * ├──────────────────────────────────────────────────────────────────────────┤
  * │ SUPPORTING ACCOUNTS                                                      │
- * │   crm-test-cfm@gwtrack.com      / Password123  (CFM · shared prospects)│
- * │   crm-recruit-onboarding@gwtrack.com / Password123  (direct recruit)    │
- * │   crm-recruit-licensing@gwtrack.com  / Password123  (direct recruit)    │
- * │   crm-recruit-active@gwtrack.com     / Password123  (direct recruit)    │
+ * │   crm-test-cfm@gwtracks.com      / Password123  (CFM · shared prospects)│
+ * │   crm-recruit-onboarding@gwtracks.com / Password123  (direct recruit)    │
+ * │   crm-recruit-licensing@gwtracks.com  / Password123  (direct recruit)    │
+ * │   crm-recruit-active@gwtracks.com     / Password123  (direct recruit)    │
  * └──────────────────────────────────────────────────────────────────────────┘
  *
  * Start at:
@@ -60,14 +60,14 @@ class CrmModuleTestSeeder extends Seeder
         $sfaRankId = (int) (Rank::query()->where('code', 'ASC')->value('id') ?: $faRankId);
 
         $this->cfm = $this->user(
-            'crm-test-cfm@gwtrack.com',
+            'crm-test-cfm@gwtracks.com',
             'CRM Test CFM',
             'certified-field-mentor',
             $sfaRankId,
         );
 
         $this->owner = $this->user(
-            'crm-test@gwtrack.com',
+            'crm-test@gwtracks.com',
             'CRM Test Owner',
             'member',
             $faRankId,
@@ -91,11 +91,11 @@ class CrmModuleTestSeeder extends Seeder
         $this->command?->table(
             ['Account', 'Email', 'Password', 'Use for'],
             [
-                ['Primary CRM owner', 'crm-test@gwtrack.com', 'Password123', 'Sales CRM, recruiting pipeline, invites'],
-                ['CFM collaborator', 'crm-test-cfm@gwtrack.com', 'Password123', 'Shared prospect access'],
-                ['Direct recruit · onboarding', 'crm-recruit-onboarding@gwtrack.com', 'Password123', 'Active recruit journey'],
-                ['Direct recruit · licensing', 'crm-recruit-licensing@gwtrack.com', 'Password123', 'Active recruit journey'],
-                ['Direct recruit · active', 'crm-recruit-active@gwtrack.com', 'Password123', 'Active recruit journey'],
+                ['Primary CRM owner', 'crm-test@gwtracks.com', 'Password123', 'Sales CRM, recruiting pipeline, invites'],
+                ['CFM collaborator', 'crm-test-cfm@gwtracks.com', 'Password123', 'Shared prospect access'],
+                ['Direct recruit · onboarding', 'crm-recruit-onboarding@gwtracks.com', 'Password123', 'Active recruit journey'],
+                ['Direct recruit · licensing', 'crm-recruit-licensing@gwtracks.com', 'Password123', 'Active recruit journey'],
+                ['Direct recruit · active', 'crm-recruit-active@gwtracks.com', 'Password123', 'Active recruit journey'],
             ],
         );
         $this->command?->info('Sales CRM: /team/prospects');
@@ -186,9 +186,9 @@ class CrmModuleTestSeeder extends Seeder
     private function seedDirectRecruits(int $faRankId): void
     {
         $recruits = [
-            ['email' => 'crm-recruit-onboarding@gwtrack.com', 'name' => 'CRM Recruit Onboarding', 'days_ago' => 10],
-            ['email' => 'crm-recruit-licensing@gwtrack.com', 'name' => 'CRM Recruit Licensing', 'days_ago' => 45],
-            ['email' => 'crm-recruit-active@gwtrack.com', 'name' => 'CRM Recruit Active', 'days_ago' => 120],
+            ['email' => 'crm-recruit-onboarding@gwtracks.com', 'name' => 'CRM Recruit Onboarding', 'days_ago' => 10],
+            ['email' => 'crm-recruit-licensing@gwtracks.com', 'name' => 'CRM Recruit Licensing', 'days_ago' => 45],
+            ['email' => 'crm-recruit-active@gwtracks.com', 'name' => 'CRM Recruit Active', 'days_ago' => 120],
         ];
 
         foreach ($recruits as $recruit) {

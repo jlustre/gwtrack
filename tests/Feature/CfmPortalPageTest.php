@@ -36,7 +36,7 @@ class CfmPortalPageTest extends TestCase
             CfmManagementSeeder::class,
         ]);
 
-        $cfm = User::where('email', 'cfm@gwtrack.com')->firstOrFail();
+        $cfm = User::where('email', 'cfm@gwtracks.com')->firstOrFail();
 
         $this->actingAs($cfm)
             ->get(route('cfm.portal'))
@@ -63,7 +63,7 @@ class CfmPortalPageTest extends TestCase
             CfmManagementSeeder::class,
         ]);
 
-        $cfm = User::where('email', 'cfm@gwtrack.com')->firstOrFail();
+        $cfm = User::where('email', 'cfm@gwtracks.com')->firstOrFail();
         $cfm->update(['mentor_id' => $cfm->id]);
 
         app(CfmPortalService::class)->payloadFor($cfm);
@@ -96,7 +96,7 @@ class CfmPortalPageTest extends TestCase
             CfmManagementSeeder::class,
         ]);
 
-        $cfm = User::where('email', 'cfm@gwtrack.com')->firstOrFail();
+        $cfm = User::where('email', 'cfm@gwtracks.com')->firstOrFail();
 
         $this->actingAs($cfm)
             ->patch(route('cfm.portal.profile.update'), [
@@ -137,7 +137,7 @@ class CfmPortalPageTest extends TestCase
             CfmManagementSeeder::class,
         ]);
 
-        $cfm = User::where('email', 'cfm@gwtrack.com')->firstOrFail();
+        $cfm = User::where('email', 'cfm@gwtracks.com')->firstOrFail();
 
         $this->actingAs($cfm)
             ->get(route('cfm.portal'))
@@ -160,7 +160,7 @@ class CfmPortalPageTest extends TestCase
             CfmManagementSeeder::class,
         ]);
 
-        $cfm = User::where('email', 'cfm@gwtrack.com')->firstOrFail();
+        $cfm = User::where('email', 'cfm@gwtracks.com')->firstOrFail();
 
         $this->actingAs($cfm)
             ->from(route('cfm.portal'))
@@ -195,7 +195,7 @@ class CfmPortalPageTest extends TestCase
             CfmManagementSeeder::class,
         ]);
 
-        $cfm = User::where('email', 'cfm@gwtrack.com')->firstOrFail();
+        $cfm = User::where('email', 'cfm@gwtracks.com')->firstOrFail();
 
         $this->actingAs($cfm)
             ->patch(route('cfm.portal.profile.update'), [
@@ -307,7 +307,7 @@ class CfmPortalPageTest extends TestCase
             CfmManagementSeeder::class,
         ]);
 
-        $cfm = User::where('email', 'cfm@gwtrack.com')->firstOrFail();
+        $cfm = User::where('email', 'cfm@gwtracks.com')->firstOrFail();
         $trainee = User::where('email', 'maya.fap@example.com')->firstOrFail();
 
         Livewire::actingAs($cfm)
@@ -316,7 +316,7 @@ class CfmPortalPageTest extends TestCase
             ->assertDontSee('mailto:', false)
             ->call('openTraineeQuickActionModal', 'message')
             ->assertSet('traineeQuickActionModal', 'message')
-            ->assertSee('Message Maya Chen through GWTrack messaging', false)
+            ->assertSee('Message Maya Chen through GWTracks messaging', false)
             ->set('quickMessageBody', 'Great progress on your FAP checklist this week.')
             ->call('sendQuickMessage')
             ->assertSet('traineeQuickActionModal', null)

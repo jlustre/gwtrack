@@ -38,7 +38,7 @@ class BookingSchedulingModuleTest extends TestCase
     {
         $this->seedScheduling();
 
-        $cfm = User::where('email', 'booking-cfm@gwtrack.com')->firstOrFail();
+        $cfm = User::where('email', 'booking-cfm@gwtracks.com')->firstOrFail();
 
         foreach ([
             'bookings.dashboard' => 'dashboard',
@@ -71,7 +71,7 @@ class BookingSchedulingModuleTest extends TestCase
     {
         $this->seedScheduling();
 
-        $cfm = User::where('email', 'booking-cfm@gwtrack.com')->firstOrFail();
+        $cfm = User::where('email', 'booking-cfm@gwtracks.com')->firstOrFail();
 
         Livewire::actingAs($cfm)
             ->test(BookingsHub::class)
@@ -92,7 +92,7 @@ class BookingSchedulingModuleTest extends TestCase
     {
         $this->seedScheduling();
 
-        $trainee = User::where('email', 'booking-trainee@gwtrack.com')->firstOrFail();
+        $trainee = User::where('email', 'booking-trainee@gwtracks.com')->firstOrFail();
 
         $this->assertSame(url('/bookings/my-appointments'), route('bookings.my'));
 
@@ -116,7 +116,7 @@ class BookingSchedulingModuleTest extends TestCase
     {
         $this->seedScheduling();
 
-        $trainee = User::where('email', 'booking-trainee@gwtrack.com')->firstOrFail();
+        $trainee = User::where('email', 'booking-trainee@gwtracks.com')->firstOrFail();
         $confirmed = Booking::query()->where('status', 'confirmed')->firstOrFail();
 
         Livewire::actingAs($trainee)
@@ -155,7 +155,7 @@ class BookingSchedulingModuleTest extends TestCase
     {
         $this->seedScheduling();
 
-        $admin = User::where('email', 'calendar-owner@gwtrack.com')->firstOrFail();
+        $admin = User::where('email', 'calendar-owner@gwtracks.com')->firstOrFail();
         $admin->assignRole('admin');
 
         foreach (['booking-event-types', 'booking-links', 'bookings'] as $resource) {

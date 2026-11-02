@@ -23,7 +23,7 @@ class SmsTransport
         }
 
         $driver = (string) config('notifications.sms.driver', 'log');
-        $fromLabel = $from ?? (string) config('notifications.sms.from', 'GWTrack');
+        $fromLabel = $from ?? (string) config('notifications.sms.from', 'GWTracks');
 
         return match ($driver) {
             'twilio' => $this->sendViaTwilio($phone, $body, $fromLabel),

@@ -33,7 +33,7 @@ class FnaAnalyticsScopeTest extends TestCase
 
     public function test_agency_report_scopes_to_hierarchy_without_client_pii(): void
     {
-        $owner = User::where('email', 'downline-owner@gwtrack.com')->firstOrFail();
+        $owner = User::where('email', 'downline-owner@gwtracks.com')->firstOrFail();
         $member = User::where('sponsor_id', $owner->id)->firstOrFail();
         $outsider = User::factory()->create();
         $outsider->assignRole('member');

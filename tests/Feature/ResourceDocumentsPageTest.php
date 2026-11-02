@@ -35,7 +35,7 @@ class ResourceDocumentsPageTest extends TestCase
             ->get(route('resources.documents'))
             ->assertOk()
             ->assertSee('Documents', false)
-            ->assertSee('GWTrack Welcome Orientation', false)
+            ->assertSee('GWTracks Welcome Orientation', false)
             ->assertSee('Associate Welcome Packet', false)
             ->assertSee('Featured documents', false)
             ->assertSee('Compliance', false);
@@ -49,7 +49,7 @@ class ResourceDocumentsPageTest extends TestCase
         $user->assignRole('member');
 
         $this->assertDatabaseHas('resources', [
-            'title' => 'GWTrack Welcome Orientation',
+            'title' => 'GWTracks Welcome Orientation',
             'type' => 'document',
             'category' => 'guides',
             'url' => 'resources/welcome-orientation.pdf',
@@ -58,7 +58,7 @@ class ResourceDocumentsPageTest extends TestCase
         ]);
 
         $orientation = PortalResource::query()
-            ->where('title', 'GWTrack Welcome Orientation')
+            ->where('title', 'GWTracks Welcome Orientation')
             ->firstOrFail();
 
         $this->assertNotNull($orientation->file_path);
@@ -68,7 +68,7 @@ class ResourceDocumentsPageTest extends TestCase
         $this->actingAs($user)
             ->get(route('support.documentation', 'welcome-orientation'))
             ->assertOk()
-            ->assertSee('GWTrack Welcome Orientation', false)
+            ->assertSee('GWTracks Welcome Orientation', false)
             ->assertSee('Portal purpose', false)
             ->assertSee('Download PDF', false)
             ->assertSee(route('support.documentation.pdf', 'welcome-orientation'), false);
@@ -92,7 +92,7 @@ class ResourceDocumentsPageTest extends TestCase
         $user->assignRole('member');
 
         $guide = PortalResource::query()
-            ->where('title', 'GWTrack Application User Guide')
+            ->where('title', 'GWTracks Application User Guide')
             ->firstOrFail();
 
         $this->assertSame('resources/application.pdf', $guide->url);
@@ -104,7 +104,7 @@ class ResourceDocumentsPageTest extends TestCase
         $this->actingAs($user)
             ->get(route('support.documentation', 'application'))
             ->assertOk()
-            ->assertSee('GWTrack Application User Guide', false)
+            ->assertSee('GWTracks Application User Guide', false)
             ->assertSee('Download PDF', false)
             ->assertSee(route('support.documentation.pdf', 'application'), false);
 
@@ -571,7 +571,7 @@ class ResourceDocumentsPageTest extends TestCase
             'type' => 'document',
             'category' => 'guides',
             'sort_order' => 1,
-            'content' => '<p>Welcome to <strong>GWTrack</strong>.</p>',
+            'content' => '<p>Welcome to <strong>GWTracks</strong>.</p>',
             'is_published' => true,
         ]);
 

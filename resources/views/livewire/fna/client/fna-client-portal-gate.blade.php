@@ -4,7 +4,7 @@
             <h2 class="text-lg font-semibold text-gw-primary">Enter your security code</h2>
             <p class="mt-2 text-sm text-slate-600">Your financial advisor sent you a {{ config('fna.client_portal.security_code_length', 6) }}-digit code with your invite link.</p>
             @if ($invite?->recipient_user_id)
-                <p class="mt-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-600">You may already have a GWTrack member account. This secure form is separate from your member login.</p>
+                <p class="mt-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-600">You may already have a GWTracks member account. This secure form is separate from your member login.</p>
             @endif
 
             <form wire:submit="verifySecurityCode" class="mt-6 space-y-4">

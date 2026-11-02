@@ -35,7 +35,7 @@ class RegisteredUserController extends Controller
      */
     public function create(?string $code = null): View
     {
-        abort_if($code === null, 403, 'Registration requires an invitation link from a current GWTrack member.');
+        abort_if($code === null, 403, 'Registration requires an invitation link from a current GWTracks member.');
 
         $invitation = RegistrationInvitation::query()
             ->with('sponsor')
@@ -126,7 +126,7 @@ class RegisteredUserController extends Controller
 
             if (User::where('email', $email)->exists()) {
                 throw ValidationException::withMessages([
-                    'email' => 'This email is already registered as a GWTrack member.',
+                    'email' => 'This email is already registered as a GWTracks member.',
                 ]);
             }
 

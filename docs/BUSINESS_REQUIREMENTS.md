@@ -1,10 +1,10 @@
-# GWTrack Business Requirements
+# GWTracks Business Requirements
 
-This document defines the business requirements for GWTrack.com, a private Greatway Financial Group team tracking portal.
+This document defines the business requirements for GWTracks.com, a private Greatway Financial Group team tracking portal.
 
 ## Project Summary
 
-GWTrack.com will help a Greatway Financial Group team track new recruits, associates, onboarding, licensing, mentorship, training, assessments, resources, motivation, recognition, events, notifications, and rank advancement.
+GWTracks.com will help a Greatway Financial Group team track new recruits, associates, onboarding, licensing, mentorship, training, assessments, resources, motivation, recognition, events, notifications, and rank advancement.
 
 The system should give each user a clear view of what they need to do next, while giving mentors and leaders visibility into team progress.
 
@@ -34,7 +34,7 @@ The system should give each user a clear view of what they need to do next, whil
 
 ### Authentication And Profiles
 
-- Users must only be able to register through an invitation link from a current GWTrack member or be created by an admin.
+- Users must only be able to register through an invitation link from a current GWTracks member or be created by an admin.
 - Invitation links must include a tracked registration code.
 - New user registrations must store the sponsoring member as `sponsor_id`.
 - New user registrations must assign the default `member` role.
@@ -53,10 +53,10 @@ The system should give each user a clear view of what they need to do next, whil
 
 ### Member Invitations
 
-- Active GWTrack members must be able to create invitation links from their profile.
+- Active GWTracks members must be able to create invitation links from their profile.
 - Invitation links must be single-use by default.
 - The system must prevent multiple active invitation links for the same email recipient.
-- The system must prevent invitations to an email address that already belongs to a registered GWTrack user.
+- The system must prevent invitations to an email address that already belongs to a registered GWTracks user.
 - Accepted invitations must be deactivated after successful registration.
 - Accepted invitations must not appear in the sponsor's Recent Invitations panel.
 - Sponsors must be able to delete an active invitation link, which deactivates the code.
@@ -71,7 +71,7 @@ The system should give each user a clear view of what they need to do next, whil
 
 - The system must use Spatie Laravel Permission.
 - The system must support roles and permissions.
-- Roles are GWTrack application access groups, while ranks are Greatway Financial Group advancement levels.
+- Roles are GWTracks application access groups, while ranks are Greatway Financial Group advancement levels.
 - Admin users must be able to assign roles.
 - Admin Management must support CRUD workflows for important setup tables.
 - Features must be protected by permissions.
@@ -351,7 +351,7 @@ The system should give each user a clear view of what they need to do next, whil
 
 ## Open Business Questions
 
-- Which remaining rank-advancement evidence and approval steps still need a GWTrack workflow beyond the published Greatway income, NBA, and leg qualifications?
+- Which remaining rank-advancement evidence and approval steps still need a GWTracks workflow beyond the published Greatway income, NBA, and leg qualifications?
 - What exact licensing workflow applies by province or state?
 - Which apprenticeship steps are mandatory?
 - Who can approve CFM certification?

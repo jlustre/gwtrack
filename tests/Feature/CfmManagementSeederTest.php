@@ -35,17 +35,17 @@ class CfmManagementSeederTest extends TestCase
             CfmManagementSeeder::class,
         ]);
 
-        $agencyOwner = User::where('email', 'agency-owner@gwtrack.com')->firstOrFail();
-        $celeste = User::where('email', 'cfm@gwtrack.com')->firstOrFail();
-        $maria = User::where('email', 'maria.cfm@gwtrack.com')->firstOrFail();
-        $john = User::where('email', 'john.cfm@gwtrack.com')->firstOrFail();
-        $david = User::where('email', 'external.cfm@gwtrack.com')->firstOrFail();
+        $agencyOwner = User::where('email', 'agency-owner@gwtracks.com')->firstOrFail();
+        $celeste = User::where('email', 'cfm@gwtracks.com')->firstOrFail();
+        $maria = User::where('email', 'maria.cfm@gwtracks.com')->firstOrFail();
+        $john = User::where('email', 'john.cfm@gwtracks.com')->firstOrFail();
+        $david = User::where('email', 'external.cfm@gwtracks.com')->firstOrFail();
         $queueOntario = User::where('email', 'fap.queue1@example.com')->firstOrFail();
         $queueManitoba = User::where('email', 'fap.queue4@example.com')->firstOrFail();
         $queueBc = User::where('email', 'fap.queue5@example.com')->firstOrFail();
 
-        $james = User::where('email', 'james.cfm@gwtrack.com')->firstOrFail();
-        $lisa = User::where('email', 'lisa.cfm@gwtrack.com')->firstOrFail();
+        $james = User::where('email', 'james.cfm@gwtracks.com')->firstOrFail();
+        $lisa = User::where('email', 'lisa.cfm@gwtracks.com')->firstOrFail();
         $queueUsCa = User::where('email', 'fap.queue.us-ca@example.com')->firstOrFail();
         $queueUsWa = User::where('email', 'fap.queue.us-wa@example.com')->firstOrFail();
 

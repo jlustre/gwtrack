@@ -2,7 +2,7 @@
 
 return [
     'brand' => [
-        'name' => 'GWTrack Academy',
+        'name' => 'GWTracks Academy',
         'tagline' => 'Learn, certify, lead, and grow your financial services career.',
     ],
 

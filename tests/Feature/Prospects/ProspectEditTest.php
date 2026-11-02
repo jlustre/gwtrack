@@ -75,7 +75,7 @@ class ProspectEditTest extends TestCase
             ProspectDemoSeeder::class,
         ]);
 
-        $owner = User::where('email', 'prospects@gwtrack.com')->firstOrFail();
+        $owner = User::where('email', 'prospects@gwtracks.com')->firstOrFail();
         $prospect = Prospect::where('owner_id', $owner->id)->firstOrFail();
 
         $this->actingAs($owner)

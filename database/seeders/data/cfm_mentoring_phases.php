@@ -37,7 +37,7 @@ return [
       'Orientation Meeting' => 
       [
         0 => 'Conduct orientation session',
-        1 => 'Explain GWTrack portal',
+        1 => 'Explain GWTracks portal',
         2 => 'Review onboarding process',
         3 => 'Review FAP requirements',
         4 => 'Review licensing process',
@@ -52,7 +52,7 @@ return [
         2 => 'Discuss business goals',
         3 => 'Set first 30-day goals',
         4 => 'Set first 90-day goals',
-        5 => 'Document goals in GWTrack',
+        5 => 'Document goals in GWTracks',
       ],
     ],
   ],
