@@ -122,7 +122,7 @@
             }
         </style>
 
-        <nav class="fixed left-0 top-0 z-50 w-full transition-all duration-300" :class="scrolled ? 'border-b border-gw-accent/30 bg-white shadow-2xl' : 'bg-white/95 backdrop-blur-sm'">
+        <nav class="fixed left-0 top-0 z-50 w-full border-b border-transparent bg-white transition-all duration-300" :class="scrolled ? 'border-gw-accent/30 shadow-2xl' : ''">
             <div class="mx-auto flex max-w-7xl items-center justify-between px-5 py-1.5 md:px-8 md:py-2">
                 <a href="#home" class="inline-flex items-center">
                     <img src="{{ asset('images/gwtrackslogo_small.png') }}" alt="GWTracks" class="h-9 w-auto md:h-11">
