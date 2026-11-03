@@ -34,10 +34,9 @@
             @persist('sidebar')
                 <aside
                     id="gw-sidebar-aside"
-                    class="fixed inset-y-0 left-0 z-40 flex h-screen w-72 -translate-x-full flex-col overflow-hidden bg-gw-primary text-white transition-all duration-300 lg:sticky lg:top-0 lg:translate-x-0 lg:self-start"
+                    class="fixed inset-y-0 left-0 z-40 flex h-screen w-72 shrink-0 -translate-x-full flex-col overflow-hidden bg-gw-primary text-white transition-all duration-300 lg:sticky lg:top-0 lg:translate-x-0 lg:self-start"
                     x-data
-                    x-bind:style="$store.shell.sidebarCollapsed && $store.shell.isDesktop ? 'width: 0px;' : 'width: 18rem;'"
-                    x-bind:class="{ 'translate-x-0': $store.shell.sidebarOpen }"
+                    x-bind:class="{ '!translate-x-0': $store.shell.sidebarOpen, 'lg:!w-0': $store.shell.sidebarCollapsed }"
                 >
                     <div class="flex h-16 shrink-0 items-center justify-between gap-2 border-b border-white/10 bg-white px-6">
                         <a href="{{ url('/') }}" class="inline-flex flex-col items-start gap-1.5">
