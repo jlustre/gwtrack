@@ -21,6 +21,7 @@ use App\Http\Controllers\DownlineController;
 use App\Http\Controllers\FnaManagementController;
 use App\Http\Controllers\GlobalSearchController;
 use App\Http\Controllers\GoalReportController;
+use App\Http\Controllers\LeadershipReportController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\NotificationDeviceTokenController;
 use App\Http\Controllers\OnboardingController;
@@ -43,15 +44,21 @@ use App\Http\Controllers\TrainingPathController;
 use App\Http\Controllers\TrainingPlanController;
 use App\Http\Controllers\TrainingReportController;
 use App\Http\Controllers\TrainingSessionController;
+use App\Livewire\Activities\DailyActivitiesPage;
 use App\Livewire\Admin\AdminSettingsPage;
-use App\Livewire\Admin\SubscriptionPaymentsPage;
 use App\Livewire\Admin\Backups\BackupDashboard;
 use App\Livewire\Admin\Backups\BackupHistory;
 use App\Livewire\Admin\Backups\CreateBackup;
 use App\Livewire\Admin\Backups\RestoreBackup;
 use App\Livewire\Admin\Backups\RestoreHistory;
+use App\Livewire\Admin\Cfm\CertificationReviewManager;
+use App\Livewire\Admin\Cfm\CfmPerformanceManager;
+use App\Livewire\Admin\Crm\PipelineManager;
+use App\Livewire\Admin\RankAdministrationManager;
+use App\Livewire\Admin\Roles\RolesPermissionsManager;
+use App\Livewire\Admin\SubscriptionPaymentsPage;
+use App\Livewire\Booking\BookingsHub;
 use App\Livewire\Cfm\Portal;
-use App\Livewire\Team\MyTrainees;
 use App\Livewire\Communication\AnnouncementArchive;
 use App\Livewire\Communication\AnnouncementBookmarks;
 use App\Livewire\Communication\AnnouncementComposer;
@@ -64,24 +71,21 @@ use App\Livewire\Communication\EventAnnouncementComposer;
 use App\Livewire\Communication\LeadershipDesk;
 use App\Livewire\Communication\RecognitionCenter;
 use App\Livewire\Communication\RecognitionComposer;
-use App\Livewire\Fna\Client\FnaClientPortalGate;
-use App\Livewire\Fna\Client\FnaClientPortalReturn;
-use App\Livewire\Fna\Client\FnaClientPortalWizard;
-use App\Livewire\Activities\DailyActivitiesPage;
-use App\Livewire\Admin\Cfm\CfmPerformanceManager;
-use App\Livewire\Admin\Crm\PipelineManager;
-use App\Livewire\Admin\Roles\RolesPermissionsManager;
-use App\Livewire\Booking\BookingsHub;
 use App\Livewire\ComplianceLifecycleHub;
-use App\Livewire\Trackers\TrackerChecklistPage;
 use App\Livewire\Crm\ConsultantTracker;
 use App\Livewire\Crm\FunnelBoard;
 use App\Livewire\Crm\FunnelDashboard;
 use App\Livewire\Crm\PipelineComparison;
+use App\Livewire\Fna\Client\FnaClientPortalGate;
+use App\Livewire\Fna\Client\FnaClientPortalReturn;
+use App\Livewire\Fna\Client\FnaClientPortalWizard;
+use App\Livewire\Goals\GoalsHub;
 use App\Livewire\Members\MyInvitesPage;
 use App\Livewire\Messaging\MessageCenter;
 use App\Livewire\Notifications\NotificationCenter;
 use App\Livewire\Notifications\NotificationPreferences;
+use App\Livewire\Team\MyTrainees;
+use App\Livewire\Trackers\TrackerChecklistPage;
 use App\Models\CfmEffectiveness\CfmReview;
 use App\Models\GoalBlueprint;
 use App\Models\SupportTicket;
@@ -122,6 +126,12 @@ Route::middleware(['auth', 'verified', 'active'])->group(function () {
     Route::get('/dashboard/stats/{type}/members', [DashboardController::class, 'statDetails'])
         ->middleware('permission:view dashboard')
         ->name('dashboard.stat-details');
+    Route::view('/reports/leadership', 'reports.leadership')
+        ->middleware('permission:view leadership reports')
+        ->name('reports.leadership');
+    Route::get('/reports/leadership/download', [LeadershipReportController::class, 'download'])
+        ->middleware('permission:view leadership reports')
+        ->name('reports.leadership.download');
 
     Route::get('/messages', MessageCenter::class)->middleware('permission:view conversations')->name('messages.index');
 
@@ -170,6 +180,7 @@ Route::middleware(['auth', 'verified', 'active'])->group(function () {
     Route::patch('/cfm/portal/calendar-sharing', [CfmPortalController::class, 'updateCalendarSharing'])->middleware('cfm.portal')->name('cfm.portal.calendar-sharing.update');
     Route::get('/cfm/portal/assignments/{assignment}/review', [CfmPortalController::class, 'reviewAssignment'])->middleware('cfm.portal')->name('cfm.portal.assignments.review');
     Route::post('/cfm/portal/assignments/{assignment}/confirm', [CfmPortalController::class, 'confirmAssignment'])->middleware('cfm.portal')->name('cfm.portal.assignments.confirm');
+    Route::post('/cfm/portal/assignments/{assignment}/decline', [CfmAssignmentConfirmationController::class, 'decline'])->middleware('cfm.portal')->name('cfm.portal.assignments.decline');
     Route::post('/cfm/portal/assignments/{assignment}/first-contact', [CfmPortalController::class, 'sendFirstContact'])->middleware('cfm.portal')->name('cfm.portal.assignments.first-contact');
     Route::get('/cfm/portal/trainees/{assignment}/checklist', [CfmTraineeChecklistController::class, 'show'])->middleware('cfm.portal')->name('cfm.portal.trainees.checklist');
     Route::patch('/cfm/portal/trainees/{assignment}/checklist/{item}', [CfmTraineeChecklistController::class, 'update'])->middleware('cfm.portal')->name('cfm.portal.trainees.checklist.update');
@@ -210,7 +221,7 @@ Route::middleware(['auth', 'verified', 'active'])->group(function () {
     Route::get('/training/reports', [TrainingReportController::class, 'index'])->name('training.reports.index');
     Route::get('/training/reports/download', [TrainingReportController::class, 'download'])->name('training.reports.download');
     Route::post('/training/reports/email', [TrainingReportController::class, 'email'])->name('training.reports.email');
-    Route::get('/goals', \App\Livewire\Goals\GoalsHub::class)->middleware('permission:manage goals')->name('goals.index');
+    Route::get('/goals', GoalsHub::class)->middleware('permission:manage goals')->name('goals.index');
     Route::get('/goals/plan', fn () => redirect()->route('goals.index', ['tab' => 'plan']))->middleware('permission:manage goals')->name('goals.plan');
     Route::get('/goals/create', fn () => redirect()->route('goals.index', array_filter(['tab' => 'create', 'template' => request('template')])))->middleware('permission:manage goals')->name('goals.create');
     Route::get('/goals/blueprint/{blueprint}', fn (GoalBlueprint $blueprint) => view('goals.blueprint.show', compact('blueprint')))->middleware('permission:manage goals')->name('goals.blueprint.show');
@@ -230,6 +241,7 @@ Route::middleware(['auth', 'verified', 'active'])->group(function () {
     Route::view('/team/production', 'team.production.index')->name('team.production');
     Route::get('/team', [DownlineController::class, 'index'])->middleware('permission:view own team')->name('team.index');
     Route::get('/team/tree', [DownlineController::class, 'tree'])->middleware('permission:view team tree')->name('team.tree');
+    Route::get('/team/tree/branches/{user}', [DownlineController::class, 'treeBranch'])->middleware('permission:view team tree')->name('team.tree.branch');
     Route::get('/team/tree/search', [DownlineController::class, 'treeSearch'])->middleware('permission:view team tree')->name('team.tree.search');
     Route::get('/team/org-chart', [DownlineController::class, 'orgChart'])->middleware('permission:view org chart')->name('team.org-chart');
     Route::get('/team/downlines', [DownlineController::class, 'table'])->middleware('permission:view team table')->name('team.downlines');
@@ -248,6 +260,7 @@ Route::middleware(['auth', 'verified', 'active'])->group(function () {
     Route::get('/team/cfms', [CfmManagementController::class, 'index'])->middleware('cfm.management')->name('team.cfms');
     Route::patch('/team/cfms/{user}/licensed-jurisdictions', [CfmManagementController::class, 'updateLicensedJurisdictions'])->middleware('cfm.management')->name('team.cfms.licensed-jurisdictions.update');
     Route::post('/team/cfms/assign', [CfmManagementController::class, 'assign'])->middleware('cfm.management')->name('team.cfms.assign');
+    Route::post('/team/downlines/assign-cfm', [CfmManagementController::class, 'bulkAssign'])->middleware('cfm.management')->name('team.downlines.assign-cfm');
     Route::post('/team/cfms', [CfmManagementController::class, 'store'])->middleware('cfm.management')->name('team.cfms.store');
     Route::view('/team/recruiting', 'team.recruiting.index')->middleware('permission:manage prospects')->name('team.recruiting.index');
     Route::get('/team/prospects', [ProspectManagementController::class, 'index'])->middleware('permission:manage prospects')->name('team.prospects');
@@ -477,7 +490,9 @@ Route::middleware(['auth', 'verified', 'active'])->group(function () {
                 Route::post('/resources/{record}/generate-pdf', [AdminManagementController::class, 'generateResourcePdf'])->name('resources.generate-pdf');
             });
             Route::get('/roles', RolesPermissionsManager::class)->middleware('permission:manage roles')->name('roles.index');
-            Route::view('/ranks', 'admin.ranks.index')->middleware(['role:super-admin|admin|agency-owner', 'permission:manage ranks'])->name('ranks.index');
+            Route::get('/ranks', RankAdministrationManager::class)
+                ->middleware(['role:super-admin|admin|agency-owner', 'permission:manage ranks'])
+                ->name('ranks.index');
             Route::view('/checklists', 'admin.checklists.index')->middleware('role:super-admin|admin|agency-owner|team-leader|certified-field-mentor|trainer')->name('checklists.index');
             Route::prefix('backups')
                 ->name('backups.')
@@ -496,7 +511,9 @@ Route::middleware(['auth', 'verified', 'active'])->group(function () {
             Route::get('/training/courses/{module}', [AdminTrainingController::class, 'course'])->middleware('permission:manage training')->name('training.courses.show');
             Route::get('/training/paths', [AdminTrainingController::class, 'paths'])->middleware('permission:manage training')->name('training.paths.index');
             Route::get('/training/paths/{path}', [AdminTrainingController::class, 'path'])->middleware('permission:manage training')->name('training.paths.show');
-            Route::view('/cfm-certification', 'admin.cfm.index')->middleware('permission:manage CFM certification')->name('cfm.index');
+            Route::get('/cfm-certification', CertificationReviewManager::class)
+                ->middleware('permission:manage CFM certification')
+                ->name('cfm.index');
             Route::get('/cfm-performance', CfmPerformanceManager::class)
                 ->middleware('permission:manage mentor reviews')
                 ->name('cfm-performance.index');

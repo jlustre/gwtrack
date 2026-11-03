@@ -7,8 +7,8 @@
     <div class="w-full max-w-lg rounded-xl border border-slate-200 bg-white p-6 shadow-xl" @click.stop>
         <div class="mb-4 flex items-center justify-between">
             <div>
-                <h3 class="text-xl font-semibold text-gw-primary">Add Certified Field Mentor</h3>
-                <p class="mt-1 text-xs text-slate-500">Nominate a team member for CFM certification and mentorship duties</p>
+                <h3 class="text-xl font-semibold text-gw-primary">Nominate a CFM Candidate</h3>
+                <p class="mt-1 text-xs text-slate-500">Nomination starts a certification review; CFM access is granted only after training eligibility is verified and approved.</p>
             </div>
             <button type="button" @click="showAddCfmModal = false" class="text-2xl leading-none text-slate-400 hover:text-gw-primary">&times;</button>
         </div>
@@ -42,23 +42,13 @@
             </div>
 
             <div class="space-y-2 text-sm text-slate-700">
-                <label class="flex items-center gap-2">
-                    <input type="hidden" name="require_approval" value="0">
-                    <input type="checkbox" name="require_approval" value="1" x-model="addCfmForm.requireApproval" class="rounded border-gray-300 text-gw-accent focus:ring-gw-accent">
-                    Require admin approval before activation
-                </label>
-                <label class="flex items-center gap-2">
-                    <input type="hidden" name="notify_candidate" value="0">
-                    <input type="checkbox" name="notify_candidate" value="1" x-model="addCfmForm.notifyCandidate" class="rounded border-gray-300 text-gw-accent focus:ring-gw-accent">
-                    Notify candidate by email
-                </label>
             </div>
 
             <p x-show="cfmCandidates.length === 0" class="rounded-lg border border-amber-200 bg-amber-50 p-3 text-xs text-amber-900">No eligible team members found in your accessible downline.</p>
 
             <div class="flex gap-3 pt-2">
                 <button type="button" @click="showAddCfmModal = false" class="flex-1 rounded-lg border border-slate-300 py-2.5 text-sm font-semibold text-gw-primary transition hover:bg-slate-50">Cancel</button>
-                <button type="submit" class="flex-1 rounded-lg bg-gw-accent py-2.5 font-bold text-gw-primary transition hover:bg-gw-accent-hover disabled:cursor-not-allowed disabled:opacity-40">Submit Nomination</button>
+                <button type="submit" class="flex-1 rounded-lg bg-gw-accent py-2.5 font-bold text-gw-primary transition hover:bg-gw-accent-hover disabled:cursor-not-allowed disabled:opacity-40">Submit for Review</button>
             </div>
         </form>
     </div>

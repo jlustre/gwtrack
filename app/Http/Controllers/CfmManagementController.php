@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreBulkCfmAssignmentRequest;
 use App\Http\Requests\StoreCfmAssignmentRequest;
 use App\Http\Requests\StoreCfmNominationRequest;
 use App\Http\Requests\UpdateCfmLicensedJurisdictionsRequest;
@@ -78,6 +79,18 @@ class CfmManagementController extends Controller
         return redirect()
             ->route('team.cfms')
             ->with('status', $result['message']);
+    }
+
+    public function bulkAssign(StoreBulkCfmAssignmentRequest $request): RedirectResponse
+    {
+        $result = $this->cfmManagement->assignAssociates(
+            $request->user(),
+            $request->validated('associate_ids'),
+            (int) $request->validated('cfm_id'),
+            $request->validated('reason')
+        );
+
+        return redirect()->back()->with('bulk_cfm_assignment_result', $result);
     }
 
     public function store(StoreCfmNominationRequest $request): JsonResponse|RedirectResponse

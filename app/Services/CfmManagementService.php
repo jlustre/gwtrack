@@ -3,19 +3,19 @@
 namespace App\Services;
 
 use App\Models\Booking;
-use App\Models\Checklist;
-use App\Models\ChecklistProgress;
 use App\Models\CfmAdvancementGuideline;
 use App\Models\CfmMentorProfile;
 use App\Models\CfmRankTier;
+use App\Models\Checklist;
+use App\Models\ChecklistProgress;
 use App\Models\MentorAssignment;
-use App\Models\TeamVisibilityPermission;
-use App\Models\User;
 use App\Models\TaskUser;
+use App\Models\User;
 use App\Support\LocationOptions;
 use App\Support\MemberDisplayName;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
@@ -30,6 +30,7 @@ class CfmManagementService
         private readonly CfmAssignmentWorkflowService $assignmentWorkflow,
         private readonly CfmTraineeChecklistService $traineeChecklist,
         private readonly ChecklistService $checklists,
+        private readonly CfmCertificationWorkflowService $certificationWorkflow,
     ) {}
 
     public function rankStructureFor(): array
@@ -153,15 +154,7 @@ class CfmManagementService
             return true;
         }
 
-        $myHierarchyIds = $this->hierarchy->descendantsQuery($viewer)->pluck('users.id');
-        if ($myHierarchyIds->contains($cfm->id)) {
-            return true;
-        }
-
-        return TeamVisibilityPermission::query()
-            ->where('viewer_id', $viewer->id)
-            ->where('visible_user_id', $cfm->id)
-            ->exists();
+        return $this->hierarchy->canViewMember($viewer, $cfm);
     }
 
     public function profileFor(User $viewer, User $cfm): array
@@ -187,46 +180,21 @@ class CfmManagementService
             ]);
         }
 
-        $requireApproval = (bool) ($data['require_approval'] ?? false);
         $targetRank = $data['target_rank'];
         $notes = trim($data['notes'] ?? '');
+        $nominationNotes = trim(collect([
+            'Nominated CFM tier: '.$targetRank,
+            $notes,
+        ])->filter()->implode("\n\n"));
 
-        return DB::transaction(function () use ($candidate, $requireApproval, $targetRank, $notes): array {
-            if (! $candidate->hasRole('certified-field-mentor')) {
-                $candidate->assignRole('certified-field-mentor');
-            }
+        $request = $this->certificationWorkflow->nominate($candidate, $viewer, $nominationNotes);
 
-            $bio = $notes !== ''
-                ? $notes
-                : 'Nominated for CFM mentorship duties.';
-
-            CfmMentorProfile::updateOrCreate(
-                ['user_id' => $candidate->id],
-                [
-                    'certification_status' => $requireApproval ? 'pending_approval' : 'certified',
-                    'hierarchy_access' => 'my_hierarchy',
-                    'max_apprentices' => 6,
-                    'fap_completion_rate' => 0,
-                    'calendar_busyness_percent' => 0,
-                    'avg_apprentice_progress' => 0,
-                    'recommendation_score' => 75,
-                    'languages' => ['English'],
-                    'specialties' => array_values(array_filter([$targetRank, 'Field Apprenticeship'])),
-                    'mentor_bio' => $bio,
-                    'last_mentor_activity_at' => now(),
-                ]
-            );
-
-            $message = $requireApproval
-                ? "{$candidate->name} was nominated as a CFM. Certification is pending admin approval and will appear as Pending Approval in the directory."
-                : "{$candidate->name} was added as a Certified Field Mentor and is now available for assignments.";
-
-            return [
-                'message' => $message,
-                'user_id' => $candidate->id,
-                'certification_status' => $requireApproval ? 'pending_approval' : 'certified',
-            ];
-        });
+        return [
+            'message' => "{$candidate->name} was nominated for CFM certification review. They will only become assignable after eligibility is verified and an authorized reviewer approves the request.",
+            'user_id' => $candidate->id,
+            'certification_request_id' => $request->id,
+            'certification_status' => 'pending_approval',
+        ];
     }
 
     public function assignAssociate(User $viewer, array $data): array
@@ -284,6 +252,15 @@ class CfmManagementService
                 ]
             );
 
+            if ($assignment->wasRecentlyCreated) {
+                $assignment->events()->create([
+                    'actor_id' => $viewer->id,
+                    'event_type' => 'assignment_requested',
+                    'notes' => $data['reason'] ?? null,
+                    'metadata' => ['confirmation_required' => $requireCfmApproval],
+                ]);
+            }
+
             $noteBody = trim(collect([
                 $data['reason'] ?? null,
                 $data['notes'] ?? null,
@@ -330,6 +307,39 @@ class CfmManagementService
         });
     }
 
+    /**
+     * Assign selected members through the same eligibility, visibility, and approval workflow
+     * used by individual CFM assignments. Failures are reported per member so a valid selection
+     * can still make progress when another selected member is not eligible.
+     *
+     * @param  list<int>  $associateIds
+     * @return array{assigned: list<int>, failed: array<int, string>}
+     */
+    public function assignAssociates(User $viewer, array $associateIds, int $cfmId, ?string $reason = null): array
+    {
+        $assigned = [];
+        $failed = [];
+
+        foreach ($associateIds as $associateId) {
+            try {
+                $this->assignAssociate($viewer, [
+                    'associate_id' => $associateId,
+                    'cfm_id' => $cfmId,
+                    'reason' => $reason,
+                    'require_cfm_approval' => true,
+                    'notify_cfm' => true,
+                ]);
+                $assigned[] = $associateId;
+            } catch (ValidationException $exception) {
+                $failed[$associateId] = (string) (collect($exception->errors())->flatten()->first() ?? 'Assignment is not available.');
+            } catch (ModelNotFoundException) {
+                $failed[$associateId] = 'The selected member or CFM is no longer available.';
+            }
+        }
+
+        return compact('assigned', 'failed');
+    }
+
     public function accessibleCfms(User $viewer): Collection
     {
         $cfmRoleUsers = User::query()
@@ -339,19 +349,8 @@ class CfmManagementService
             ->whereNull('deleted_at')
             ->get();
 
-        $myHierarchyIds = $this->hierarchy->descendantsQuery($viewer)->pluck('users.id');
-
-        $sharedIds = TeamVisibilityPermission::query()
-            ->where('viewer_id', $viewer->id)
-            ->where(function (Builder $query): void {
-                $query->whereNull('expires_at')->orWhere('expires_at', '>', now());
-            })
-            ->pluck('visible_user_id');
-
         return $cfmRoleUsers
-            ->filter(function (User $cfm) use ($viewer, $myHierarchyIds, $sharedIds): bool {
-                return $this->viewerCanAccessCfm($viewer, $cfm, $myHierarchyIds, $sharedIds);
-            })
+            ->filter(fn (User $cfm): bool => $this->hierarchy->canViewMember($viewer, $cfm))
             ->map(fn (User $cfm) => $this->enrichCfm($cfm, $this->cfmIsInViewerHierarchy($viewer, $cfm)))
             ->sortByDesc('recommendationScore')
             ->values();
@@ -359,21 +358,9 @@ class CfmManagementService
 
     private function accessibleCfmIds(User $viewer): Collection
     {
-        $myHierarchyIds = $this->hierarchy->descendantsQuery($viewer)->pluck('users.id');
-
-        $sharedIds = TeamVisibilityPermission::query()
-            ->where('viewer_id', $viewer->id)
-            ->where(function (Builder $query): void {
-                $query->whereNull('expires_at')->orWhere('expires_at', '>', now());
-            })
-            ->pluck('visible_user_id');
-
-        return User::query()
+        return $this->hierarchy->visibleMembersQuery($viewer)
             ->role('certified-field-mentor')
             ->where('is_active', true)
-            ->whereNull('deleted_at')
-            ->get()
-            ->filter(fn (User $cfm) => $this->viewerCanAccessCfm($viewer, $cfm, $myHierarchyIds, $sharedIds))
             ->pluck('id');
     }
 
@@ -383,24 +370,7 @@ class CfmManagementService
             return true;
         }
 
-        return $this->hierarchy->descendantsQuery($viewer)->where('users.id', $cfm->id)->exists();
-    }
-
-    private function viewerCanAccessCfm(User $viewer, User $cfm, Collection $myHierarchyIds, Collection $sharedIds): bool
-    {
-        if ($cfm->id === $viewer->id) {
-            return true;
-        }
-
-        if ($viewer->hasAnyRole(['super-admin', 'admin'])) {
-            return true;
-        }
-
-        if ($myHierarchyIds->contains($cfm->id)) {
-            return true;
-        }
-
-        return $sharedIds->contains($cfm->id);
+        return $this->hierarchy->dashboardMembersQuery($viewer)->whereKey($cfm->id)->exists();
     }
 
     private function enrichCfm(User $cfm, bool $inMyHierarchy): array

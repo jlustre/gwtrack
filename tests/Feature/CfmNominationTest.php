@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\CfmCertificationRequest;
 use App\Models\CfmMentorProfile;
 use App\Models\User;
 use Database\Seeders\CfmManagementSeeder;
@@ -43,20 +44,16 @@ class CfmNominationTest extends TestCase
                 'require_approval' => false,
             ])
             ->assertOk()
-            ->assertJsonPath('certification_status', 'certified');
+            ->assertJsonPath('certification_status', 'pending_approval');
 
         $candidate->refresh();
-        $this->assertTrue($candidate->hasRole('certified-field-mentor'));
-
-        $this->assertDatabaseHas('cfm_mentor_profiles', [
+        $this->assertFalse($candidate->hasRole('certified-field-mentor'));
+        $this->assertDatabaseHas('cfm_certification_requests', [
             'user_id' => $candidate->id,
-            'certification_status' => 'certified',
+            'status' => 'pending',
+            'source' => 'nomination',
         ]);
-
-        $this->actingAs($agencyOwner)
-            ->get(route('team.cfms'))
-            ->assertOk()
-            ->assertSee($candidate->name, false);
+        $this->assertFalse(CfmMentorProfile::where('user_id', $candidate->id)->exists());
     }
 
     public function test_cfm_nomination_can_require_approval(): void
@@ -83,8 +80,8 @@ class CfmNominationTest extends TestCase
             ->assertOk()
             ->assertJsonPath('certification_status', 'pending_approval');
 
-        $profile = CfmMentorProfile::where('user_id', $candidate->id)->firstOrFail();
-        $this->assertSame('pending_approval', $profile->certification_status);
-        $this->assertTrue($candidate->fresh()->hasRole('certified-field-mentor'));
+        $request = CfmCertificationRequest::query()->where('user_id', $candidate->id)->firstOrFail();
+        $this->assertSame('pending', $request->status);
+        $this->assertFalse($candidate->fresh()->hasRole('certified-field-mentor'));
     }
 }

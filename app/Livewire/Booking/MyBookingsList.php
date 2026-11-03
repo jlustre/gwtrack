@@ -3,6 +3,8 @@
 namespace App\Livewire\Booking;
 
 use App\Models\Booking;
+use App\Services\BookingWorkflowService;
+use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Livewire\Attributes\Url;
@@ -46,6 +48,12 @@ class MyBookingsList extends Component
         'completed',
         'no_show',
     ];
+
+    /** @var array<string, string> */
+    public array $rescheduleAt = [];
+
+    /** @var array<string, string> */
+    public array $rescheduleReason = [];
 
     public function mount(): void
     {
@@ -119,6 +127,30 @@ class MyBookingsList extends Component
         $this->resetPage();
     }
 
+    public function requestReschedule(string $bookingId, BookingWorkflowService $workflow): void
+    {
+        $validated = $this->validate([
+            "rescheduleAt.{$bookingId}" => ['required', 'date', 'after:now'],
+            "rescheduleReason.{$bookingId}" => ['nullable', 'string', 'max:1000'],
+        ]);
+        $booking = $this->appointmentsQuery((int) auth()->id())->whereKey($bookingId)->firstOrFail();
+        $workflow->requestReschedule(
+            $booking,
+            auth()->user(),
+            Carbon::parse($validated['rescheduleAt'][$bookingId], $booking->timezone),
+            $validated['rescheduleReason'][$bookingId] ?? null,
+        );
+        unset($this->rescheduleAt[$bookingId], $this->rescheduleReason[$bookingId]);
+        session()->flash('booking-status', 'Reschedule request sent to the mentor for approval.');
+    }
+
+    public function cancelBooking(string $bookingId, BookingWorkflowService $workflow): void
+    {
+        $booking = $this->appointmentsQuery((int) auth()->id())->whereKey($bookingId)->firstOrFail();
+        $workflow->cancel($booking, auth()->user());
+        session()->flash('booking-status', 'Booking cancelled.');
+    }
+
     public function render(): View
     {
         $userId = (int) auth()->id();
@@ -129,6 +161,8 @@ class MyBookingsList extends Component
         return view('livewire.booking.my-bookings-list', [
             'bookings' => $bookings,
             'resultCount' => $bookings->total(),
+            'canReschedule' => auth()->user()->can('reschedule bookings'),
+            'canCancel' => auth()->user()->can('cancel bookings'),
         ]);
     }
 

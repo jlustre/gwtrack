@@ -4,6 +4,7 @@ namespace App\Services\Prospects;
 
 use App\Models\Contact;
 use App\Models\ContactReferral;
+use App\Models\PipelineStage;
 use App\Models\Prospect;
 use App\Models\RecruitingOpportunity;
 use App\Models\SalesOpportunity;
@@ -19,6 +20,7 @@ class CrmRelationshipExpansionService
     public function syncProspect(Prospect $prospect): array
     {
         return DB::transaction(function () use ($prospect): array {
+            $prospect = Prospect::query()->whereKey($prospect->id)->lockForUpdate()->firstOrFail();
             $contact = $this->contactForProspect($prospect);
             $salesOpportunity = $this->shouldCreateSalesOpportunity($prospect)
                 ? $this->salesOpportunityForProspect($prospect, $contact)
@@ -78,52 +80,66 @@ class CrmRelationshipExpansionService
 
     public function salesOpportunityForProspect(Prospect $prospect, Contact $contact): SalesOpportunity
     {
-        return SalesOpportunity::query()->updateOrCreate(
-            ['prospect_id' => $prospect->id],
-            [
-                'contact_id' => $contact->id,
-                'owner_id' => $prospect->owner_id,
-                'prospect_funnel_id' => $prospect->prospect_funnel_id,
-                'pipeline_stage_id' => $prospect->pipeline_stage_id,
-                'title' => $prospect->displayName().' - Insurance Opportunity',
-                'status' => $this->opportunityStatusFor($prospect),
-                'opportunity_type' => 'insurance',
-                'probability' => $this->probabilityFor($prospect),
-                'opened_at' => $prospect->created_at ?? now(),
-                'closed_at' => $prospect->converted_to === 'client' ? ($prospect->conversion_at ?? $prospect->updated_at) : null,
-                'lost_reason' => $prospect->lost_reason,
-                'metadata' => [
-                    'funnel_type' => $prospect->funnel_type,
-                    'interest_level' => $prospect->interest_level,
-                    'priority' => $prospect->priority,
-                ],
+        $opportunity = SalesOpportunity::query()->firstOrNew(['prospect_id' => $prospect->id]);
+        $isNew = ! $opportunity->exists;
+        $status = $this->opportunityStatusFor($prospect, 'insurance');
+
+        $opportunity->fill([
+            'contact_id' => $contact->id,
+            'owner_id' => $prospect->owner_id,
+            'prospect_funnel_id' => $prospect->prospect_funnel_id,
+            'pipeline_stage_id' => $prospect->pipeline_stage_id,
+            'title' => $prospect->displayName().' - Insurance Opportunity',
+            'status' => $status,
+            'opportunity_type' => 'insurance',
+            'opened_at' => $opportunity->opened_at ?? $prospect->created_at ?? now(),
+            'closed_at' => $this->closedAtFor($opportunity, $prospect, $status),
+            'lost_reason' => $prospect->lost_reason,
+            'metadata' => [
+                ...($opportunity->metadata ?? []),
+                'funnel_type' => $prospect->funnel_type,
+                'interest_level' => $prospect->interest_level,
+                'priority' => $prospect->priority,
             ],
-        );
+        ]);
+        if ($isNew) {
+            $opportunity->probability = $this->probabilityFor($prospect);
+        }
+        $opportunity->save();
+
+        return $opportunity;
     }
 
     public function recruitingOpportunityForProspect(Prospect $prospect, Contact $contact): RecruitingOpportunity
     {
-        return RecruitingOpportunity::query()->updateOrCreate(
-            ['prospect_id' => $prospect->id],
-            [
-                'contact_id' => $contact->id,
-                'owner_id' => $prospect->owner_id,
-                'prospect_funnel_id' => $prospect->prospect_funnel_id,
-                'pipeline_stage_id' => $prospect->pipeline_stage_id,
-                'title' => $prospect->displayName().' - Recruiting Opportunity',
-                'status' => $this->opportunityStatusFor($prospect),
-                'candidate_type' => 'associate',
-                'probability' => $this->probabilityFor($prospect),
-                'opened_at' => $prospect->created_at ?? now(),
-                'closed_at' => $prospect->converted_to === 'associate' ? ($prospect->conversion_at ?? $prospect->updated_at) : null,
-                'lost_reason' => $prospect->lost_reason,
-                'metadata' => [
-                    'funnel_type' => $prospect->funnel_type,
-                    'interest_level' => $prospect->interest_level,
-                    'priority' => $prospect->priority,
-                ],
+        $opportunity = RecruitingOpportunity::query()->firstOrNew(['prospect_id' => $prospect->id]);
+        $isNew = ! $opportunity->exists;
+        $status = $this->opportunityStatusFor($prospect, 'recruiting');
+
+        $opportunity->fill([
+            'contact_id' => $contact->id,
+            'owner_id' => $prospect->owner_id,
+            'prospect_funnel_id' => $prospect->prospect_funnel_id,
+            'pipeline_stage_id' => $prospect->pipeline_stage_id,
+            'title' => $prospect->displayName().' - Recruiting Opportunity',
+            'status' => $status,
+            'candidate_type' => 'associate',
+            'opened_at' => $opportunity->opened_at ?? $prospect->created_at ?? now(),
+            'closed_at' => $this->closedAtFor($opportunity, $prospect, $status),
+            'lost_reason' => $prospect->lost_reason,
+            'metadata' => [
+                ...($opportunity->metadata ?? []),
+                'funnel_type' => $prospect->funnel_type,
+                'interest_level' => $prospect->interest_level,
+                'priority' => $prospect->priority,
             ],
-        );
+        ]);
+        if ($isNew) {
+            $opportunity->probability = $this->probabilityFor($prospect);
+        }
+        $opportunity->save();
+
+        return $opportunity;
     }
 
     public function referralFromProspects(
@@ -170,17 +186,36 @@ class CrmRelationshipExpansionService
         };
     }
 
-    private function opportunityStatusFor(Prospect $prospect): string
+    private function opportunityStatusFor(Prospect $prospect, string $opportunityType): string
     {
-        if ($prospect->converted_to) {
+        $conversionType = $opportunityType === 'insurance' ? 'client' : 'associate';
+        if ($prospect->converted_to === $conversionType) {
             return 'won';
         }
 
-        if ($prospect->is_archived || $prospect->status === 'lost') {
+        $stageSlug = $prospect->stage?->slug
+            ?? PipelineStage::query()->whereKey($prospect->pipeline_stage_id)->value('slug');
+        if ($prospect->is_archived || $prospect->status === 'lost' || $stageSlug === 'closed-lost') {
             return 'lost';
         }
 
         return 'open';
+    }
+
+    private function closedAtFor(
+        SalesOpportunity|RecruitingOpportunity $opportunity,
+        Prospect $prospect,
+        string $status,
+    ): mixed {
+        if ($status === 'open') {
+            return null;
+        }
+
+        if ($status === 'won') {
+            return $prospect->conversion_at ?? $opportunity->closed_at ?? now();
+        }
+
+        return $opportunity->closed_at ?? $prospect->updated_at ?? now();
     }
 
     private function probabilityFor(Prospect $prospect): int

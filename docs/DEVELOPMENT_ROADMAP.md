@@ -219,6 +219,7 @@ This roadmap organizes GWTracks.com into practical delivery phases. The first pr
 - [x] Add Genealogy Tree view for sponsor-to-recruit relationships.
 - [x] Add Organizational Chart view for executive branch structure.
 - [x] Add CRM-style Downline Table view with filters, pagination, export link, and icon actions.
+- [x] Add viewer-scoped lazy tree branch loading and batch CFM assignment from selected visible downlines.
 - [x] Add downline member profile page.
 - [x] Add Downline Livewire component scaffolds.
 - [x] Add Downline demo seeder and hierarchy path rebuild.
@@ -293,14 +294,15 @@ This roadmap organizes GWTracks.com into practical delivery phases. The first pr
 - [x] Add responsible-party accountability to CFM Training checklist items.
 - [x] Add `SP` direct sponsor code to CFM Training checklist responsible-party options.
 - [x] Add notified-party completion notification targets to CFM Training checklist items.
-- [ ] Create CFM training and certification models.
+- [x] Create CFM certification request and mentor assignment event models.
 - [x] Build CFM training module manager.
 - [x] Build user CFM training page with progress cards, progress graph, interactive checklist, and pending confirmation workflow.
-- [ ] Build certification request form.
-- [x] Build admin CFM certification scaffold page.
-- [ ] Build admin certification request review screen.
-- [ ] Assign `certified-field-mentor` role after approval.
-- [ ] Enforce Associate-and-above eligibility before granting `certified-field-mentor`.
+- [x] Build CFM certification request form with training and rank readiness checks.
+- [x] Replace admin CFM certification scaffold with a request review screen.
+- [x] Assign `certified-field-mentor` role only after authorized approval.
+- [x] Enforce Associate-and-above rank and all required CFM modules before approval.
+- [x] Replace direct CFM nomination role grants with queued certification nominations.
+- [x] Add mentor assignment decline, FAP completion, early ending, and lifecycle audit history.
 
 ### Role Eligibility Notes
 
@@ -377,6 +379,8 @@ This roadmap organizes GWTracks.com into practical delivery phases. The first pr
 - [x] Create user rank progress migration.
 - [ ] Create rank requirement and user rank progress models.
 - [x] Build admin ranks scaffold page.
+- [x] Build rank ladder administration for compensation settings, rank activation, and advancement requirements.
+- [x] Preserve admin-managed rank settings across database seeding and retain member progress when requirements are retired.
 - [x] Build user rank advancement tracker scaffold page.
 - [x] Show current and next-rank Greatway compensation (Total FYO, compensation rate, PPB) on the rank advancement tracker.
 - [x] Treat SVP as the agency-owner / first Field Leader rank for CFM management and related access.
@@ -441,6 +445,8 @@ This roadmap organizes GWTracks.com into practical delivery phases. The first pr
 - [x] Build Prospect Management dashboard modules for pipeline, follow-ups, appointments, hot prospects, communications, sharing, imports, and reports.
 - [x] Add table scaffolds to Prospect Management overview panels and module shortcut pages.
 - [x] Add feature tests for prospect demo data and Prospect Management dashboard modules.
+- [x] Synchronize prospect contacts and sales/recruiting opportunities across prospect lifecycle changes.
+- [x] Add prospect-profile opportunity forecasts with funnel-scoped stage validation.
 - [ ] Build `ProspectDashboard` Livewire component.
 - [ ] Build prospect CRUD Livewire components.
 - [ ] Build prospect profile screen with notes, communications, appointments, follow-ups, tags, and sharing.
@@ -469,12 +475,12 @@ This roadmap organizes GWTracks.com into practical delivery phases. The first pr
 ### Tasks
 
 - [x] Implement Laravel database notifications.
-- [ ] Notify users on mentor assignment.
-- [ ] Notify users on apprenticeship approval.
-- [ ] Notify users on CFM certification status changes.
-- [ ] Notify users on assessment results.
-- [ ] Notify users on new announcements.
-- [ ] Notify users on upcoming events.
+- [x] Notify users on mentor assignment.
+- [x] Notify users on apprenticeship approval.
+- [x] Notify users on CFM certification status changes.
+- [x] Notify users on assessment results.
+- [x] Notify users on new announcements.
+- [x] Notify users on upcoming events.
 - [x] Add notification icon/link to topbar.
 - [x] Add Notifications sidebar menu link.
 - [x] Build Notifications page scaffold.
@@ -498,12 +504,12 @@ This roadmap organizes GWTracks.com into practical delivery phases. The first pr
 - [x] Build generic Admin Management CRUD for important setup tables.
 - [x] Add Admin Management sidebar group with users, roles, ranks, teams, checklists hub, training, CFM certification, setup tables, and settings.
 - [ ] Add user filters by role, rank, team, and status.
-- [ ] Add onboarding progress report.
-- [ ] Add licensing progress report.
-- [ ] Add apprenticeship progress report.
-- [ ] Add CFM mentor activity report.
-- [ ] Add training progress report.
-- [ ] Add rank progress report.
+- [x] Add onboarding progress report.
+- [x] Add licensing progress report.
+- [x] Add apprenticeship progress report.
+- [x] Add CFM mentor activity report.
+- [x] Add training progress report.
+- [x] Add rank progress report.
 
 ### Deliverables
 

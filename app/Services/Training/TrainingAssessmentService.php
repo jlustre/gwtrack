@@ -2,11 +2,12 @@
 
 namespace App\Services\Training;
 
+use App\Models\Answer;
 use App\Models\Assessment;
 use App\Models\AssessmentAttempt;
-use App\Models\Answer;
 use App\Models\Question;
 use App\Models\User;
+use App\Services\Notifications\NotificationOrchestrator;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\ValidationException;
 
@@ -151,6 +152,26 @@ class TrainingAssessmentService
             'passed' => $passed,
             'answers_snapshot' => $graded['snapshot'],
             'completed_at' => now(),
+        ]);
+
+        app(NotificationOrchestrator::class)->dispatch('assessment_result', [
+            'queue' => true,
+            'recipients' => [$user->id],
+            'module' => 'training',
+            'priority' => $passed ? 'info' : 'medium',
+            'related' => ['type' => AssessmentAttempt::class, 'id' => $attempt->id],
+            'related_user_id' => $user->id,
+            'template_data' => [
+                'member_name' => $user->name,
+                'assessment_title' => $assessment->title,
+                'score' => $score,
+                'result' => $passed ? 'passed' : 'not passed',
+            ],
+            'action_link' => [
+                'route' => 'assessments.show',
+                'params' => ['assessment' => $assessment->id],
+                'label' => 'View assessment',
+            ],
         ]);
 
         if ($passed) {

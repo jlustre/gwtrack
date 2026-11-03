@@ -10,6 +10,7 @@ import profilePhotoUpload from './profile-photo-upload';
 import prospectActivitiesModal from './prospect-activities-modal';
 import pipelineStageProspectsModal from './pipeline-stage-prospects-modal';
 import genealogyTreePan from './genealogy-tree-pan';
+import genealogyTreeBranch from './genealogy-tree-branch';
 import dashboardStats from './dashboard-stats';
 import prospectKanbanBoard from './prospect-kanban-board';
 import globalSearch from './global-search';
@@ -62,6 +63,7 @@ document.addEventListener('alpine:init', () => {
     Alpine.data('prospectActivitiesModal', prospectActivitiesModal);
     Alpine.data('pipelineStageProspectsModal', pipelineStageProspectsModal);
     Alpine.data('genealogyTreePan', genealogyTreePan);
+    Alpine.data('genealogyTreeBranch', genealogyTreeBranch);
     Alpine.data('dashboardStats', dashboardStats);
     Alpine.data('prospectKanbanBoard', prospectKanbanBoard);
     Alpine.data('globalSearch', () => globalSearch(window.__gwSearchSuggestUrl ?? '/search/suggest'));

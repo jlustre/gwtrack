@@ -58,6 +58,47 @@ class CfmAssignmentTest extends TestCase
         ]);
     }
 
+    public function test_agency_owner_can_bulk_assign_visible_associates_to_a_cfm(): void
+    {
+        $this->seed([
+            RankSeeder::class,
+            RolePermissionSeeder::class,
+            EmailTemplateSeeder::class,
+            TeamSeeder::class,
+            ChecklistTypeSeeder::class,
+            ChecklistSeeder::class,
+            TaskScenarioSeeder::class,
+            CfmManagementSeeder::class,
+        ]);
+
+        $agencyOwner = User::where('email', 'agency-owner@gwtracks.com')->firstOrFail();
+        $cfm = User::where('email', 'maria.cfm@gwtracks.com')->firstOrFail();
+        $associates = User::query()->whereIn('email', [
+            'fap.queue1@example.com',
+            'fap.queue2@example.com',
+        ])->get();
+
+        $this->from(route('team.downlines'))
+            ->actingAs($agencyOwner)
+            ->post(route('team.downlines.assign-cfm'), [
+                'associate_ids' => $associates->pluck('id')->all(),
+                'cfm_id' => $cfm->id,
+                'reason' => 'Bulk assignment test',
+            ])
+            ->assertRedirect(route('team.downlines'))
+            ->assertSessionHas('bulk_cfm_assignment_result', function (array $result): bool {
+                return count($result['assigned']) === 2 && $result['failed'] === [];
+            });
+
+        foreach ($associates as $associate) {
+            $this->assertDatabaseHas('mentor_assignments', [
+                'mentor_id' => $cfm->id,
+                'apprentice_id' => $associate->id,
+                'status' => 'pending',
+            ]);
+        }
+    }
+
     private function confirmAssignmentFor(User $cfm, User $associate): void
     {
         $assignment = MentorAssignment::query()

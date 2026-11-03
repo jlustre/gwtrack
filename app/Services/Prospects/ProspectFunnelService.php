@@ -15,6 +15,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class ProspectFunnelService
 {
@@ -31,6 +32,7 @@ class ProspectFunnelService
         return DB::transaction(function () use ($owner, $attributes): Prospect {
             $funnel = $this->resolveFunnel($attributes['funnel_type'] ?? 'insurance', $attributes['prospect_funnel_id'] ?? null);
             $stageId = $attributes['pipeline_stage_id'] ?? $this->defaultStageIdForFunnel($funnel);
+            $this->assertStageBelongsToFunnel($funnel->id, $stageId);
 
             $prospect = Prospect::create([
                 ...$attributes,
@@ -44,6 +46,9 @@ class ProspectFunnelService
                 $this->recordStageHistory($prospect, null, $stageId, $owner, 'create');
             }
 
+            $prospect = $prospect->fresh(['source', 'stage', 'funnel']);
+            app(CrmRelationshipExpansionService::class)->syncProspect($prospect);
+
             return $prospect->fresh(['source', 'stage', 'funnel']);
         });
     }
@@ -56,6 +61,7 @@ class ProspectFunnelService
         return DB::transaction(function () use ($prospect, $actor, $attributes, $stageChangeSource): Prospect {
             $previousStageId = $prospect->pipeline_stage_id;
             $previousFunnelId = $prospect->prospect_funnel_id;
+            $nextFunnelId = $previousFunnelId;
 
             if (isset($attributes['funnel_type']) || isset($attributes['prospect_funnel_id'])) {
                 try {
@@ -64,10 +70,21 @@ class ProspectFunnelService
                         $attributes['prospect_funnel_id'] ?? $prospect->prospect_funnel_id,
                     );
                     $attributes['prospect_funnel_id'] = $funnel->id;
+                    $nextFunnelId = $funnel->id;
                 } catch (ModelNotFoundException) {
                     unset($attributes['prospect_funnel_id']);
                 }
             }
+
+            if ($nextFunnelId !== $previousFunnelId && ! array_key_exists('pipeline_stage_id', $attributes)) {
+                $attributes['pipeline_stage_id'] = $this->defaultStageIdForFunnel(
+                    ProspectFunnel::query()->findOrFail($nextFunnelId),
+                );
+            }
+            $this->assertStageBelongsToFunnel(
+                $nextFunnelId,
+                $attributes['pipeline_stage_id'] ?? $previousStageId,
+            );
 
             $prospect->update([
                 ...$attributes,
@@ -97,8 +114,16 @@ class ProspectFunnelService
                 ));
             }
 
+            $prospect = $prospect->fresh(['source', 'stage', 'funnel']);
+            app(CrmRelationshipExpansionService::class)->syncProspect($prospect);
+
             return $prospect->fresh(['source', 'stage', 'funnel']);
         });
+    }
+
+    public function syncRelationships(Prospect $prospect): void
+    {
+        app(CrmRelationshipExpansionService::class)->syncProspect($prospect->fresh());
     }
 
     public function moveStage(Prospect $prospect, User $actor, int $stageId, string $source = 'manual'): Prospect
@@ -476,6 +501,32 @@ class ProspectFunnelService
             ->first();
 
         return $stage?->pipeline_stage_id;
+    }
+
+    private function assertStageBelongsToFunnel(?int $funnelId, ?int $stageId): void
+    {
+        if ($stageId === null) {
+            return;
+        }
+
+        $activeGlobalStage = PipelineStage::query()
+            ->whereKey($stageId)
+            ->whereNull('user_id')
+            ->where('is_active', true)
+            ->exists();
+        $linkedFunnelIds = ProspectFunnelStage::query()
+            ->where('pipeline_stage_id', $stageId)
+            ->pluck('prospect_funnel_id');
+        $belongsToFunnel = $activeGlobalStage
+            && ($funnelId === null
+                || $linkedFunnelIds->isEmpty()
+                || $linkedFunnelIds->contains($funnelId));
+
+        if (! $belongsToFunnel) {
+            throw ValidationException::withMessages([
+                'pipeline_stage_id' => 'Select a stage that belongs to this prospect funnel.',
+            ]);
+        }
     }
 
     private function recordStageHistory(

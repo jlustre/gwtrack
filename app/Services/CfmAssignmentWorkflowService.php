@@ -2,12 +2,13 @@
 
 namespace App\Services;
 
-use App\Mail\TemplatedMail;use App\Models\EmailTemplate;
+use App\Mail\TemplatedMail;
+use App\Models\Checklist;
+use App\Models\ChecklistProgress;
+use App\Models\EmailTemplate;
 use App\Models\MentorAssignment;
 use App\Models\User;
 use App\Services\CfmEffectiveness\CfmMilestoneReviewTriggerService;
-use App\Services\CfmAssignmentConfirmationTaskService;
-use App\Services\NewMemberValidatedTaskService;
 use App\Services\Notifications\NotificationOrchestrator;
 use App\Support\EmailTemplateTokens;
 use Illuminate\Support\Facades\DB;
@@ -86,7 +87,36 @@ class CfmAssignmentWorkflowService
             ]);
         }
 
-        return $this->activatePendingAssignment($assignment);
+        return $this->activatePendingAssignment($assignment, $actingCfm);
+    }
+
+    public function declineAssignment(MentorAssignment $assignment, User $actingCfm, string $reason): MentorAssignment
+    {
+        if ($assignment->mentor_id !== $actingCfm->id && ! $actingCfm->hasAnyRole(['super-admin', 'admin'])) {
+            throw ValidationException::withMessages([
+                'assignment' => 'You are not authorized to decline this assignment.',
+            ]);
+        }
+        $this->assertReason($reason);
+
+        return DB::transaction(function () use ($assignment, $actingCfm, $reason): MentorAssignment {
+            $locked = MentorAssignment::query()->whereKey($assignment->id)->lockForUpdate()->firstOrFail();
+            if ($locked->status !== 'pending') {
+                throw ValidationException::withMessages([
+                    'assignment' => 'This assignment is no longer awaiting confirmation.',
+                ]);
+            }
+
+            $locked->forceFill(['status' => 'declined'])->save();
+            $locked->events()->create([
+                'actor_id' => $actingCfm->id,
+                'event_type' => 'assignment_declined',
+                'notes' => trim($reason),
+            ]);
+            $this->notifyAssignmentEnded($locked, $actingCfm, 'mentor_assignment_declined');
+
+            return $locked->fresh(['mentor', 'apprentice', 'events.actor']);
+        });
     }
 
     public function activateAssignment(MentorAssignment $assignment): MentorAssignment
@@ -109,10 +139,10 @@ class CfmAssignmentWorkflowService
             ]);
         }
 
-        return $this->activatePendingAssignment($assignment);
+        return $this->activatePendingAssignment($assignment, $assignment->assignedBy);
     }
 
-    private function activatePendingAssignment(MentorAssignment $assignment): MentorAssignment
+    private function activatePendingAssignment(MentorAssignment $assignment, ?User $actor = null): MentorAssignment
     {
         if ($assignment->apprentice_id === $assignment->mentor_id) {
             throw ValidationException::withMessages([
@@ -120,25 +150,47 @@ class CfmAssignmentWorkflowService
             ]);
         }
 
-        return DB::transaction(function () use ($assignment): MentorAssignment {
-            $assignment->update([
+        return DB::transaction(function () use ($assignment, $actor): MentorAssignment {
+            $locked = MentorAssignment::query()->whereKey($assignment->id)->lockForUpdate()->firstOrFail();
+            if ($locked->status !== 'pending') {
+                throw ValidationException::withMessages([
+                    'assignment' => 'This assignment is no longer awaiting confirmation.',
+                ]);
+            }
+
+            $apprentice = User::query()->whereKey($locked->apprentice_id)->lockForUpdate()->firstOrFail();
+            $hasActiveAssignment = MentorAssignment::query()
+                ->where('apprentice_id', $apprentice->id)
+                ->where('status', 'active')
+                ->where('id', '!=', $locked->id)
+                ->exists();
+            if ($apprentice->mentor_id || $hasActiveAssignment) {
+                throw ValidationException::withMessages([
+                    'assignment' => 'This associate already has an active CFM.',
+                ]);
+            }
+
+            $locked->forceFill([
                 'status' => 'active',
                 'confirmed_at' => now(),
+            ])->save();
+            $locked->events()->create([
+                'actor_id' => $actor?->id,
+                'event_type' => 'assignment_activated',
             ]);
 
-            $assignment->apprentice->update([
-                'mentor_id' => $assignment->mentor_id,
-            ]);
+            $apprentice->forceFill(['mentor_id' => $locked->mentor_id])->save();
 
-            app(NewMemberValidatedTaskService::class)->completeCfmAssignmentTasksIfOpen($assignment->apprentice->fresh());
+            app(NewMemberValidatedTaskService::class)->completeCfmAssignmentTasksIfOpen($apprentice->fresh());
 
-            $this->confirmationTasks->completeForAssignment($assignment);
+            $this->confirmationTasks->completeForAssignment($locked);
 
-            $this->sendConfirmationEmails($assignment->fresh(['mentor', 'apprentice.sponsor', 'assignedBy']));
-            $this->dispatchAssignmentActivatedNotifications($assignment->fresh(['mentor', 'apprentice.sponsor', 'assignedBy']));
-            $this->milestoneReviews->onAssignmentActivated($assignment->fresh(['mentor', 'apprentice']));
+            $fresh = $locked->fresh(['mentor', 'apprentice.sponsor', 'assignedBy']);
+            $this->sendConfirmationEmails($fresh);
+            $this->dispatchAssignmentActivatedNotifications($fresh);
+            $this->milestoneReviews->onAssignmentActivated($fresh->fresh(['mentor', 'apprentice']));
 
-            return $assignment;
+            return $fresh;
         });
     }
 
@@ -168,6 +220,129 @@ class CfmAssignmentWorkflowService
         );
 
         $assignment->update(['first_contact_sent_at' => now()]);
+        $assignment->events()->create([
+            'actor_id' => $actingCfm->id,
+            'event_type' => 'first_contact_sent',
+        ]);
+    }
+
+    public function completeAssignment(MentorAssignment $assignment, User $actor, ?string $notes = null): MentorAssignment
+    {
+        abort_unless(
+            $assignment->mentor_id === $actor->id
+            || ($actor->can('assign mentors') && $actor->hasAnyRole(['super-admin', 'admin', 'agency-owner'])),
+            403
+        );
+        if (mb_strlen(trim((string) $notes)) > 2000) {
+            throw ValidationException::withMessages([
+                'assignmentOutcomeNotes' => 'Notes may not exceed 2000 characters.',
+            ]);
+        }
+
+        return DB::transaction(function () use ($assignment, $actor, $notes): MentorAssignment {
+            $locked = MentorAssignment::query()->whereKey($assignment->id)->lockForUpdate()->firstOrFail();
+            abort_unless($locked->status === 'active', 422, 'Only active mentorship assignments can be completed.');
+
+            $requiredItems = Checklist::query()
+                ->forTypeCode('fap')
+                ->active()
+                ->where('is_required', true)
+                ->pluck('id');
+            $completedItems = ChecklistProgress::query()
+                ->where('user_id', $locked->apprentice_id)
+                ->whereNull('mentor_assignment_id')
+                ->whereIn('checklist_id', $requiredItems)
+                ->where('status', 'completed')
+                ->distinct('checklist_id')
+                ->count('checklist_id');
+
+            if ($requiredItems->isEmpty() || $completedItems !== $requiredItems->count()) {
+                throw ValidationException::withMessages([
+                    'assignment' => 'Complete all required Field Apprenticeship checklist items before closing this mentorship as completed.',
+                ]);
+            }
+
+            $locked->forceFill([
+                'status' => 'completed',
+                'completed_at' => now()->toDateString(),
+            ])->save();
+            $this->clearActiveMentor($locked);
+            $locked->events()->create([
+                'actor_id' => $actor->id,
+                'event_type' => 'assignment_completed',
+                'notes' => filled($notes) ? trim($notes) : null,
+            ]);
+            $this->notifyAssignmentEnded($locked, $actor, 'apprenticeship_completed');
+
+            return $locked->fresh(['mentor', 'apprentice', 'events.actor']);
+        });
+    }
+
+    public function endAssignment(MentorAssignment $assignment, User $actor, string $reason): MentorAssignment
+    {
+        abort_unless(
+            $assignment->mentor_id === $actor->id
+            || ($actor->can('assign mentors') && $actor->hasAnyRole(['super-admin', 'admin', 'agency-owner'])),
+            403
+        );
+        $this->assertReason($reason);
+
+        return DB::transaction(function () use ($assignment, $actor, $reason): MentorAssignment {
+            $locked = MentorAssignment::query()->whereKey($assignment->id)->lockForUpdate()->firstOrFail();
+            abort_unless(in_array($locked->status, ['pending', 'active'], true), 422, 'This mentorship assignment is no longer active.');
+
+            $locked->forceFill([
+                'status' => 'cancelled',
+            ])->save();
+            $this->clearActiveMentor($locked);
+            $locked->events()->create([
+                'actor_id' => $actor->id,
+                'event_type' => 'assignment_ended',
+                'notes' => trim($reason),
+            ]);
+            $this->notifyAssignmentEnded($locked, $actor, 'apprenticeship_ended');
+
+            return $locked->fresh(['mentor', 'apprentice', 'events.actor']);
+        });
+    }
+
+    private function clearActiveMentor(MentorAssignment $assignment): void
+    {
+        $apprentice = $assignment->apprentice;
+        if ((int) $apprentice->mentor_id === (int) $assignment->mentor_id) {
+            $apprentice->forceFill(['mentor_id' => null])->save();
+        }
+    }
+
+    private function assertReason(string $reason): void
+    {
+        $length = mb_strlen(trim($reason));
+        if ($length < 5 || $length > 2000) {
+            throw ValidationException::withMessages([
+                'reason' => 'Enter a reason between 5 and 2000 characters.',
+            ]);
+        }
+    }
+
+    private function notifyAssignmentEnded(MentorAssignment $assignment, User $actor, string $trigger): void
+    {
+        app(NotificationOrchestrator::class)->dispatch($trigger, [
+            'queue' => false,
+            'recipients' => array_values(array_unique([$assignment->mentor_id, $assignment->apprentice_id])),
+            'module' => 'mentoring',
+            'priority' => 'medium',
+            'related' => ['type' => MentorAssignment::class, 'id' => $assignment->id],
+            'related_user_id' => $assignment->apprentice_id,
+            'template_data' => [
+                'member_name' => $assignment->apprentice->name,
+                'mentor_name' => $assignment->mentor->name,
+                'actor_name' => $actor->name,
+            ],
+            'action_link' => [
+                'route' => 'apprenticeship.index',
+                'label' => 'View apprenticeship progress',
+            ],
+        ]);
     }
 
     private function sendConfirmationEmails(MentorAssignment $assignment): void
@@ -259,13 +434,13 @@ class CfmAssignmentWorkflowService
         return EmailTemplateTokens::merge(array_merge(
             EmailTemplateTokens::forMember($member),
             [
-            'app_name' => config('app.name', 'GWTracks'),
-            'cfm_name' => $cfm->name,
-            'cfm_email' => $cfm->email,
-            'sponsor_name' => $sponsor?->name ?? 'the sponsor',
-            'agency_owner_name' => $agencyOwner?->name ?? $this->memberUpline->agencyOwnerName($member),
-            'assigned_by_name' => $assignment->assignedBy?->name ?? 'Agency leadership',
-        ], $extra));
+                'app_name' => config('app.name', 'GWTracks'),
+                'cfm_name' => $cfm->name,
+                'cfm_email' => $cfm->email,
+                'sponsor_name' => $sponsor?->name ?? 'the sponsor',
+                'agency_owner_name' => $agencyOwner?->name ?? $this->memberUpline->agencyOwnerName($member),
+                'assigned_by_name' => $assignment->assignedBy?->name ?? 'Agency leadership',
+            ], $extra));
     }
 
     private function sendTemplatedEmail(string $templateKey, string $recipientEmail, array $tokens): void

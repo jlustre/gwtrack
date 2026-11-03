@@ -59,6 +59,7 @@ class RankAdvancementService
 
         $requirementIds = RankRequirement::query()
             ->where('rank_id', $nextRank->id)
+            ->where('is_active', true)
             ->pluck('id');
 
         foreach ($requirementIds as $requirementId) {
@@ -220,6 +221,7 @@ class RankAdvancementService
 
         $requirements = RankRequirement::query()
             ->where('rank_id', $nextRank->id)
+            ->where('is_active', true)
             ->orderBy('sort_order')
             ->orderBy('title')
             ->get();

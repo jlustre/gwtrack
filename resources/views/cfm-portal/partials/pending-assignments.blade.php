@@ -18,7 +18,7 @@
                         </p>
                     </div>
 
-                    <div class="flex flex-col gap-2 sm:flex-row sm:items-center">
+                    <div class="flex flex-col gap-2 sm:min-w-72 sm:flex-row sm:items-center">
                         <a
                             href="{{ route('cfm.portal.assignments.review', $row['id']) }}"
                             class="inline-flex items-center justify-center rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
@@ -34,6 +34,15 @@
                         </form>
                     </div>
                 </div>
+                <form method="POST" action="{{ route('cfm.portal.assignments.decline', $row['id']) }}" class="rounded-md border border-slate-200 bg-slate-50 p-3">
+                    @csrf
+                    <label class="block text-xs font-semibold text-slate-600" for="decline-reason-{{ $row['id'] }}">Decline reason (required)</label>
+                    <div class="mt-2 flex flex-col gap-2 sm:flex-row">
+                        <input id="decline-reason-{{ $row['id'] }}" name="reason" required minlength="5" maxlength="2000" class="min-w-0 flex-1 rounded-md border-slate-300 text-sm" placeholder="Let leadership know why another mentor is needed.">
+                        <button type="submit" class="rounded-lg border border-red-300 px-4 py-2 text-sm font-semibold text-red-700 transition hover:bg-red-50">Decline assignment</button>
+                    </div>
+                    @error('reason') <p class="mt-1 text-xs text-red-700">{{ $message }}</p> @enderror
+                </form>
             @endforeach
         </div>
     </div>

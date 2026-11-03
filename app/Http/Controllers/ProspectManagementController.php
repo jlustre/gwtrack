@@ -568,6 +568,7 @@ class ProspectManagementController extends Controller
             'is_archived' => true,
             'archived_at' => now(),
         ]);
+        $this->funnels->syncRelationships($prospect);
 
         return redirect()
             ->route('team.prospects')
@@ -583,6 +584,7 @@ class ProspectManagementController extends Controller
             'is_archived' => false,
             'archived_at' => null,
         ]);
+        $this->funnels->syncRelationships($prospect);
 
         return back()->with('status', 'Prospect restored.');
     }

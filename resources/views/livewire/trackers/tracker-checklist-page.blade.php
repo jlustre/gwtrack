@@ -95,6 +95,9 @@
                             </label>
                         </div>
                     @endif
+                    @if (($tracker['key'] ?? null) === 'cfm-training')
+                        @livewire(\App\Livewire\Cfm\CertificationApplication::class)
+                    @endif
                 </div>
             </div>
         </section>

@@ -23,7 +23,17 @@ The CFM Mentor Scheduling module adds Calendly/Cal.com-style booking to GWTracks
 6. Auto-confirmed bookings immediately create calendar events and attendees for both CFM and trainee.
 7. Approval-required bookings enter `pending_approval`; the CFM can approve or decline from Booking Requests.
 8. Reschedules and cancellations preserve history and notify both users.
-9. Completed mentor sessions can update Field Apprenticeship progress.
+9. CFM can mark past confirmed bookings completed or no-show.
+
+## Implemented
+
+- Timezone-aware slot generation uses weekly availability, date overrides, blackout dates, event duration and buffers, minimum notice, booking horizon, daily/weekly limits, active bookings, and calendar conflicts.
+- Public and invite booking pages validate active, expired, one-time, and use-limited links. Public event pages are restricted to public or assigned-apprentice event types; private event types require a private/invite link.
+- Booking submission supports guest contact details, trainee identity, reason/topics, required questions, multiple-choice validation, and yes/no validation.
+- CFM booking screens provide schedule, weekly rule, date override, blackout, event type, custom question, and booking link creation, plus booking approval/decline, cancellation, reschedule decisions, completion, and no-show actions.
+- Confirmed bookings create/update calendar events, user/guest attendees, and in-app reminders at 5, 15, 30, 60, and 1,440 minutes before the session. Cancelled calendar events are excluded from reminder dispatch.
+- Booking lifecycle changes are recorded in activity/history tables and booking notifications are dispatched through the existing notification module.
+- Feature coverage is in `tests/Feature/BookingSchedulingModuleTest.php`.
 
 ## Conflict Detection Plan
 
@@ -60,29 +70,10 @@ The CFM Mentor Scheduling module adds Calendly/Cal.com-style booking to GWTracks
 
 ## Livewire Component Structure
 
-- `BookingDashboard`
-- `AvailabilityScheduleManager`
-- `AvailabilityRuleEditor`
-- `AvailabilityOverrideManager`
-- `BlackoutDateManager`
-- `BookingEventTypeIndex`
-- `BookingEventTypeCreate`
-- `BookingEventTypeEdit`
-- `BookingLinkManager`
-- `PublicBookingPage`
-- `BookingDatePicker`
-- `AvailableTimeSlots`
-- `BookingForm`
-- `BookingConfirmationScreen`
-- `BookingRequestInbox`
-- `BookingApprovalPanel`
-- `BookingRescheduleModal`
-- `BookingCancelModal`
-- `BookingQuestionsBuilder`
-- `BookingAnswersViewer`
-- `MyBookingsList`
-- `CfmBookingsCalendar`
-- `TraineeBookingsCalendar`
+- `BookingsHub` supplies the CFM dashboard, availability, event types, links, requests, appointments, calendar, and settings panels.
+- `PublicBookingPage` provides public/invite event selection, slot picking, question answers, and booking submission.
+- `MyBookingsList` displays a user's bookings and supports cancellation and reschedule requests.
+- `BookingWorkflowService` owns slot generation, validation, booking lifecycle transitions, calendar synchronization, audit history, and notification dispatch.
 
 ## Calendar Event Auto-Creation Snippet
 
@@ -122,9 +113,7 @@ $booking->update([
 
 ## Next Development Steps
 
-- Build slot-generation service using availability rules, overrides, blackout dates, booking limits, and conflict detection.
-- Replace scaffold pages with Livewire CRUD flows.
-- Add approval, decline, reschedule, cancel, complete, and no-show actions.
-- Add in-app and email notifications for each booking lifecycle event.
-- Add reminders at 5, 15, 30, 60 minutes and 1 day before sessions.
-- Add booking reports for completion rate, no-show rate, lead time, CFM utilization, and apprenticeship step completion.
+- Add event-type editing and richer booking-link management (edit/revoke, copy/share actions, and explicit usage history).
+- Add booking reports for completion/no-show rate, lead time, CFM utilization, and apprenticeship step completion.
+- Add guest-facing confirmation, cancellation, and reminder delivery; current in-app notifications target authenticated users.
+- Connect completed-session outcomes to Field Apprenticeship progress if that workflow is desired.

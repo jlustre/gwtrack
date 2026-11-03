@@ -18,9 +18,9 @@ class NotificationManagementTest extends TestCase
     {
         $this->seed(NotificationConfigSeeder::class);
 
-        $this->assertDatabaseCount('notification_types', 26);
-        $this->assertDatabaseCount('notification_triggers', 39);
-        $this->assertDatabaseCount('notification_templates', 39);
+        $this->assertDatabaseCount('notification_types', 27);
+        $this->assertDatabaseCount('notification_triggers', 51);
+        $this->assertDatabaseCount('notification_templates', 51);
 
         $this->assertDatabaseHas('notification_types', [
             'code' => 'training',

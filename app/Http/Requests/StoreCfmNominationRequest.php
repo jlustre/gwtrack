@@ -12,14 +12,6 @@ class StoreCfmNominationRequest extends FormRequest
         return $this->user()?->can('view team') ?? false;
     }
 
-    protected function prepareForValidation(): void
-    {
-        $this->merge([
-            'require_approval' => $this->boolean('require_approval'),
-            'notify_candidate' => $this->boolean('notify_candidate'),
-        ]);
-    }
-
     public function rules(): array
     {
         return [
@@ -31,8 +23,6 @@ class StoreCfmNominationRequest extends FormRequest
                 'Senior CFM',
             ])],
             'notes' => ['nullable', 'string', 'max:2000'],
-            'require_approval' => ['sometimes', 'boolean'],
-            'notify_candidate' => ['sometimes', 'boolean'],
         ];
     }
 }

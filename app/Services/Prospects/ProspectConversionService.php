@@ -44,6 +44,7 @@ class ProspectConversionService
             } else {
                 $prospect->update(['converted_to' => 'pending']);
             }
+            $this->funnelService->syncRelationships($prospect);
 
             $conversion = $this->upsertAssociateConversion($prospect, $actor, $notes);
 
@@ -112,6 +113,7 @@ class ProspectConversionService
             if ($stageId) {
                 $this->funnelService->moveStage($prospect, $owner, $stageId, 'conversion');
             }
+            $this->funnelService->syncRelationships($prospect);
 
             $this->funnelService->logActivity($prospect, $owner, [
                 'activity_type' => 'recruitment_meeting',
@@ -158,6 +160,7 @@ class ProspectConversionService
                 'application_reference' => $applicationReference,
                 'notes' => $notes,
             ]);
+            $this->funnelService->syncRelationships($prospect);
 
             $this->shareService->logAccess($prospect, $actor, 'conversion_client', [
                 'conversion_id' => $conversion->id,
@@ -179,6 +182,7 @@ class ProspectConversionService
                 'status' => 'inactive',
                 'lost_reason' => $reason,
             ]);
+            $this->funnelService->syncRelationships($prospect);
 
             $this->shareService->logAccess($prospect, $actor, 'conversion_inactive', [
                 'reason' => $reason,
@@ -224,10 +228,15 @@ class ProspectConversionService
 
     private function stageIdForFunnel(?int $funnelId, string $pipelineSlug): ?int
     {
+        $stageSlugs = $pipelineSlug === 'registration-link-sent'
+            ? ['registration-link-sent', 'invitation-sent']
+            : [$pipelineSlug];
+
         $pipelineStageId = DB::table('pipeline_stages')
             ->whereNull('user_id')
-            ->where('slug', $pipelineSlug)
+            ->whereIn('slug', $stageSlugs)
             ->where('is_active', true)
+            ->orderByRaw('CASE WHEN slug = ? THEN 0 ELSE 1 END', [$pipelineSlug])
             ->value('id');
 
         if (! $pipelineStageId) {

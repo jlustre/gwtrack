@@ -9,6 +9,7 @@ use App\Models\BookingLink;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Illuminate\Support\Str;
 
 class BookingController extends Controller
 {
@@ -98,25 +99,36 @@ class BookingController extends Controller
 
     public function publicPage(string $username, ?string $eventTypeSlug = null): View
     {
+        $slug = Str::slug($username);
         $mentor = User::query()
-            ->where('email', 'like', str_replace('-', '.', $username).'%')
-            ->orWhere('name', 'like', str_replace('-', ' ', $username).'%')
-            ->first();
+            ->role('certified-field-mentor')
+            ->where('is_active', true)
+            ->get()
+            ->first(fn (User $user): bool => Str::slug($user->name) === $slug || Str::slug(Str::before($user->email, '@')) === $slug);
 
-        $eventTypes = $mentor
-            ? BookingEventType::query()->where('owner_id', $mentor->id)->where('is_active', true)->when($eventTypeSlug, fn ($query) => $query->where('slug', $eventTypeSlug))->get()
-            : collect();
+        abort_unless($mentor, 404);
+        $eventTypes = BookingEventType::query()
+            ->where('owner_id', $mentor->id)
+            ->where('is_active', true)
+            ->when($eventTypeSlug, fn ($query) => $query->where('slug', $eventTypeSlug))
+            ->get();
+        abort_if($eventTypeSlug && $eventTypes->isEmpty(), 404);
 
         return view('bookings.public', [
             'mentor' => $mentor,
             'eventTypes' => $eventTypes,
             'eventTypeSlug' => $eventTypeSlug,
+            'inviteLink' => null,
         ]);
     }
 
     public function invite(string $token): View
     {
-        $link = BookingLink::query()->where('token', $token)->with('owner', 'eventType', 'apprentice')->first();
+        $link = BookingLink::query()->where('token', $token)->with('owner', 'eventType', 'apprentice')->firstOrFail();
+        abort_unless($link->is_active && $link->eventType?->is_active, 404);
+        abort_if($link->expires_at?->isPast(), 410, 'This booking link has expired.');
+        abort_if($link->is_one_time && $link->used_at, 410, 'This booking link has already been used.');
+        abort_if($link->max_uses !== null && $link->uses_count >= $link->max_uses, 410, 'This booking link has reached its booking limit.');
 
         return view('bookings.public', [
             'mentor' => $link?->owner,

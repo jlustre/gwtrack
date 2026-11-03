@@ -2,11 +2,15 @@
 
 namespace App\Livewire\Cfm;
 
+use App\Models\CfmCoachingSession;
 use App\Models\CfmMeeting;
+use App\Models\CfmProgressReport;
+use App\Models\CfmPromotion;
 use App\Models\CfmTask;
 use App\Models\Checklist;
 use App\Models\MentorAssignment;
 use App\Models\User;
+use App\Services\CfmAssignmentWorkflowService;
 use App\Services\CfmPortal\CfmCoachingAssistantService;
 use App\Services\CfmPortal\CfmCoachingNoteService;
 use App\Services\CfmPortal\CfmMeetingService;
@@ -23,6 +27,8 @@ use App\Services\CfmTraineeChecklistService;
 use App\Services\ChecklistService;
 use App\Services\Messaging\MessagingService;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Collection;
+use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -115,6 +121,8 @@ class Portal extends Component
     public ?string $traineeQuickActionModal = null;
 
     public string $quickMessageBody = '';
+
+    public string $assignmentOutcomeNotes = '';
 
     public function selectTrainee(?int $traineeId): void
     {
@@ -241,6 +249,53 @@ class Portal extends Component
         session()->flash('profile_feedback', [
             'type' => 'success',
             'message' => 'Mentoring notes saved.',
+        ]);
+    }
+
+    public function completeTraineeAssignment(CfmAssignmentWorkflowService $assignments): void
+    {
+        $this->validate([
+            'assignmentOutcomeNotes' => ['nullable', 'string', 'max:2000'],
+        ]);
+        $assignment = $this->activeAssignment();
+        abort_unless($assignment, 404);
+
+        try {
+            $assignments->completeAssignment(
+                $assignment,
+                auth()->user(),
+                $this->assignmentOutcomeNotes !== '' ? $this->assignmentOutcomeNotes : null,
+            );
+        } catch (ValidationException $exception) {
+            foreach ($exception->errors() as $field => $messages) {
+                foreach ($messages as $message) {
+                    $this->addError($field, $message);
+                }
+            }
+
+            return;
+        }
+
+        $this->assignmentOutcomeNotes = '';
+        session()->flash('profile_feedback', [
+            'type' => 'success',
+            'message' => 'Field Apprenticeship completed. The associate is ready for a new mentor assignment.',
+        ]);
+    }
+
+    public function endTraineeAssignment(CfmAssignmentWorkflowService $assignments): void
+    {
+        $this->validate([
+            'assignmentOutcomeNotes' => ['required', 'string', 'min:5', 'max:2000'],
+        ]);
+        $assignment = $this->activeAssignment();
+        abort_unless($assignment, 404);
+
+        $assignments->endAssignment($assignment, auth()->user(), $this->assignmentOutcomeNotes);
+        $this->assignmentOutcomeNotes = '';
+        session()->flash('profile_feedback', [
+            'type' => 'success',
+            'message' => 'Mentor assignment ended. The assignment history has been retained.',
         ]);
     }
 
@@ -425,7 +480,7 @@ class Portal extends Component
     {
         $this->validate([
             'meetingTitle' => ['required', 'string', 'max:255'],
-            'meetingType' => ['required', 'in:'.implode(',', \App\Models\CfmMeeting::TYPES)],
+            'meetingType' => ['required', 'in:'.implode(',', CfmMeeting::TYPES)],
             'meetingStartsAt' => ['required', 'date'],
             'meetingEndsAt' => ['nullable', 'date', 'after:meetingStartsAt'],
         ]);
@@ -547,8 +602,8 @@ class Portal extends Component
         CfmNotificationService $notifications,
     ): void {
         $this->validate([
-            'reportType' => ['required', 'in:'.implode(',', \App\Models\CfmProgressReport::TYPES)],
-            'reportAudience' => ['required', 'in:'.implode(',', \App\Models\CfmProgressReport::AUDIENCES)],
+            'reportType' => ['required', 'in:'.implode(',', CfmProgressReport::TYPES)],
+            'reportAudience' => ['required', 'in:'.implode(',', CfmProgressReport::AUDIENCES)],
         ]);
 
         $cfm = $this->resolvedCfmUser();
@@ -649,7 +704,7 @@ class Portal extends Component
     public function updatePromotionStatus(CfmPromotionReadinessService $promotion): void
     {
         $this->validate([
-            'promotionStatus' => ['required', 'in:'.implode(',', \App\Models\CfmPromotion::STATUSES)],
+            'promotionStatus' => ['required', 'in:'.implode(',', CfmPromotion::STATUSES)],
         ]);
 
         $cfm = $this->resolvedCfmUser();
@@ -671,7 +726,7 @@ class Portal extends Component
     public function generateCoachingBrief(CfmCoachingAssistantService $assistant): void
     {
         $this->validate([
-            'aiFocusArea' => ['required', 'in:'.implode(',', \App\Models\CfmCoachingSession::FOCUS_AREAS)],
+            'aiFocusArea' => ['required', 'in:'.implode(',', CfmCoachingSession::FOCUS_AREAS)],
         ]);
 
         $cfm = $this->resolvedCfmUser();
@@ -762,6 +817,13 @@ class Portal extends Component
         $trainees = $dashboard->traineesFor($cfmUser);
         $summary = $dashboard->summaryFor($cfmUser);
         $pendingAssignments = $dashboard->pendingAssignmentsFor($cfmUser);
+        $assignmentHistory = MentorAssignment::query()
+            ->with(['apprentice', 'events.actor'])
+            ->where('mentor_id', $cfmUser->id)
+            ->whereIn('status', ['completed', 'cancelled', 'declined'])
+            ->latest('updated_at')
+            ->limit(20)
+            ->get();
         $aiSuggestions = $dashboard->aiSuggestionsFor($cfmUser, $trainees);
         $aiPriorities = $coachingAssistant->rosterPrioritiesFor($cfmUser, $trainees);
 
@@ -800,8 +862,10 @@ class Portal extends Component
             'summary' => $summary,
             'trainees' => $filteredTrainees,
             'trainee360' => $trainee360,
+            'activeAssignment' => $this->selectedTraineeId ? $this->activeAssignment() : null,
             'sectionCenter' => $sectionCenter,
             'pendingAssignments' => $pendingAssignments,
+            'assignmentHistory' => $assignmentHistory,
             'aiSuggestions' => $aiSuggestions,
             'aiPriorities' => $aiPriorities,
             'todayLabel' => now()->format('l, F j, Y'),
@@ -891,8 +955,8 @@ class Portal extends Component
     }
 
     /**
-     * @param  \Illuminate\Support\Collection<int, array<string, mixed>>  $trainees
-     * @return \Illuminate\Support\Collection<int, array<string, mixed>>
+     * @param  Collection<int, array<string, mixed>>  $trainees
+     * @return Collection<int, array<string, mixed>>
      */
     private function filteredTrainees($trainees)
     {

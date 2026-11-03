@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use App\Services\NewMemberRegistrationService;
+use App\Services\SubscriptionService;
 use App\Support\GreatwayRankCatalog;
 use App\Support\SystemTaskAssignor;
 use App\Support\UserAvatar;
 use App\Support\UserRankRoleLabel;
+use Illuminate\Auth\MustVerifyEmail as MustVerifyEmailTrait;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -15,7 +17,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Auth\MustVerifyEmail as MustVerifyEmailTrait;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Models\Role;
@@ -73,13 +74,13 @@ class User extends Authenticatable implements MustVerifyEmail
             $user->ensureDefaultRole();
 
             if ($user->rank_id) {
-                app(\App\Services\SubscriptionService::class)->sync($user);
+                app(SubscriptionService::class)->sync($user);
             }
         });
 
         static::updated(function (User $user): void {
             if ($user->wasChanged('rank_id')) {
-                app(\App\Services\SubscriptionService::class)->sync($user);
+                app(SubscriptionService::class)->sync($user);
             }
         });
 
@@ -228,6 +229,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function apprenticeshipAssignments(): HasMany
     {
         return $this->hasMany(MentorAssignment::class, 'apprentice_id');
+    }
+
+    public function cfmCertificationRequests(): HasMany
+    {
+        return $this->hasMany(CfmCertificationRequest::class);
     }
 
     public function prospects(): HasMany

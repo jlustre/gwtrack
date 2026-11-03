@@ -48,8 +48,6 @@ export default function cfmManagement(initial = {}) {
             userId: '',
             targetRank: 'CFM I',
             notes: '',
-            requireApproval: false,
-            notifyCandidate: true,
         },
         addCfmSubmitting: false,
         addCfmError: null,
@@ -461,8 +459,6 @@ export default function cfmManagement(initial = {}) {
                         user_id: Number(this.addCfmForm.userId),
                         target_rank: this.addCfmForm.targetRank,
                         notes: this.addCfmForm.notes || null,
-                        require_approval: this.addCfmForm.requireApproval,
-                        notify_candidate: this.addCfmForm.notifyCandidate,
                     }),
                 });
 

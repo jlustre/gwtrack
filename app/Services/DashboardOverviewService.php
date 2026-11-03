@@ -9,6 +9,7 @@ use App\Models\ChecklistProgress;
 use App\Models\Rank;
 use App\Models\User;
 use App\Services\Communication\CommunicationHubService;
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
@@ -306,6 +307,7 @@ class DashboardOverviewService
 
         $requirements = DB::table('rank_requirements')
             ->where('rank_id', $nextRank->id)
+            ->where('is_active', true)
             ->whereNull('deleted_at')
             ->orderBy('sort_order')
             ->orderBy('title')
@@ -540,6 +542,6 @@ class DashboardOverviewService
             return 'recently';
         }
 
-        return \Carbon\Carbon::parse($timestamp)->diffForHumans();
+        return Carbon::parse($timestamp)->diffForHumans();
     }
 }

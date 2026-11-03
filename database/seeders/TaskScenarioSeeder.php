@@ -293,12 +293,16 @@ class TaskScenarioSeeder extends Seeder
             return;
         }
 
+        $requirementTitle = 'Complete Licensing And FAP Readiness Review';
+        $requirementCode = Str::slug($requirementTitle);
+
         DB::table('rank_requirements')->updateOrInsert(
             [
                 'rank_id' => $rankId,
-                'title' => 'Complete Licensing And FAP Readiness Review',
+                'code' => $requirementCode,
             ],
             [
+                'title' => $requirementTitle,
                 'description' => 'Demo rank advancement item waiting for leadership review.',
                 'sort_order' => 10,
                 'deleted_at' => null,
@@ -309,7 +313,7 @@ class TaskScenarioSeeder extends Seeder
 
         $requirementId = DB::table('rank_requirements')
             ->where('rank_id', $rankId)
-            ->where('title', 'Complete Licensing And FAP Readiness Review')
+            ->where('code', $requirementCode)
             ->value('id');
 
         DB::table('user_rank_progress')->updateOrInsert(

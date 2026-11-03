@@ -19,7 +19,7 @@ class CalendarReminderDispatcher
         CalendarEventReminder::query()
             ->with(['event.organizer', 'user'])
             ->whereNull('sent_at')
-            ->whereHas('event', fn ($query) => $query->where('starts_at', '>', now()))
+            ->whereHas('event', fn ($query) => $query->where('starts_at', '>', now())->whereIn('status', ['scheduled', 'confirmed']))
             ->chunkById(50, function ($reminders) use (&$sent): void {
                 foreach ($reminders as $reminder) {
                     if ($this->dispatchReminder($reminder)) {

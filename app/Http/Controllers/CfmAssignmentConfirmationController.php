@@ -6,6 +6,7 @@ use App\Models\MentorAssignment;
 use App\Services\CfmAssignmentWorkflowService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class CfmAssignmentConfirmationController extends Controller
@@ -54,6 +55,29 @@ class CfmAssignmentConfirmationController extends Controller
             ->with('profile_feedback', [
                 'type' => 'success',
                 'message' => $assignment->apprentice->name.' is now your active trainee. Send your first welcome email from the portal.',
+            ]);
+    }
+
+    public function decline(Request $request, MentorAssignment $assignment): RedirectResponse
+    {
+        $validated = $request->validate([
+            'reason' => ['required', 'string', 'min:5', 'max:2000'],
+        ]);
+
+        try {
+            $this->workflow->declineAssignment($assignment, $request->user(), $validated['reason']);
+        } catch (ValidationException $exception) {
+            return redirect()
+                ->route('cfm.portal')
+                ->withErrors($exception->errors())
+                ->withInput();
+        }
+
+        return redirect()
+            ->route('cfm.portal')
+            ->with('profile_feedback', [
+                'type' => 'success',
+                'message' => 'Assignment declined. Agency leadership can now choose another mentor.',
             ]);
     }
 }

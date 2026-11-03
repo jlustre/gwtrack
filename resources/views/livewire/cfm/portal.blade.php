@@ -135,6 +135,7 @@
                     @include('livewire.cfm.partials.trainee-nav')
 
                     @if ($activeSection === 'overview')
+                        @include('livewire.cfm.partials.assignment-lifecycle')
                         @include('livewire.cfm.partials.trainee-360')
                     @elseif ($sectionCenter)
                         @include('livewire.cfm.partials.centers.'.$activeSection)
@@ -143,6 +144,7 @@
                     @endif
                 @else
                     @include('livewire.cfm.partials.cfm-dashboard')
+                    @include('livewire.cfm.partials.assignment-history')
                 @endif
             </div>
         </div>

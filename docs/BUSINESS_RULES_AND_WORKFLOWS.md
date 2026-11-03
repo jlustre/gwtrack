@@ -85,6 +85,10 @@ Canonical figures: `docs/greatway-promotion-compensation-guidelines.md` and `con
 ## Compensation Rules
 
 - Each rank stores track (producer or builder), Total FYO, compensation rate, PPB rate, non-FYC rate, income metric, and Field Leader flag.
+- Authorized rank administrators manage the ordered rank ladder and the advancement requirements associated with each target rank.
+- Rank codes are stable identifiers and cannot be changed through rank administration. Ranks are retired rather than deleted; the configured entry rank must remain active.
+- Retiring a rank does not change existing member rank assignments. Retiring an advancement requirement hides it from active trackers but preserves existing member progress history.
+- Seeder runs create missing catalog defaults but do not overwrite rank and requirement settings managed by administrators.
 - The rank advancement tracker shows current and next-rank compensation.
 - Generational overrides apply at SVP and above.
 - Rank-based CFM management access starts at SVP. The `agency-owner` role also grants that access independently of rank.
@@ -110,6 +114,8 @@ Canonical figures: `docs/greatway-promotion-compensation-guidelines.md` and `con
 - Fast downline visibility queries are powered by `user_hierarchy_paths`, a closure table containing ancestor, descendant, and depth.
 - Sponsor relationship history is tracked in `sponsor_relationships`.
 - Explicit visibility exceptions are tracked in `team_visibility_permissions`.
+- Visibility grants apply only while they are not soft-deleted and have not expired; active mentor assignments and agency-owner-owned teams are additional scoped visibility exceptions.
+- Member lists, dashboard detail queries, and individual member checks use the same authorized visibility scope.
 - `view direct downline` limits visibility to the member and first-level recruits unless another permission expands visibility.
 - `view full downline` allows visibility into all descendant levels under the viewer's sponsorship branch.
 - `view all teams` allows authorized platform-level users to view all team data.
@@ -319,12 +325,14 @@ Canonical figures: `docs/greatway-promotion-compensation-guidelines.md` and `con
 9. Rejected modules remain visible to the member with review comments so they can be corrected and resubmitted.
 10. Responsible parties confirm or follow up until CFM training items are completed.
 11. Notified parties receive notifications or email when items are completed.
-12. User submits CFM certification request.
-13. Request enters pending status.
-14. Authorized reviewer approves or rejects the request.
-15. Reviewer notes are stored.
-16. Approved users at Associate rank or above may be assigned the Certified Field Mentor role.
-17. Rejected user can review feedback and reapply if allowed.
+12. User at Associate rank or above with all required CFM training items confirmed submits a certification request; leadership nominations enter the same review queue but cannot bypass eligibility.
+13. Request enters pending status and retains its source, notes, reviewer, decision, and review history.
+14. Authorized reviewer approves or rejects the request; approval rechecks active account status, rank, training checklist start/completion, and existing CFM access.
+15. Reviewer notes are stored; a rejection requires actionable feedback and the member may reapply.
+16. The `certified-field-mentor` role and certified mentor profile are created only after an eligible request is approved.
+17. Mentor assignments remain pending until the CFM confirms them; a CFM may decline a pending assignment with a reason.
+18. Active mentorship can be completed only after all required FAP checklist items are confirmed; early-ending a mentorship requires a reason.
+19. Completed, declined, and early-ended assignment records remain in history, active mentor access is cleared, and both parties are notified.
 
 ## Training Workflow
 
@@ -422,9 +430,17 @@ Canonical figures: `docs/greatway-promotion-compensation-guidelines.md` and `con
 ## Notification Rules
 
 - Notifications should be generated for important events such as mentor assignment, training completion, assessment result, apprenticeship approval, CFM request status, rank advancement, new announcement, and upcoming event.
-- Initial version may use in-app notifications.
+- Assessment results are sent to the learner with a link back to the assessment. Calendar invitations and scheduled reminders notify their selected attendees.
+- Notification triggers use configured templates, channels, and recipient preferences; the in-app channel is the default for assessment results.
 - The topbar notification bell should show unread count, recent notifications, and links to all notifications and announcements.
 - Future versions may add email and SMS notifications.
+
+## Leadership Reporting Rules
+
+- Leadership reports summarize onboarding, licensing, apprenticeship, mentor assignments, training, assessments, and rank requirement progress.
+- Report membership is limited to the viewer's hierarchy and permissions; report filters and CSV exports must preserve that same scope.
+- Reporting periods apply to new-member, mentor-assignment, lesson-completion, and assessment activity metrics. Progress percentages and active assignment counts are current snapshots.
+- Checklist and rank percentages are based on requirements with progress recorded for that member.
 
 ## Task Center Rules
 

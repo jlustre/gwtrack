@@ -5,21 +5,24 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\ChecklistType;
 use App\Models\EmailTemplateToken;
-use App\Models\User;
-use App\Rules\UrlOrRelativePath;
 use App\Models\PortalResource;
 use App\Models\ProfileCompletionField;
+use App\Models\User;
+use App\Rules\UrlOrRelativePath;
 use App\Services\DocumentLinkSyncService;
 use App\Services\ResourcePdfService;
+use App\Support\ResourceDocumentCategories;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
@@ -124,7 +127,7 @@ class AdminManagementController extends Controller
             ->when($hasSoftDeletes && $trashed === 'only', fn ($query) => $query->whereNotNull('deleted_at'))
             ->when($hasSoftDeletes && $trashed !== 'only' && $trashed !== 'with', fn ($query) => $query->whereNull('deleted_at'))
             ->when(
-                $resource === 'resources' && $category !== '' && \App\Support\ResourceDocumentCategories::isValid($category),
+                $resource === 'resources' && $category !== '' && ResourceDocumentCategories::isValid($category),
                 fn ($query) => $query->where('category', $category),
             )
             ->when(
@@ -205,7 +208,8 @@ class AdminManagementController extends Controller
             'checklistTypeQuickFilters' => $checklistTypeQuickFilters,
             'embedded' => $request->boolean('embedded'),
             'canManage' => $this->canManageResource($resource),
-            'canDeleteRecords' => $this->canDeleteResourceRecords($resource),
+            'canDeleteRecords' => $this->canDeleteResourceRecords($resource)
+                && ! in_array($resource, ['ranks', 'rank-requirements'], true),
             'canUpdateSeeder' => $this->canUpdateSeeder($resource),
             'options' => ($config['use_inline_modals'] ?? true) ? $this->formOptionsFor($config) : [],
             'favoriteResourceIds' => $favoriteResourceIds,
@@ -236,6 +240,24 @@ class AdminManagementController extends Controller
         abort_unless($this->canManageResource($resource), 403);
 
         $validated = $this->validatedData($request, $config);
+
+        if ($resource === 'rank-requirements') {
+            $code = substr(Str::slug($validated['title']), 0, 140);
+            $code = $code !== '' ? $code : 'custom-'.Str::uuid();
+            $exists = DB::table('rank_requirements')
+                ->where('rank_id', $validated['rank_id'])
+                ->where('code', $code)
+                ->whereNull('deleted_at')
+                ->exists();
+
+            if ($exists) {
+                throw ValidationException::withMessages([
+                    'title' => 'A requirement with this title already exists for this rank.',
+                ]);
+            }
+
+            $validated['code'] = $code;
+        }
 
         if ($resource === 'checklist-types') {
             $validated = $this->normalizeChecklistTypeData($validated);
@@ -316,6 +338,8 @@ class AdminManagementController extends Controller
             'config' => $config,
             'record' => $row,
             'canManage' => $this->canManageResource($resource),
+            'canDeleteRecord' => $this->canDeleteResourceRecords($resource)
+                && ! in_array($resource, ['ranks', 'rank-requirements'], true),
         ]);
     }
 
@@ -336,7 +360,8 @@ class AdminManagementController extends Controller
             'record' => $row,
             'options' => $this->formOptionsFor($config),
             'canUpdateRecord' => $this->canUpdateResourceRecord($resource, $row),
-            'canDeleteRecord' => $this->canDeleteResourceRecords($resource),
+            'canDeleteRecord' => $this->canDeleteResourceRecords($resource)
+                && ! in_array($resource, ['ranks', 'rank-requirements'], true),
             'indexQueryParams' => $this->resourceIndexQueryParams($request, $resource),
         ]);
     }
@@ -350,6 +375,16 @@ class AdminManagementController extends Controller
 
         if ($response = $this->denyPortalResourceUpdate($resource, $existing)) {
             return $response;
+        }
+
+        if ($resource === 'ranks') {
+            abort_unless($request->input('code') === $existing->code, 422, 'Rank codes cannot be changed after creation.');
+            abort_if(
+                $existing->code === config('greatway-compensation.entry_rank', 'TA')
+                    && ! $request->boolean('is_active'),
+                422,
+                'The entry rank must remain active.',
+            );
         }
 
         $validated = $this->validatedData($request, $config, $record);
@@ -434,7 +469,7 @@ class AdminManagementController extends Controller
     {
         abort_unless($this->canViewResource('resources'), 403);
 
-        $portalResource = \App\Models\PortalResource::query()->findOrFail($record);
+        $portalResource = PortalResource::query()->findOrFail($record);
         abort_unless($portalResource->hasDownloadableFile() && $portalResource->hasPdfPreview(), 404);
 
         $disk = Storage::disk('public');
@@ -480,6 +515,13 @@ class AdminManagementController extends Controller
         abort_unless($this->hasColumn($config['table'], 'is_active'), 404);
 
         $row = DB::table($config['table'])->where('id', $record)->firstOrFail();
+        abort_if(
+            $resource === 'ranks'
+                && $row->code === config('greatway-compensation.entry_rank', 'TA')
+                && $row->is_active,
+            422,
+            'The entry rank must remain active.',
+        );
 
         DB::table($config['table'])->where('id', $record)->update([
             'is_active' => ! (bool) $row->is_active,
@@ -560,6 +602,11 @@ class AdminManagementController extends Controller
         $config = $this->resourceConfig($resource);
         abort_unless($this->canManageResource($resource), 403);
         abort_unless($this->canDeleteResourceRecords($resource), 403);
+        abort_if(
+            in_array($resource, ['ranks', 'rank-requirements'], true),
+            422,
+            'Ranks and advancement requirements cannot be deleted. Retire them to preserve member records.',
+        );
 
         DB::table($config['table'])->where('id', $record)->update([
             'deleted_at' => now(),
@@ -633,7 +680,7 @@ class AdminManagementController extends Controller
             ->values();
 
         if ($recordId && $ids->contains($recordId)) {
-            throw \Illuminate\Validation\ValidationException::withMessages([
+            throw ValidationException::withMessages([
                 'prerequisite_checklist_type_ids' => 'A checklist type cannot be its own prerequisite.',
             ]);
         }
@@ -1109,7 +1156,7 @@ class AdminManagementController extends Controller
         File::put($this->seederPath('checklists'), $this->buildChecklistSeeder($records));
     }
 
-    private function checklistRecordsForSeederExport(): \Illuminate\Support\Collection
+    private function checklistRecordsForSeederExport(): Collection
     {
         return DB::table('checklists')
             ->join('checklist_types', 'checklist_types.id', '=', 'checklists.checklist_type_id')
@@ -1141,12 +1188,12 @@ class AdminManagementController extends Controller
             ->groupBy('type_code');
     }
 
-    private function buildCfmMentoringPhasesFile(\Illuminate\Support\Collection $items): string
+    private function buildCfmMentoringPhasesFile(Collection $items): string
     {
         $phases = $items
             ->sortBy('sort_order')
             ->groupBy('phase_number')
-            ->map(function (\Illuminate\Support\Collection $phaseItems, $phaseNumber): array {
+            ->map(function (Collection $phaseItems, $phaseNumber): array {
                 $first = $phaseItems->first();
 
                 return [
@@ -1155,7 +1202,7 @@ class AdminManagementController extends Controller
                     'phase_target' => $first->phase_target,
                     'sections' => $phaseItems
                         ->groupBy('section_title')
-                        ->map(fn (\Illuminate\Support\Collection $sectionItems) => $sectionItems
+                        ->map(fn (Collection $sectionItems) => $sectionItems
                             ->sortBy('sort_order')
                             ->pluck('title')
                             ->values()
@@ -1170,7 +1217,7 @@ class AdminManagementController extends Controller
         return "<?php\n\nreturn ".$this->exportPhpArray($phases).";\n";
     }
 
-    private function buildChecklistSeeder(\Illuminate\Support\Collection $recordsByType): string
+    private function buildChecklistSeeder(Collection $recordsByType): string
     {
         $methods = [];
 
@@ -1267,7 +1314,7 @@ class ChecklistSeeder extends Seeder
 PHP;
     }
 
-    private function buildChecklistTypeSeedMethod(string $typeCode, string $methodName, \Illuminate\Support\Collection $items): string
+    private function buildChecklistTypeSeedMethod(string $typeCode, string $methodName, Collection $items): string
     {
         if ($items->isEmpty()) {
             return <<<PHP
@@ -1496,7 +1543,7 @@ PHP;
                 'prerequisites.code as prerequisite_code',
             ])
             ->groupBy('type_code')
-            ->map(fn (\Illuminate\Support\Collection $rows) => $rows->pluck('prerequisite_code')->values()->all());
+            ->map(fn (Collection $rows) => $rows->pluck('prerequisite_code')->values()->all());
 
         $exportedTypes = $this->exportPhpArray(
             $types->map(fn ($type) => [
@@ -1918,10 +1965,10 @@ PHP;
                 'search' => ['code', 'name'],
                 'columns' => ['code', 'name', 'track', 'total_fyo_rate', 'sort_order', 'is_active'],
                 'fields' => [
-                    ['name' => 'code', 'label' => 'Code', 'type' => 'text', 'rules' => ['required', 'string', 'max:20'], 'unique' => true],
+                    ['name' => 'code', 'label' => 'Code', 'type' => 'text', 'rules' => ['required', 'string', 'max:20', 'regex:/^[A-Z0-9][A-Z0-9_-]*$/'], 'unique' => true],
                     ['name' => 'name', 'label' => 'Name', 'type' => 'text', 'rules' => ['required', 'string', 'max:255']],
                     ['name' => 'track', 'label' => 'Track', 'type' => 'select', 'options' => ['producer' => 'Producer', 'builder' => 'Builder'], 'rules' => ['required', 'string', 'in:producer,builder']],
-                    ['name' => 'sort_order', 'label' => 'Sort Order', 'type' => 'number', 'rules' => ['required', 'integer', 'min:0']],
+                    ['name' => 'sort_order', 'label' => 'Sort Order', 'type' => 'number', 'rules' => ['required', 'integer', 'between:0,65535'], 'unique' => true],
                     ['name' => 'income_metric', 'label' => 'Income Metric', 'type' => 'select', 'options' => ['' => 'None', 'lti' => 'Lifetime Income (LTI)', 'twelve_month_income' => '12 Month Income (12MI)'], 'rules' => ['nullable', 'string', 'in:lti,twelve_month_income']],
                     ['name' => 'income_requirement', 'label' => 'Income Requirement', 'type' => 'number', 'rules' => ['nullable', 'integer', 'min:0']],
                     ['name' => 'qualification', 'label' => 'Qualification', 'type' => 'text', 'rules' => ['nullable', 'string', 'max:255']],
@@ -2032,8 +2079,8 @@ PHP;
                 'fields' => [
                     ['name' => 'checklist_type_id', 'label' => 'Checklist Type', 'type' => 'checklist_type', 'rules' => ['required', 'integer', 'exists:checklist_types,id']],
                     ['name' => 'instructions', 'label' => 'Instructions', 'type' => 'rich_text', 'rows' => 16, 'help' => 'Rich text shown to members completing this checklist (formatting, lists, and links supported).', 'rules' => ['nullable', 'string']],
-                    ['name' => 'doc_link', 'label' => 'Manual / Document Link', 'type' => 'text', 'help' => 'Link to a manual or document library entry. Full URL or site-relative path.', 'rules' => ['nullable', 'string', 'max:500', new UrlOrRelativePath()]],
-                    ['name' => 'other_link', 'label' => 'Other Link', 'type' => 'text', 'help' => 'Optional secondary resource such as a video or external reference.', 'rules' => ['nullable', 'string', 'max:500', new UrlOrRelativePath()]],
+                    ['name' => 'doc_link', 'label' => 'Manual / Document Link', 'type' => 'text', 'help' => 'Link to a manual or document library entry. Full URL or site-relative path.', 'rules' => ['nullable', 'string', 'max:500', new UrlOrRelativePath]],
+                    ['name' => 'other_link', 'label' => 'Other Link', 'type' => 'text', 'help' => 'Optional secondary resource such as a video or external reference.', 'rules' => ['nullable', 'string', 'max:500', new UrlOrRelativePath]],
                     ['name' => 'sort_order', 'label' => 'Sort Order', 'type' => 'number', 'rules' => ['required', 'integer', 'min:0']],
                     ['name' => 'is_active', 'label' => 'Active', 'type' => 'boolean', 'rules' => ['required', 'boolean']],
                 ],
@@ -2131,13 +2178,14 @@ PHP;
                 'description' => 'Manage advancement requirements tied to each rank.',
                 'order_by' => 'sort_order',
                 'search' => ['title', 'description'],
-                'columns' => ['title', 'category', 'sort_order'],
+                'columns' => ['rank_id', 'title', 'category', 'sort_order', 'is_required', 'is_active'],
                 'fields' => [
                     ['name' => 'rank_id', 'label' => 'Rank', 'type' => 'rank', 'rules' => ['required', 'integer', 'exists:ranks,id']],
                     ['name' => 'title', 'label' => 'Title', 'type' => 'text', 'rules' => ['required', 'string', 'max:255']],
                     ['name' => 'description', 'label' => 'Description', 'type' => 'textarea', 'rules' => ['nullable', 'string']],
                     ['name' => 'category', 'label' => 'Category', 'type' => 'select', 'options' => config('rank-advancement.categories', []), 'rules' => ['required', 'string', 'max:40']],
                     ['name' => 'is_required', 'label' => 'Required', 'type' => 'boolean', 'rules' => ['required', 'boolean']],
+                    ['name' => 'is_active', 'label' => 'Active', 'type' => 'boolean', 'rules' => ['required', 'boolean']],
                     ['name' => 'sort_order', 'label' => 'Sort Order', 'type' => 'number', 'rules' => ['required', 'integer', 'min:0']],
                 ],
             ],
@@ -2154,10 +2202,10 @@ PHP;
                     ['name' => 'title', 'label' => 'Title', 'type' => 'text', 'rules' => ['required', 'string', 'max:255']],
                     ['name' => 'description', 'label' => 'Summary', 'type' => 'textarea', 'rules' => ['nullable', 'string']],
                     ['name' => 'type', 'label' => 'Type', 'type' => 'select', 'options' => ['document' => 'Document', 'file' => 'File', 'link' => 'Link', 'video' => 'Video'], 'rules' => ['required', 'string', 'max:100']],
-                    ['name' => 'category', 'label' => 'Category', 'type' => 'select', 'options' => \App\Support\ResourceDocumentCategories::optionsForSelect(), 'rules' => ['required', 'string', 'max:100']],
+                    ['name' => 'category', 'label' => 'Category', 'type' => 'select', 'options' => ResourceDocumentCategories::optionsForSelect(), 'rules' => ['required', 'string', 'max:100']],
                     ['name' => 'sort_order', 'label' => 'Sort Order', 'type' => 'number', 'rules' => ['required', 'integer', 'min:0']],
                     ['name' => 'content', 'label' => 'Document Content', 'type' => 'rich_text', 'rows' => 18, 'help' => 'Compose the document body here. Use Generate PDF to convert this content into a downloadable PDF for the document library.', 'rules' => ['nullable', 'string']],
-                    ['name' => 'url', 'label' => 'External URL (optional)', 'type' => 'text', 'help' => 'Optional fallback link. Enter a full URL or a site-relative path such as resources/documents/welcome-packet.pdf.', 'rules' => ['nullable', 'string', 'max:255', new UrlOrRelativePath()]],
+                    ['name' => 'url', 'label' => 'External URL (optional)', 'type' => 'text', 'help' => 'Optional fallback link. Enter a full URL or a site-relative path such as resources/documents/welcome-packet.pdf.', 'rules' => ['nullable', 'string', 'max:255', new UrlOrRelativePath]],
                     ['name' => 'is_published', 'label' => 'Published', 'type' => 'boolean', 'rules' => ['required', 'boolean']],
                     ['name' => 'is_featured', 'label' => 'Featured', 'type' => 'boolean', 'rules' => ['required', 'boolean']],
                 ],

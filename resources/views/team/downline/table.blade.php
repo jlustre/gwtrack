@@ -67,25 +67,93 @@
             </div>
         </form>
 
-        <div class="rounded-lg border border-slate-400 bg-gradient-to-br from-white via-[#F8FAFC] to-gw-accent-soft p-5 shadow-sm">
+        <div
+            class="rounded-lg border border-slate-400 bg-gradient-to-br from-white via-[#F8FAFC] to-gw-accent-soft p-5 shadow-sm"
+            x-data="{ selectedMemberIds: [], pageMemberIds: @js($members->getCollection()->pluck('id')->values()), selectPage(event) { this.selectedMemberIds = event.target.checked ? [...this.pageMemberIds] : []; } }"
+        >
             <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
                 <div>
                     <h2 class="text-lg font-semibold text-gw-primary">Members</h2>
                     <p class="text-sm text-slate-600">{{ $members->total() }} visible records</p>
                 </div>
-                <div class="flex flex-wrap gap-2 text-xs font-bold">
-                    <button type="button" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-600">Assign CFM</button>
-                    <button type="button" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-600">Send Announcement</button>
-                    <button type="button" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-600">Invite To Training</button>
-                    <button type="button" class="rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-600">Create Follow-Up</button>
-                </div>
             </div>
+
+            @if ($errors->any())
+                <div class="mb-4 rounded-lg border border-rose-200 bg-rose-50 p-4 text-sm text-rose-800" role="alert">
+                    <p class="font-semibold">The bulk assignment could not be submitted.</p>
+                    <ul class="mt-1 list-inside list-disc">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            @if ($result = session('bulk_cfm_assignment_result'))
+                <div class="mb-4 rounded-lg border p-4 text-sm {{ count($result['failed']) ? 'border-amber-200 bg-amber-50 text-amber-900' : 'border-emerald-200 bg-emerald-50 text-emerald-900' }}" role="status">
+                    @if (count($result['assigned']))
+                        <p class="font-semibold">{{ count($result['assigned']) }} CFM assignment{{ count($result['assigned']) === 1 ? '' : 's' }} submitted for confirmation.</p>
+                    @else
+                        <p class="font-semibold">No CFM assignments were created.</p>
+                    @endif
+                    @if (count($result['failed']))
+                        <p class="mt-2 font-semibold">{{ count($result['failed']) }} member{{ count($result['failed']) === 1 ? '' : 's' }} could not be assigned:</p>
+                        <ul class="mt-1 list-inside list-disc">
+                            @foreach ($result['failed'] as $memberId => $message)
+                                <li>Member #{{ $memberId }}: {{ $message }}</li>
+                            @endforeach
+                        </ul>
+                    @endif
+                </div>
+            @endif
+
+            @if ($cfmCandidates !== [])
+                <form method="POST" action="{{ route('team.downlines.assign-cfm', request()->query()) }}" class="mb-4 flex flex-col gap-3 rounded-lg border border-gw-accent/40 bg-gw-accent-soft/50 p-4 sm:flex-row sm:items-end">
+                    @csrf
+                    <div class="min-w-0 flex-1">
+                        <p class="text-sm font-semibold text-gw-primary">
+                            <span x-text="selectedMemberIds.length"></span> selected
+                            <span class="text-slate-600">· Assign CFM</span>
+                        </p>
+                        <label for="bulk-cfm-id" class="mt-2 block text-xs font-semibold uppercase tracking-wide text-slate-600">Certified Field Mentor</label>
+                        <select id="bulk-cfm-id" name="cfm_id" required class="mt-1 h-10 w-full rounded-lg border-slate-300 text-sm">
+                            <option value="">Choose a CFM</option>
+                            @foreach ($cfmCandidates as $cfm)
+                                <option value="{{ $cfm['id'] }}">{{ $cfm['name'] }}{{ $cfm['rank'] ? ' · '.$cfm['rank'] : '' }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <input type="text" name="reason" maxlength="255" placeholder="Reason (optional)" class="h-10 rounded-lg border-slate-300 text-sm sm:w-56">
+                    <button
+                        type="submit"
+                        x-bind:disabled="selectedMemberIds.length === 0"
+                        x-on:click="if (selectedMemberIds.length === 0) $event.preventDefault()"
+                        class="h-10 rounded-lg bg-gw-primary px-4 text-sm font-semibold text-white hover:bg-gw-primary-hover disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                        Submit Assignments
+                    </button>
+                    <template x-for="memberId in selectedMemberIds" :key="`bulk-member-${memberId}`">
+                        <input type="hidden" name="associate_ids[]" :value="memberId">
+                    </template>
+                </form>
+            @endif
 
             <div class="overflow-x-auto rounded-lg border border-slate-300 bg-white/90">
                 <table class="min-w-full divide-y divide-slate-200 text-sm">
                     <thead class="sticky top-0 bg-slate-50 text-left text-xs font-bold uppercase tracking-wide text-slate-500">
                         <tr>
-                            <th class="px-4 py-3"><input type="checkbox" class="rounded border-slate-400"></th>
+                            <th class="px-4 py-3">
+                                @if ($cfmCandidates !== [])
+                                    <input
+                                        type="checkbox"
+                                        class="rounded border-slate-400"
+                                        aria-label="Select all members on this page"
+                                        x-bind:checked="pageMemberIds.length > 0 && selectedMemberIds.length === pageMemberIds.length"
+                                        x-bind:indeterminate="selectedMemberIds.length > 0 && selectedMemberIds.length < pageMemberIds.length"
+                                        x-on:change="selectPage($event)"
+                                    >
+                                @endif
+                            </th>
                             <th class="px-4 py-3">Name</th>
                             <th class="px-4 py-3">Rank</th>
                             <th class="px-4 py-3">Sponsor</th>
@@ -105,10 +173,14 @@
                     <tbody class="divide-y divide-slate-200">
                         @foreach ($members as $member)
                             @php($hierarchy = app(App\Services\DownlineHierarchyService::class))
-                            @php($metrics = $hierarchy->memberMetrics($member))
+                            @php($metrics = $hierarchy->visibleMemberMetrics(auth()->user(), $member))
                             @php($progress = $hierarchy->progressSummary($member))
                             <tr>
-                                <td class="px-4 py-3"><input type="checkbox" class="rounded border-slate-400"></td>
+                                <td class="px-4 py-3">
+                                    @if ($cfmCandidates !== [])
+                                        <input type="checkbox" value="{{ $member->id }}" x-model.number="selectedMemberIds" class="rounded border-slate-400" aria-label="Select {{ $member->name }}">
+                                    @endif
+                                </td>
                                 <td class="px-4 py-3">
                                     <a href="{{ route('team.member', $member) }}" class="font-semibold text-gw-primary hover:text-gw-accent-dark">{{ $member->name }}</a>
                                     <div class="text-xs text-slate-500">{{ $member->email }}</div>

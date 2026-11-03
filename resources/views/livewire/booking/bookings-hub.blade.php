@@ -30,6 +30,15 @@
         @endforeach
     </nav>
 
+    @if (session('booking-status'))
+        <div class="rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-800" role="status">
+            {{ session('booking-status') }}
+            @if (session('booking-link-url'))
+                <a href="{{ session('booking-link-url') }}" class="ml-2 font-semibold underline" target="_blank" rel="noopener">Open booking link</a>
+            @endif
+        </div>
+    @endif
+
     <div wire:key="booking-panel-{{ $tab }}-{{ $panelKey }}">
         @switch($tab)
             @case('dashboard')
@@ -37,7 +46,7 @@
                 @break
 
             @case('availability')
-                @include('livewire.booking.panels.availability', ['schedules' => $schedules])
+                @include('livewire.booking.panels.availability', ['schedules' => $schedules, 'blackouts' => $blackouts])
                 @break
 
             @case('event-types')
@@ -45,11 +54,11 @@
                 @break
 
             @case('links')
-                @include('livewire.booking.panels.links', ['links' => $links])
+                @include('livewire.booking.panels.links', ['links' => $links, 'linkableEventTypes' => $linkableEventTypes, 'linkableSchedules' => $linkableSchedules])
                 @break
 
             @case('requests')
-                @include('livewire.booking.panels.requests', ['bookings' => $requestBookings])
+                @include('livewire.booking.panels.requests', ['bookings' => $requestBookings, 'rescheduleRequests' => $rescheduleRequests])
                 @break
 
             @case('calendar')

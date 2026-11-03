@@ -2,13 +2,17 @@
 
 namespace Tests\Feature;
 
+use App\Jobs\Notifications\SendNotificationJob;
+use App\Livewire\Training\AssessmentTaker;
 use App\Models\Assessment;
 use App\Models\TrainingModule;
 use App\Models\User;
 use App\Services\Training\TrainingCoursePlayerService;
+use Database\Seeders\NotificationModuleSeeder;
 use Database\Seeders\RolePermissionSeeder;
 use Database\Seeders\TrainingAcademySeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Queue;
 use Livewire\Livewire;
 use Tests\TestCase;
 
@@ -24,6 +28,7 @@ class TrainingAssessmentTest extends TestCase
 
         $this->seed(RolePermissionSeeder::class);
         $this->seed(TrainingAcademySeeder::class);
+        $this->seed(NotificationModuleSeeder::class);
 
         $this->user = User::factory()->create();
         $this->user->assignRole('member');
@@ -71,8 +76,10 @@ class TrainingAssessmentTest extends TestCase
             $responses[$question->id] = ['answer_id' => $correct->id];
         }
 
+        Queue::fake();
+
         Livewire::actingAs($this->user)
-            ->test(\App\Livewire\Training\AssessmentTaker::class, ['assessment' => $assessment])
+            ->test(AssessmentTaker::class, ['assessment' => $assessment])
             ->set('responses', $responses)
             ->call('submit')
             ->assertRedirect();
@@ -83,6 +90,9 @@ class TrainingAssessmentTest extends TestCase
             'score' => 100,
             'passed' => true,
         ]);
+
+        Queue::assertPushed(SendNotificationJob::class, fn (SendNotificationJob $job): bool => $job->triggerCode === 'assessment_result'
+            && $job->context['recipients'] === [$this->user->id]);
     }
 
     public function test_passed_assessment_cannot_be_retaken_by_default(): void
@@ -104,7 +114,7 @@ class TrainingAssessmentTest extends TestCase
         }
 
         Livewire::actingAs($this->user)
-            ->test(\App\Livewire\Training\AssessmentTaker::class, ['assessment' => $assessment])
+            ->test(AssessmentTaker::class, ['assessment' => $assessment])
             ->set('responses', $responses)
             ->call('submit');
 

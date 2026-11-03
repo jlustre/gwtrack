@@ -13,10 +13,12 @@ class RankRequirement extends Model
 
     protected $fillable = [
         'rank_id',
+        'code',
         'title',
         'description',
         'category',
         'is_required',
+        'is_active',
         'sort_order',
     ];
 
@@ -24,6 +26,7 @@ class RankRequirement extends Model
     {
         return [
             'is_required' => 'boolean',
+            'is_active' => 'boolean',
         ];
     }
 

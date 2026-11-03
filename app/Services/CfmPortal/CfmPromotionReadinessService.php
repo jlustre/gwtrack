@@ -216,6 +216,7 @@ class CfmPromotionReadinessService
 
         $requirements = DB::table('rank_requirements')
             ->where('rank_id', $nextRank->id)
+            ->where('is_active', true)
             ->whereNull('deleted_at')
             ->orderBy('sort_order')
             ->orderBy('title')

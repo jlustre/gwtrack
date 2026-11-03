@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Rank;
 use App\Models\RankRequirement;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class RankRequirementSeeder extends Seeder
 {
@@ -21,18 +22,24 @@ class RankRequirementSeeder extends Seeder
             }
 
             foreach ($requirements as $requirement) {
-                RankRequirement::query()->updateOrCreate(
+                $model = RankRequirement::withTrashed()->firstOrCreate(
                     [
                         'rank_id' => $rankId,
-                        'title' => $requirement['title'],
+                        'code' => Str::slug($requirement['title']),
                     ],
                     [
+                        'title' => $requirement['title'],
                         'description' => $requirement['description'] ?? null,
                         'category' => $requirement['category'] ?? 'general',
                         'is_required' => $requirement['is_required'] ?? true,
+                        'is_active' => true,
                         'sort_order' => $requirement['sort_order'] ?? 0,
                     ],
                 );
+
+                if ($model->trashed()) {
+                    $model->restore();
+                }
             }
         }
     }

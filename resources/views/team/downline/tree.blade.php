@@ -135,22 +135,7 @@
                             @endif
 
                             @foreach ($children as $child)
-                                <div x-data="{ expanded: false }" class="flex w-56 shrink-0 flex-col items-center">
-                                    <div class="h-8 w-px shrink-0 bg-gw-accent {{ $children->count() > 1 ? '-mb-px' : '' }}" aria-hidden="true"></div>
-                                    <div class="relative w-full shrink-0">
-                                        @include('team.downline.partials.tree-node', ['node' => $child, 'isRoot' => false])
-                                        <button type="button" x-on:click="expanded = ! expanded" class="mt-3 w-full rounded-lg border border-gw-accent/60 bg-white/10 px-3 py-2 text-xs font-bold uppercase tracking-wide text-gw-accent hover:bg-white/15">
-                                            Branch Actions
-                                        </button>
-                                        <div x-show="expanded" x-transition class="mt-2 grid gap-2 rounded-lg border border-gw-accent/40 bg-[#F8FAFC] p-3 text-sm font-semibold text-gw-primary shadow-lg">
-                                            <a href="{{ route('team.member', $child['id']) }}" class="rounded-md px-2 py-1 transition hover:bg-gw-accent-muted hover:text-gw-accent-dark">View Profile</a>
-                                            <a href="{{ route('team.member.tree', $child['id']) }}" class="rounded-md px-2 py-1 transition hover:bg-gw-accent-muted hover:text-gw-accent-dark">View Direct Recruits</a>
-                                            <a href="{{ route('licensing.index') }}" class="rounded-md px-2 py-1 transition hover:bg-gw-accent-muted hover:text-gw-accent-dark">View Licensing Progress</a>
-                                            <a href="{{ route('training.index') }}" class="rounded-md px-2 py-1 transition hover:bg-gw-accent-muted hover:text-gw-accent-dark">View Training Progress</a>
-                                            <a href="{{ route('team.downlines', ['search' => $child['name']]) }}" class="rounded-md px-2 py-1 transition hover:bg-gw-accent-muted hover:text-gw-accent-dark">Open In All Downlines</a>
-                                        </div>
-                                    </div>
-                                </div>
+                                @include('team.downline.partials.tree-branch-node', ['node' => $child])
                             @endforeach
                         </div>
                     @else

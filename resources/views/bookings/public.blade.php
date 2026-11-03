@@ -17,39 +17,12 @@
             </aside>
 
             <main class="p-6">
-                <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                    <div>
-                        <p class="text-xs font-bold uppercase tracking-wide text-gw-accent">Book a Session</p>
-                        <h2 class="mt-1 text-xl font-semibold">Available Event Types</h2>
-                    </div>
-                    <select class="rounded-md border-[#516070]/30 text-sm focus:border-gw-accent focus:ring-gw-accent">
-                        <option>America/Vancouver</option>
-                        <option>America/Toronto</option>
-                        <option>America/New_York</option>
-                        <option>America/Chicago</option>
-                        <option>America/Los_Angeles</option>
-                    </select>
-                </div>
-
-                <div class="mt-6 grid gap-4 lg:grid-cols-2">
-                    @forelse ($eventTypes as $type)
-                        <article class="rounded-lg border border-[#516070] bg-gw-accent-soft p-4 shadow-sm">
-                            <div class="flex items-start justify-between gap-3">
-                                <div>
-                                    <h3 class="font-semibold text-gw-primary">{{ $type->title }}</h3>
-                                    <p class="mt-1 text-sm text-slate-600">{{ $type->duration_minutes }} minutes · {{ str($type->location_type)->headline() }}</p>
-                                </div>
-                                <span class="h-3 w-3 rounded-full" style="background-color: {{ $type->color }}"></span>
-                            </div>
-                            <p class="mt-3 line-clamp-3 text-sm leading-6 text-slate-600">{{ $type->description }}</p>
-                            <div class="mt-4 rounded-md border border-dashed border-gw-accent/60 bg-white px-3 py-4 text-sm text-slate-500">
-                                Date picker, time slots, booking questions, and confirmation screen will be activated in the Livewire implementation phase.
-                            </div>
-                        </article>
-                    @empty
-                        <div class="rounded-lg border border-dashed border-[#516070]/40 bg-[#F8FAFC] p-6 text-sm text-slate-500">This booking page is not available yet.</div>
-                    @endforelse
-                </div>
+                <p class="mb-4 text-xs font-bold uppercase tracking-wide text-gw-accent">Book a Session</p>
+                @livewire('booking.public-booking-page', [
+                    'mentorId' => $mentor?->id,
+                    'eventTypeSlug' => $eventTypeSlug,
+                    'inviteToken' => $inviteLink?->token,
+                ])
             </main>
         </div>
     </div>

@@ -175,7 +175,7 @@
         ],
         [
             'label' => 'My Team',
-            'active' => ['team.index', 'team.tree', 'team.hierarchy', 'team.org-chart', 'team.directs', 'team.downlines'],
+            'active' => ['team.index', 'team.tree', 'team.hierarchy', 'team.org-chart', 'team.directs', 'team.downlines', 'reports.leadership*'],
             'items' => [
                 ['label' => 'Downline Dashboard', 'route' => 'team.index', 'permissions' => ['view own team'], 'active' => ['team.index']],
                 ['label' => 'My Directs', 'route' => 'team.directs', 'permissions' => ['view own team'], 'active' => ['team.directs']],
@@ -183,6 +183,7 @@
                 ['label' => 'Genealogy Tree', 'route' => 'team.tree', 'permissions' => ['view team tree'], 'active' => ['team.tree']],
                 ['label' => 'Hierarchy Table', 'route' => 'team.hierarchy', 'permissions' => ['view team tree'], 'active' => ['team.hierarchy']],
                 ['label' => 'Org Chart', 'route' => 'team.org-chart', 'permissions' => ['view org chart'], 'active' => ['team.org-chart']],
+                ['label' => 'Leadership Reports', 'route' => 'reports.leadership', 'permissions' => ['view leadership reports'], 'active' => ['reports.leadership*']],
             ],
         ],
         [
@@ -220,7 +221,7 @@
                 ['label' => 'User Management', 'route' => 'admin.users.index', 'active' => ['admin.users.*'], 'roles' => ['super-admin', 'admin', 'agency-owner']],
                 ['label' => 'Roles & Permissions', 'route' => 'admin.roles.index', 'permissions' => ['manage roles']],
                 ['label' => 'Teams', 'route' => 'admin.management.resource.index', 'params' => ['teams'], 'active_resource' => 'teams', 'roles' => ['super-admin', 'admin']],
-                ['label' => 'Ranks', 'route' => 'admin.management.resource.index', 'params' => ['ranks'], 'active_resource' => 'ranks', 'roles' => ['super-admin', 'admin']],
+                ['label' => 'Ranks', 'route' => 'admin.ranks.index', 'roles' => ['super-admin', 'admin', 'agency-owner']],
                 ['label' => 'Profile Completion Fields', 'route' => 'admin.management.resource.index', 'params' => ['profile-completion-fields'], 'active_resource' => 'profile-completion-fields', 'roles' => ['super-admin', 'admin']],
                 ['label' => 'Task Categories', 'route' => 'admin.management.resource.index', 'params' => ['task-categories'], 'active_resource' => 'task-categories', 'roles' => ['super-admin', 'admin']],
                 ['label' => 'Tasks', 'route' => 'admin.management.resource.index', 'params' => ['tasks'], 'active_resource' => 'tasks', 'roles' => ['super-admin', 'admin']],

@@ -41,7 +41,7 @@ class PermissionCatalog
             'team' => [
                 'label' => 'Team & Downline',
                 'description' => 'Team visibility, hierarchy, and member management.',
-                'match' => ['view team', 'manage team', 'view own team', 'view direct downline', 'view full downline', 'view all teams', 'view team tree', 'view org chart', 'view team table', 'manage team members', 'export team data'],
+                'match' => ['view team', 'manage team', 'view own team', 'view direct downline', 'view full downline', 'view all teams', 'view team tree', 'view org chart', 'view team table', 'manage team members', 'export team data', 'view leadership reports'],
             ],
             'crm' => [
                 'label' => 'Prospects & CRM',

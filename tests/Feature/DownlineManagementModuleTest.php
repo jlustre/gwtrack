@@ -11,11 +11,18 @@ use Database\Seeders\RolePermissionSeeder;
 use Database\Seeders\TaskScenarioSeeder;
 use Database\Seeders\TeamSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class DownlineManagementModuleTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->withoutVite();
+    }
 
     public function test_downline_dashboard_member_search_filters_visible_team_members(): void
     {
@@ -297,6 +304,120 @@ class DownlineManagementModuleTest extends TestCase
             ->assertSee(MemberDisplayName::for($directLeader), false);
     }
 
+    public function test_genealogy_tree_branch_endpoint_loads_visible_direct_recruits_and_protects_other_branches(): void
+    {
+        $this->seed([
+            RankSeeder::class,
+            RolePermissionSeeder::class,
+            TeamSeeder::class,
+            DownlineManagementSeeder::class,
+        ]);
+
+        $owner = User::where('email', 'downline-owner@gwtracks.com')->firstOrFail();
+        $directLeader = User::where('sponsor_id', $owner->id)->firstOrFail();
+        $deeperMember = User::where('sponsor_id', $directLeader->id)->firstOrFail();
+        $owner->forceFill(['email_verified_at' => now()])->save();
+
+        $response = $this->actingAs($owner)
+            ->getJson(route('team.tree.branch', $directLeader));
+        $this->assertSame(200, $response->status(), $response->getContent());
+        $response->assertJsonStructure(['html']);
+
+        $this->assertStringContainsString($deeperMember->name, $response->json('html'));
+        $this->assertStringContainsString('Expand branch', $response->json('html'));
+
+        $outsider = User::factory()->create(['name' => 'Outside Branch']);
+        $outsider->forceFill(['email_verified_at' => now()])->save();
+        $outsider->givePermissionTo('view team tree');
+
+        $this->actingAs($outsider)
+            ->getJson(route('team.tree.branch', $directLeader))
+            ->assertForbidden();
+    }
+
+    public function test_genealogy_tree_branch_endpoint_does_not_expose_members_beyond_viewer_depth(): void
+    {
+        $this->seed([
+            RankSeeder::class,
+            RolePermissionSeeder::class,
+            TeamSeeder::class,
+            DownlineManagementSeeder::class,
+        ]);
+
+        $owner = User::where('email', 'downline-owner@gwtracks.com')->firstOrFail();
+        $directLeader = User::where('sponsor_id', $owner->id)->firstOrFail();
+        $deeperMember = User::where('sponsor_id', $directLeader->id)->firstOrFail();
+        $hiddenMember = User::factory()->create([
+            'name' => 'Beyond Direct Visibility',
+            'sponsor_id' => $deeperMember->id,
+        ]);
+        $directLeader->forceFill(['email_verified_at' => now()])->save();
+        $directViewerRole = Role::findOrCreate('direct-tree-viewer', 'web');
+        $directViewerRole->syncPermissions(['view team tree', 'view direct downline']);
+        $directLeader->syncRoles($directViewerRole);
+        app(DownlineHierarchyService::class)->rebuild();
+
+        $response = $this->actingAs($directLeader)
+            ->getJson(route('team.tree.branch', $directLeader))
+            ->assertOk();
+
+        $this->assertStringContainsString($deeperMember->name, $response->json('html'));
+        $this->assertStringNotContainsString($hiddenMember->name, $response->json('html'));
+    }
+
+    public function test_team_dashboard_and_member_metrics_respect_direct_downline_visibility(): void
+    {
+        $this->seed([
+            RankSeeder::class,
+            RolePermissionSeeder::class,
+            TeamSeeder::class,
+            DownlineManagementSeeder::class,
+        ]);
+
+        $owner = User::where('email', 'downline-owner@gwtracks.com')->firstOrFail();
+        $viewer = User::factory()->create([
+            'name' => 'Direct Visibility Viewer',
+            'sponsor_id' => $owner->id,
+            'email_verified_at' => now(),
+        ]);
+        $directViewerRole = Role::findOrCreate('direct-viewer', 'web');
+        $directViewerRole->syncPermissions(['view own team', 'view team tree', 'view team table', 'view direct downline']);
+        $viewer->syncRoles($directViewerRole);
+        $visibleMember = User::factory()->create([
+            'name' => 'Visible Direct Member',
+            'sponsor_id' => $viewer->id,
+        ]);
+        $hiddenMember = User::factory()->create([
+            'name' => 'Outside Viewer Depth',
+            'sponsor_id' => $visibleMember->id,
+        ]);
+        app(DownlineHierarchyService::class)->rebuild();
+
+        $response = $this->actingAs($viewer)
+            ->get(route('team.index'))
+            ->assertOk();
+
+        $stats = $response->viewData('stats');
+        $hierarchy = app(DownlineHierarchyService::class);
+        $visibleDirectCount = $hierarchy->directRecruitsQuery($viewer)
+            ->whereIn('users.id', $hierarchy->visibleMembersQuery($viewer)->select('users.id'))
+            ->count();
+        $this->assertSame(
+            $visibleDirectCount,
+            $stats['total_team'],
+            json_encode(['visible_direct_count' => $visibleDirectCount, 'stats_total' => $stats['total_team']])
+        );
+        $this->assertSame(
+            $stats['total_team'],
+            array_sum($response->viewData('rankDistribution'))
+        );
+
+        $metrics = $hierarchy->visibleMemberMetrics($viewer, $visibleMember);
+        $this->assertSame(0, $metrics['direct_recruits']);
+        $this->assertSame(0, $metrics['total_downline']);
+        $this->assertFalse($hierarchy->visibleMembersQuery($viewer)->whereKey($hiddenMember->id)->exists());
+    }
+
     public function test_unrelated_member_cannot_view_another_branch_member(): void
     {
         $this->seed([
@@ -413,6 +534,8 @@ class DownlineManagementModuleTest extends TestCase
             ->assertSee('CFM Assigned', false)
             ->assertSee('New This Month', false)
             ->assertSee('Building Teams', false)
+            ->assertSee('Assign CFM', false)
+            ->assertSee('Submit Assignments', false)
             ->assertSee($direct->name, false);
     }
 

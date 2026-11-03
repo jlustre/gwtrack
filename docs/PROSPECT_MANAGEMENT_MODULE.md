@@ -184,3 +184,12 @@ Client conversion should later support:
 - Policy/application reference fields
 - Client follow-up reminders
 - Client status reporting
+
+## CRM Relationship and Forecast Workflow
+
+- Creating or updating a prospect synchronizes its contact record and sales/recruiting opportunities.
+- Conversion, archive, and restore actions refresh opportunity state so forecast records follow the prospect lifecycle.
+- Existing opportunity probabilities, estimates, expected close dates, and custom metadata are preserved during synchronization.
+- Authorized prospect editors can manage opportunity probability, estimated value, and expected close date from the prospect record.
+- Stage changes are validated against the prospect's funnel. Unassigned global stages remain available for legacy prospects, but stages assigned to another funnel are rejected.
+- Registration invitation conversion prefers the legacy `registration-link-sent` stage and falls back to the current `invitation-sent` stage when the legacy stage is not configured.

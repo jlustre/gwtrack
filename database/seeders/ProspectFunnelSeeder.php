@@ -12,6 +12,10 @@ class ProspectFunnelSeeder extends Seeder
     {
         $catalog = config('crm-funnels.funnels', []);
 
+        if ($catalog === []) {
+            $catalog = $this->legacyCatalogFromPipelines(config('crm-funnels.pipelines', []));
+        }
+
         foreach ($catalog as $key => $funnel) {
             $this->seedPipelineStages($funnel['stages'] ?? []);
         }
@@ -51,6 +55,50 @@ class ProspectFunnelSeeder extends Seeder
                 ]
             );
         }
+    }
+
+    /**
+     * @param  list<array<string, mixed>>  $pipelines
+     * @return array<string, array<string, mixed>>
+     */
+    private function legacyCatalogFromPipelines(array $pipelines): array
+    {
+        $pipelinesByKey = collect($pipelines)->keyBy('key');
+        $catalog = [];
+
+        foreach (['insurance' => 'sales', 'recruiting' => 'recruiting'] as $legacyKey => $pipelineKey) {
+            $pipeline = $pipelinesByKey->get($pipelineKey);
+
+            if (! is_array($pipeline)) {
+                continue;
+            }
+
+            $terminalStages = $pipeline['terminal'] ?? [];
+            $stages = [];
+
+            foreach (array_keys($pipeline['stages'] ?? []) as $stageName) {
+                $stageSlug = $legacyKey === 'recruiting' && Str::slug($stageName) === 'invitation-sent'
+                    ? 'registration-link-sent'
+                    : Str::slug($stageName);
+
+                $stages[] = [
+                    'name' => $stageName,
+                    'slug' => $stageSlug,
+                    'pipeline_slug' => $stageSlug,
+                    'is_terminal' => in_array($stageName, $terminalStages, true),
+                ];
+            }
+
+            $catalog[$legacyKey] = [
+                'name' => $pipeline['name'],
+                'description' => $pipeline['description'] ?? '',
+                'sort_order' => $legacyKey === 'insurance' ? 10 : 20,
+                'is_default' => $legacyKey === 'insurance',
+                'stages' => $stages,
+            ];
+        }
+
+        return $catalog;
     }
 
     private function upsertFunnel(string $key, string $name, string $description, int $sortOrder, bool $isDefault = false): int

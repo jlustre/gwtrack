@@ -52,6 +52,11 @@ class MentorAssignment extends Model
         return $this->hasMany(MentorNote::class);
     }
 
+    public function events(): HasMany
+    {
+        return $this->hasMany(MentorAssignmentEvent::class);
+    }
+
     public function traineeChecklistProgress(): HasMany
     {
         return $this->hasMany(ChecklistProgress::class, 'mentor_assignment_id');

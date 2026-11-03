@@ -225,7 +225,17 @@ class UserManagementController extends Controller
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($user)],
             'password' => [$user ? 'nullable' : 'required', 'confirmed', Rules\Password::defaults()],
             'role' => ['required', 'string', Rule::in($roleNames)],
-            'rank_id' => ['nullable', 'integer', Rule::exists('ranks', 'id')->whereNull('deleted_at')],
+            'rank_id' => [
+                'nullable',
+                'integer',
+                Rule::exists('ranks', 'id')->where(function ($query) use ($user): void {
+                    $query->whereNull('deleted_at')
+                        ->where(function ($query) use ($user): void {
+                            $query->where('is_active', true)
+                                ->orWhere('id', $user?->rank_id ?? 0);
+                        });
+                }),
+            ],
             'team_id' => ['nullable', 'integer', Rule::exists('teams', 'id')->whereNull('deleted_at')],
             'sponsor_id' => ['nullable', 'integer', Rule::exists('users', 'id')->whereNull('deleted_at'), Rule::notIn(array_filter([$user?->id]))],
             'mentor_id' => ['nullable', 'integer', Rule::exists('users', 'id')->whereNull('deleted_at'), Rule::notIn(array_filter([$user?->id]))],
@@ -342,7 +352,11 @@ class UserManagementController extends Controller
 
         return [
             'roles' => Role::orderBy('name')->pluck('name'),
-            'ranks' => Rank::orderBy('sort_order')->get(),
+            'ranks' => Rank::query()
+                ->where('is_active', true)
+                ->when($user?->rank_id, fn ($query, $rankId) => $query->orWhereKey($rankId))
+                ->orderBy('sort_order')
+                ->get(),
             'teams' => Team::orderBy('name')->get(),
             'sponsors' => $memberOptions,
             'mentors' => $memberOptions,

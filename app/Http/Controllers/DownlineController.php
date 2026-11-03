@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Services\CfmManagementService;
 use App\Services\ChecklistService;
 use App\Services\DownlineHierarchyService;
 use App\Services\MemberProfileTabsService;
+use App\Support\GreatwayRankCatalog;
 use App\Support\MemberDisplayName;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
@@ -19,6 +21,7 @@ class DownlineController extends Controller
         private readonly DownlineHierarchyService $hierarchy,
         private readonly MemberProfileTabsService $memberProfileTabs,
         private readonly ChecklistService $checklists,
+        private readonly CfmManagementService $cfmManagement,
     ) {}
 
     public function index(Request $request): View
@@ -27,9 +30,9 @@ class DownlineController extends Controller
         $members = $this->filteredMembers($request, $this->hierarchy->visibleMembersQuery($user));
 
         return view('team.downline.index', [
-            'stats' => $this->stats($user),
-            'rankDistribution' => $this->rankDistribution($user),
-            'countryDistribution' => $this->countryDistribution($user),
+            'stats' => $this->stats($user, $user),
+            'rankDistribution' => $this->rankDistribution($user, $user),
+            'countryDistribution' => $this->countryDistribution($user, $user),
             'members' => $members->paginate(10)->withQueryString(),
             'filters' => $this->filterOptions($user),
         ]);
@@ -43,7 +46,12 @@ class DownlineController extends Controller
 
         $children = $this->hierarchy->directRecruitsQuery($root)
             ->with(['profile', 'rank', 'sponsor', 'mentor'])
-            ->withCount(['sponsoredMembers as direct_recruits_count', 'prospects'])
+            ->whereIn('users.id', $this->hierarchy->visibleMembersQuery($viewer)->select('users.id'))
+            ->withCount([
+                'sponsoredMembers as direct_recruits_count' => fn (Builder $query) => $query
+                    ->whereIn('users.id', $this->hierarchy->visibleMembersQuery($viewer)->select('users.id')),
+                'prospects',
+            ])
             ->orderBy('name')
             ->get()
             ->map(fn (User $member) => $this->memberCard($member, $viewer));
@@ -52,6 +60,28 @@ class DownlineController extends Controller
             'root' => $this->memberCard($root->loadMissing(['profile', 'rank', 'sponsor', 'mentor']), $viewer),
             'children' => $children,
             'filters' => $this->filterOptions($viewer),
+        ]);
+    }
+
+    public function treeBranch(Request $request, User $user): JsonResponse
+    {
+        $viewer = $request->user();
+        abort_unless($this->hierarchy->canViewMember($viewer, $user), 403);
+
+        $children = $this->hierarchy->directRecruitsQuery($user)
+            ->whereIn('users.id', $this->hierarchy->visibleMembersQuery($viewer)->select('users.id'))
+            ->with(['profile', 'rank', 'sponsor', 'mentor'])
+            ->withCount([
+                'sponsoredMembers as direct_recruits_count' => fn (Builder $query) => $query
+                    ->whereIn('users.id', $this->hierarchy->visibleMembersQuery($viewer)->select('users.id')),
+                'prospects',
+            ])
+            ->orderBy('name')
+            ->get()
+            ->map(fn (User $member) => $this->memberCard($member, $viewer));
+
+        return response()->json([
+            'html' => view('team.downline.partials.tree-branch-children', compact('children'))->render(),
         ]);
     }
 
@@ -66,8 +96,7 @@ class DownlineController extends Controller
 
         $likeTerm = '%'.addcslashes($term, '%_\\').'%';
 
-        $members = $this->hierarchy->descendantsQuery($viewer, includeSelf: true)
-            ->whereIn('users.id', $this->hierarchy->visibleMembersQuery($viewer)->select('users.id'))
+        $members = $this->hierarchy->visibleMembersQuery($viewer)
             ->where(function (Builder $query) use ($likeTerm): void {
                 $query->where('users.name', 'like', $likeTerm)
                     ->orWhere('users.email', 'like', $likeTerm);
@@ -107,7 +136,11 @@ class DownlineController extends Controller
 
         $leaders = $this->hierarchy->directRecruitsQuery($root)
             ->with(['profile', 'rank', 'roles', 'mentor', 'sponsor', 'team'])
-            ->withCount(['sponsoredMembers as direct_recruits_count'])
+            ->whereIn('users.id', $this->hierarchy->visibleMembersQuery($viewer)->select('users.id'))
+            ->withCount([
+                'sponsoredMembers as direct_recruits_count' => fn (Builder $query) => $query
+                    ->whereIn('users.id', $this->hierarchy->visibleMembersQuery($viewer)->select('users.id')),
+            ])
             ->orderBy('name')
             ->get()
             ->map(fn (User $member): array => $this->orgChartProfilePayload($member, $viewer))
@@ -116,7 +149,7 @@ class DownlineController extends Controller
         return view('team.downline.org-chart', [
             'root' => $this->orgChartProfilePayload($root, $viewer),
             'leaders' => $leaders,
-            'branchSummary' => $this->stats($root),
+            'branchSummary' => $this->stats($root, $viewer),
         ]);
     }
 
@@ -129,6 +162,13 @@ class DownlineController extends Controller
             'stats' => $this->downlineStats($user),
             'members' => $members->paginate(15)->withQueryString(),
             'filters' => $this->filterOptions($user),
+            'cfmCandidates' => $user->canAccessCfmManagement()
+                ? $this->cfmManagement->accessibleCfms($user)->map(fn (array $cfm) => [
+                    'id' => $cfm['id'],
+                    'name' => $cfm['name'],
+                    'rank' => $cfm['rank'] ?? null,
+                ])->all()
+                : [],
         ]);
     }
 
@@ -194,8 +234,7 @@ class DownlineController extends Controller
             ->values()
             ->all();
 
-        $searchMembers = $this->hierarchy->descendantsQuery($viewer, includeSelf: true)
-            ->whereIn('users.id', $this->hierarchy->visibleMembersQuery($viewer)->select('users.id'))
+        $searchMembers = $this->hierarchy->visibleMembersQuery($viewer)
             ->with('profile')
             ->orderBy('name')
             ->get()
@@ -244,7 +283,7 @@ class DownlineController extends Controller
 
         return view('team.downline.member', [
             'member' => $user,
-            'metrics' => $this->hierarchy->memberMetrics($user),
+            'metrics' => $this->hierarchy->visibleMemberMetrics($request->user(), $user),
             'progress' => $this->progressSummary($user),
             'canSeeSensitive' => $request->user()->can('viewSensitive', $user),
             'checklistTypePanel' => $this->checklists->checklistTypeManagementPanel($user),
@@ -261,10 +300,11 @@ class DownlineController extends Controller
             ->limit(1000)
             ->get();
 
+        $viewer = $request->user();
         $csv = collect([
             ['Name', 'Email', 'Rank', 'Sponsor', 'CFM', 'Country', 'City', 'Status', 'Joined At', 'Direct Recruits', 'Total Downline'],
-        ])->merge($rows->map(function (User $member): array {
-            $metrics = $this->hierarchy->memberMetrics($member);
+        ])->merge($rows->map(function (User $member) use ($viewer): array {
+            $metrics = $this->hierarchy->visibleMemberMetrics($viewer, $member);
 
             return [
                 $member->name,
@@ -292,7 +332,11 @@ class DownlineController extends Controller
     {
         return $query
             ->with(['profile', 'rank', 'sponsor', 'mentor'])
-            ->withCount(['sponsoredMembers as direct_recruits_count', 'prospects'])
+            ->withCount([
+                'sponsoredMembers as direct_recruits_count' => fn (Builder $query) => $query
+                    ->whereIn('users.id', $this->hierarchy->visibleMembersQuery($request->user())->select('users.id')),
+                'prospects',
+            ])
             ->when($request->filled('search'), function (Builder $query) use ($request): void {
                 $search = trim((string) $request->string('search'));
 
@@ -356,18 +400,23 @@ class DownlineController extends Controller
         ];
     }
 
-    private function stats(User $root): array
+    private function stats(User $root, User $viewer): array
     {
-        $members = $this->hierarchy->descendantsQuery($root, includeSelf: false);
+        $visibleMemberIds = $this->hierarchy->visibleMembersQuery($viewer)->select('users.id');
+        $members = $this->hierarchy->descendantsQuery($root, includeSelf: false)
+            ->whereIn('users.id', $visibleMemberIds);
         $total = (clone $members)->count();
+        $directRecruits = $this->hierarchy->directRecruitsQuery($root)
+            ->whereIn('users.id', $visibleMemberIds)
+            ->count();
 
         return [
             'total_team' => $total,
-            'direct_recruits' => $this->hierarchy->directRecruitsQuery($root)->count(),
+            'direct_recruits' => $directRecruits,
             'active_associates' => (clone $members)->where('users.is_active', true)->count(),
-            'licensed_associates' => $this->licensedCount($root),
+            'licensed_associates' => (clone $members)->whereHas('profile', fn (Builder $query) => $query->whereNotNull('license_number'))->count(),
             'new_this_month' => (clone $members)->whereMonth('users.joined_at', now()->month)->whereYear('users.joined_at', now()->year)->count(),
-            'pending_licensing' => $this->pendingLicensingCount($root),
+            'pending_licensing' => (clone $members)->whereDoesntHave('profile', fn (Builder $query) => $query->whereNotNull('license_number'))->count(),
             'cfm_assigned' => (clone $members)->whereNotNull('users.mentor_id')->count(),
             'cfm_unassigned' => (clone $members)->whereNull('users.mentor_id')->count(),
             'training_average' => $total > 0 ? round((clone $members)->get()->avg(fn (User $member) => $this->progressSummary($member)['training'])) : 0,
@@ -388,9 +437,13 @@ class DownlineController extends Controller
             'phone' => $member->profile?->phone ?? 'Not set',
             'license_number' => $member->profile?->license_number ?? 'Not licensed yet',
             'can_see_sensitive' => $viewer->can('viewSensitive', $member),
-            'active_associates' => $this->hierarchy->descendantsQuery($member)->where('is_active', true)->count(),
-            'licensed_associates' => $this->licensedCount($member),
-            'pending_licensing' => $this->pendingLicensingCount($member),
+            'active_associates' => $this->visibleDescendantsQuery($viewer, $member)->where('users.is_active', true)->count(),
+            'licensed_associates' => $this->visibleDescendantsQuery($viewer, $member)
+                ->whereHas('profile', fn (Builder $query) => $query->whereNotNull('license_number'))
+                ->count(),
+            'pending_licensing' => $this->visibleDescendantsQuery($viewer, $member)
+                ->whereDoesntHave('profile', fn (Builder $query) => $query->whereNotNull('license_number'))
+                ->count(),
             'member_url' => route('team.member', $member),
             'org_chart_url' => route('team.member.org-chart', $member),
             'tree_url' => route('team.member.tree', $member),
@@ -399,7 +452,9 @@ class DownlineController extends Controller
 
     private function memberCard(User $member, ?User $viewer = null): array
     {
-        $metrics = $this->hierarchy->memberMetrics($member);
+        $metrics = $viewer
+            ? $this->hierarchy->visibleMemberMetrics($viewer, $member)
+            : $this->hierarchy->memberMetrics($member);
         $production = $this->memberProfileTabs->annualPremiumTotal($member);
         $metrics['production'] = $production;
         $metrics['production_formatted'] = '$'.number_format($production);
@@ -419,8 +474,8 @@ class DownlineController extends Controller
             'email' => $member->email,
             'avatar' => $member->initials(),
             'profile_photo_url' => $member->profilePhotoUrl(),
-            'rank' => $member->rank?->code ?? \App\Support\GreatwayRankCatalog::entryCode(),
-            'rank_name' => $member->rank?->name ?? \App\Support\GreatwayRankCatalog::entryName(),
+            'rank' => $member->rank?->code ?? GreatwayRankCatalog::entryCode(),
+            'rank_name' => $member->rank?->name ?? GreatwayRankCatalog::entryName(),
             'sponsor' => $member->sponsor?->name ?? 'None',
             'mentor' => $member->mentor?->name ?? 'Unassigned',
             'country' => $member->profile?->country ?? 'Global',
@@ -433,6 +488,7 @@ class DownlineController extends Controller
             'upline_tree_url' => $uplineTreeUrl,
             'metrics' => $metrics,
             'progress' => $progress,
+            'has_children' => (int) ($member->direct_recruits_count ?? 0) > 0,
         ];
     }
 
@@ -452,27 +508,20 @@ class DownlineController extends Controller
         };
     }
 
-    private function licensedCount(User $root): int
+    private function visibleDescendantsQuery(User $viewer, User $root): Builder
     {
         return $this->hierarchy->descendantsQuery($root)
-            ->whereHas('profile', fn (Builder $query) => $query->whereNotNull('license_number'))
-            ->count();
+            ->whereIn('users.id', $this->hierarchy->visibleMembersQuery($viewer)->select('users.id'));
     }
 
-    private function pendingLicensingCount(User $root): int
-    {
-        return $this->hierarchy->descendantsQuery($root)
-            ->whereHas('profile', fn (Builder $query) => $query->whereNull('license_number'))
-            ->count();
-    }
-
-    private function rankDistribution(User $root): array
+    private function rankDistribution(User $root, User $viewer): array
     {
         return \DB::table('user_hierarchy_paths')
             ->join('users', 'users.id', '=', 'user_hierarchy_paths.descendant_id')
             ->leftJoin('ranks', 'users.rank_id', '=', 'ranks.id')
             ->where('user_hierarchy_paths.ancestor_id', $root->id)
             ->where('user_hierarchy_paths.depth', '>', 0)
+            ->whereIn('user_hierarchy_paths.descendant_id', $this->hierarchy->visibleMembersQuery($viewer)->select('users.id'))
             ->whereNull('users.deleted_at')
             ->selectRaw('COALESCE(ranks.code, "TA") as label, COUNT(users.id) as total')
             ->groupBy('label')
@@ -481,7 +530,7 @@ class DownlineController extends Controller
             ->all();
     }
 
-    private function countryDistribution(User $root): array
+    private function countryDistribution(User $root, User $viewer): array
     {
         return \DB::table('user_hierarchy_paths')
             ->join('users', 'users.id', '=', 'user_hierarchy_paths.descendant_id')
@@ -489,6 +538,7 @@ class DownlineController extends Controller
             ->leftJoin('countries', 'countries.id', '=', 'profiles.country_id')
             ->where('user_hierarchy_paths.ancestor_id', $root->id)
             ->where('user_hierarchy_paths.depth', '>', 0)
+            ->whereIn('user_hierarchy_paths.descendant_id', $this->hierarchy->visibleMembersQuery($viewer)->select('users.id'))
             ->whereNull('users.deleted_at')
             ->selectRaw('COALESCE(countries.name, "Global") as label, COUNT(users.id) as total')
             ->groupBy('label')

@@ -18,6 +18,9 @@
 @endphp
 
 <div class="space-y-4" wire:key="my-appointments-table">
+    @if (session('booking-status'))
+        <div class="rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-800" role="status">{{ session('booking-status') }}</div>
+    @endif
     <section class="rounded-xl border border-[#516070]/30 bg-white p-4 shadow-sm">
         <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
@@ -255,6 +258,29 @@
                                         </div>
                                     </div>
                                 </div>
+                                @if (in_array($booking->status, ['confirmed', 'pending_approval'], true)
+                                    && $booking->starts_at->isFuture()
+                                    && ($booking->cfm_id === auth()->id() || $booking->trainee_id === auth()->id()))
+                                    <div class="mt-4 flex flex-col gap-3 rounded-lg border border-slate-200 bg-white p-3 sm:flex-row sm:items-end">
+                                        @if ($booking->status === 'confirmed' && $canReschedule)
+                                            <form wire:submit="requestReschedule('{{ $booking->id }}')" class="grid flex-1 gap-3 sm:grid-cols-3 sm:items-end">
+                                                <div>
+                                                    <label for="reschedule-at-{{ $booking->id }}" class="block text-xs font-semibold text-slate-600">Request a new time ({{ $booking->timezone }})</label>
+                                                    <input id="reschedule-at-{{ $booking->id }}" type="datetime-local" wire:model="rescheduleAt.{{ $booking->id }}" min="{{ now($booking->timezone)->format('Y-m-d\TH:i') }}" required class="mt-1 h-10 w-full rounded-md border-slate-300 text-sm">
+                                                    @error('rescheduleAt.'.$booking->id) <p class="mt-1 text-xs text-rose-700">{{ $message }}</p> @enderror
+                                                </div>
+                                                <div>
+                                                    <label for="reschedule-reason-{{ $booking->id }}" class="block text-xs font-semibold text-slate-600">Reason (optional)</label>
+                                                    <input id="reschedule-reason-{{ $booking->id }}" wire:model="rescheduleReason.{{ $booking->id }}" maxlength="1000" class="mt-1 h-10 w-full rounded-md border-slate-300 text-sm">
+                                                </div>
+                                                <button class="h-10 rounded-md border border-gw-primary px-3 text-xs font-semibold text-gw-primary">Request reschedule</button>
+                                            </form>
+                                        @endif
+                                        @if ($canCancel)
+                                            <button type="button" wire:click="cancelBooking('{{ $booking->id }}')" wire:confirm="Cancel this booking?" class="h-10 rounded-md border border-rose-300 px-3 text-xs font-semibold text-rose-700">Cancel booking</button>
+                                        @endif
+                                    </div>
+                                @endif
                             </td>
                         </tr>
                     @empty

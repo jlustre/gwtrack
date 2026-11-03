@@ -13,7 +13,7 @@ class RankSeeder extends Seeder
         GreatwayRankCatalog::remapLegacyRanks();
 
         foreach (GreatwayRankCatalog::seederPayload() as $rank) {
-            $model = Rank::withTrashed()->updateOrCreate(
+            $model = Rank::withTrashed()->firstOrCreate(
                 ['code' => $rank['code']],
                 $rank,
             );

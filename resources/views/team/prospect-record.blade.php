@@ -89,6 +89,10 @@
             </div>
         </div>
 
+        @can('update', $prospect)
+            <livewire:prospects.prospect-opportunity-manager :prospect="$prospect" />
+        @endcan
+
         @can('share', $prospect)
             <livewire:prospects.prospect-share-modal />
         @endcan

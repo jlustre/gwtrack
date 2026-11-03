@@ -38,6 +38,10 @@ This hybrid adjacency plus closure-table strategy gives simple sponsor updates a
 
 Visibility is enforced through Spatie permissions plus policies:
 
+- Dashboard distributions, branch summaries, member metrics, and lazy-loaded tree branches are scoped to the viewer's visible member set.
+- `DownlineHierarchyService::visibleMembersQuery()` is the common member scope used by lists and individual profile checks; dashboard detail queries use the same scope.
+- Visibility includes the permitted sponsorship depth, the viewer's own profile, active mentor assignments, unexpired explicit visibility grants, and agency-owned teams for agency owners.
+- Expired or deleted grants and inactive or deleted mentor assignments do not provide visibility.
 - `view own team`
 - `view direct downline`
 - `view full downline`
@@ -106,8 +110,10 @@ Policy classes:
 - [x] Add first-pass Blade UI for all three core views.
 - [x] Add Livewire component stubs for future interactive behavior.
 - [x] Add downline demo seeder.
-- [ ] Add AJAX lazy loading endpoints for tree branches.
+- [x] Add AJAX lazy loading endpoints for tree branches with viewer-scoped child visibility.
+- [x] Align hierarchy lists, profile checks, dashboard details, mentor assignments, visibility grants, and agency-owned team access.
 - [ ] Replace tree branch action scaffolds with Livewire modals.
 - [ ] Add saved filters and column visibility persistence.
-- [ ] Add real bulk actions for CFM assignment, announcements, tags, events, and tasks.
+- [ ] Add real bulk actions for announcements, tags, events, and tasks.
+- [x] Add bulk CFM assignment from the visible downline table using the existing eligibility and confirmation workflow.
 - [ ] Add cached downline metrics table or scheduled cache warmer.
